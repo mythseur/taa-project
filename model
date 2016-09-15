@@ -1,0 +1,77 @@
+entity Partenaire {
+    Numseq Int required
+    Siret String pattern ("[0-9]*")
+    Service String
+    NomPart String required
+  	TelStd String pattern ("[0-9]*")
+    Fax String pattern ("[0-9]*")
+    Url String pattern ("/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/")
+    Commentaire String
+    DateMaj Date required
+}
+
+entity Region {
+    Libelle String
+}
+
+entity Adresse {
+	Rue String
+    CpltRue String
+    CodeP String pattern ("[0-9]*") required
+    Ville String required
+}
+
+entity NAF
+
+entity Activite
+
+entity ContactPart
+
+entity Etudiant
+
+entity Stage
+
+entity EnseignantStage
+
+entity Periode
+
+entity ContactStage
+
+entity Filiere
+
+entity DiplomeIfsic
+
+entity DiplomeEtud
+
+relationship OneToMany {
+	Partenaire{region} to Region
+}
+
+relationship OneToMany {
+	Partenaire{adresse} to Adresse
+}
+
+relationship OneToMany {
+	Partenaire{NafCode} to NAF
+}
+
+relationship OneToMany {
+	NAF{ActCode} to Activite
+}
+
+relationship ManyToMany {
+	Partenaire{Activites} to Activite
+}
+
+relationship ManyToMany {
+	ContactPart to Partenaire,
+    Partenaire to ContactPart
+}
+
+/
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Employee, Job
+// Set an angular suffix
+angularSuffix * with mySuffix
