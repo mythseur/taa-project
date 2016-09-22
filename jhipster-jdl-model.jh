@@ -1,0 +1,125 @@
+enum Sexe{
+	HOMME, FEMME
+}
+
+entity Etudiant{
+	INE String,
+    nom String,
+    prenom String,
+    sexe Sexe
+}
+
+entity DonneesEtudiant{
+	datemodif Date,
+    adresse String,
+    ville String,
+    codepostal String,
+    telperso String,
+    telmobile String
+}
+
+entity Diplome{
+	libelle String,
+    duree Number,
+    libellecourt String
+}
+
+entity Filiere{
+	libelle String
+}
+
+entity Enseignant{
+	sesame String,
+    nom String,
+    prenom String,
+    sexe Sexe,
+    adresse String,
+    telpro String,
+    actif Boolean
+}
+
+entity Stage{
+    datedebut Date,
+    datefin Date,
+    sujet String,
+    service String,
+    details String,
+    jours Number,
+    heures Number,
+    versement Number
+}
+
+entity Entreprise{
+	siret String,
+    effectif Number
+}
+
+entity DonneesEntreprise{
+	datemodif Date,
+	adresse String,
+    ville String,
+    codepostal String,
+    tel String,
+    url String,
+    commentaire String
+}
+
+entity Contact{
+	nom String,
+    prenom String,
+    role String,
+    tel String,
+    mail String,
+    commentaire String
+}
+
+entity Alternance{
+	datedebut Date,
+    datefin Date,
+    sujet String,
+    service String,
+    details String,
+    jours Number,
+    heures Number,
+    versement Number
+}
+
+entity Enquete{
+
+}
+
+entity EtudiantDiplome{
+	annee String,
+    note Number,
+    mention String
+}
+
+
+
+
+relationship ManyToMany{
+	Etudiant to Diplome
+}
+
+relationship OneToMany{
+	Etudiant to Stage,
+    Etudiant to Alternance,
+    Etudiant to Enquete,
+    Etudiant to EtudiantDiplome,
+    Diplome to EtudiantDiplome,
+    Entreprise to DonneesEntreprise,
+    Etudiant to DonneesEtudiant
+}
+
+relationship ManyToOne{
+	Diplome to Filiere,
+    Filiere to Enseignant,
+    Stage to Enseignant,
+    Stage to Entreprise,
+    Stage to Contact{encadrant},
+    Stage to Contact{responsable},
+    Contact to Entreprise,
+    Alternance to Entreprise,
+    Alternance to Contact{encadrant},
+    Alternance to Contact{responsable}
+}
