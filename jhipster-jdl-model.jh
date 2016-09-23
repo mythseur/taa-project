@@ -50,6 +50,7 @@
   }
 
   entity Entreprise{
+      nom String,
       siret String,
       effectif Integer
   }
@@ -85,7 +86,23 @@
   }
 
   entity Enquete{
-
+	 situation String,
+     modeObtention String,
+     modeEnquete String,
+     date LocalDate,
+     nomUsuel String,
+     rue String,
+     complement String,
+     ville String,
+     codepostal String,
+     datedebut LocalDate,
+     dureeRecherche Integer,
+     salaire Integer,
+     salaireFixe Integer,
+     salaireVariable Integer,
+     pourcentage Integer,
+     avantage Integer,
+     devise String
   }
 
   entity EtudiantDiplome{
@@ -118,7 +135,7 @@
   }
 
 
-  dto * with mapstruct
+  //dto * with mapstruct
 
   // Set service options to all except few
   service all with serviceImpl

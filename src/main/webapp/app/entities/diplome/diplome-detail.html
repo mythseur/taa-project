@@ -1,0 +1,30 @@
+<div>
+    <h2><span>Diplome</span> {{vm.diplome.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Libelle</span></dt>
+        <dd>
+            <span>{{vm.diplome.libelle}}</span>
+        </dd>
+        <dt><span>Duree</span></dt>
+        <dd>
+            <span>{{vm.diplome.duree}}</span>
+        </dd>
+        <dt><span>Libellecourt</span></dt>
+        <dd>
+            <span>{{vm.diplome.libellecourt}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="diplome-detail.edit({id:vm.diplome.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm"> Edit</span>
+    </button>
+</div>

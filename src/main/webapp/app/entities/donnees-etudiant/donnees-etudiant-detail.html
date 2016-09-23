@@ -1,0 +1,46 @@
+<div>
+    <h2><span>Donnees Etudiant</span> {{vm.donneesEtudiant.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Datemodif</span></dt>
+        <dd>
+            <span>{{vm.donneesEtudiant.datemodif | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Adresse</span></dt>
+        <dd>
+            <span>{{vm.donneesEtudiant.adresse}}</span>
+        </dd>
+        <dt><span>Ville</span></dt>
+        <dd>
+            <span>{{vm.donneesEtudiant.ville}}</span>
+        </dd>
+        <dt><span>Codepostal</span></dt>
+        <dd>
+            <span>{{vm.donneesEtudiant.codepostal}}</span>
+        </dd>
+        <dt><span>Telperso</span></dt>
+        <dd>
+            <span>{{vm.donneesEtudiant.telperso}}</span>
+        </dd>
+        <dt><span>Telmobile</span></dt>
+        <dd>
+            <span>{{vm.donneesEtudiant.telmobile}}</span>
+        </dd>
+        <dt><span>Etudiant</span></dt>
+        <dd>
+            <a ui-sref="etudiant-detail({id:vm.donneesEtudiant.etudiant.id})">{{vm.donneesEtudiant.etudiant.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="donnees-etudiant-detail.edit({id:vm.donneesEtudiant.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm"> Edit</span>
+    </button>
+</div>

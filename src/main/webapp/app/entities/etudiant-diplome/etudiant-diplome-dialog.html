@@ -1,0 +1,57 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myEtudiantDiplomeLabel">Create or edit a Etudiant Diplome</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.etudiantDiplome.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   ng-model="vm.etudiantDiplome.id" readonly/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_annee">Annee</label>
+            <input type="text" class="form-control" name="annee" id="field_annee"
+                   ng-model="vm.etudiantDiplome.annee"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_note">Note</label>
+            <input type="number" class="form-control" name="note" id="field_note"
+                   ng-model="vm.etudiantDiplome.note"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_mention">Mention</label>
+            <input type="text" class="form-control" name="mention" id="field_mention"
+                   ng-model="vm.etudiantDiplome.mention"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="field_etudiant">Etudiant</label>
+            <select class="form-control" id="field_etudiant" name="etudiant" ng-model="vm.etudiantDiplome.etudiant"
+                    ng-options="etudiant as etudiant.id for etudiant in vm.etudiants track by etudiant.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="field_diplome">Diplome</label>
+            <select class="form-control" id="field_diplome" name="diplome" ng-model="vm.etudiantDiplome.diplome"
+                    ng-options="diplome as diplome.id for diplome in vm.diplomes track by diplome.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

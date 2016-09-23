@@ -1,0 +1,122 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myStageLabel">Create or edit a Stage</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.stage.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   ng-model="vm.stage.id" readonly/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_datedebut">Datedebut</label>
+            <div class="input-group">
+                <input id="field_datedebut" type="text" class="form-control" name="datedebut"
+                       uib-datepicker-popup="{{dateformat}}" ng-model="vm.stage.datedebut"
+                       is-open="vm.datePickerOpenStatus.datedebut"
+                />
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('datedebut')"><i
+                            class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_datefin">Datefin</label>
+            <div class="input-group">
+                <input id="field_datefin" type="text" class="form-control" name="datefin"
+                       uib-datepicker-popup="{{dateformat}}" ng-model="vm.stage.datefin"
+                       is-open="vm.datePickerOpenStatus.datefin"
+                />
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('datefin')"><i
+                            class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_sujet">Sujet</label>
+            <input type="text" class="form-control" name="sujet" id="field_sujet"
+                   ng-model="vm.stage.sujet"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_service">Service</label>
+            <input type="text" class="form-control" name="service" id="field_service"
+                   ng-model="vm.stage.service"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_details">Details</label>
+            <input type="text" class="form-control" name="details" id="field_details"
+                   ng-model="vm.stage.details"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_jours">Jours</label>
+            <input type="number" class="form-control" name="jours" id="field_jours"
+                   ng-model="vm.stage.jours"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_heures">Heures</label>
+            <input type="number" class="form-control" name="heures" id="field_heures"
+                   ng-model="vm.stage.heures"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_versement">Versement</label>
+            <input type="number" class="form-control" name="versement" id="field_versement"
+                   ng-model="vm.stage.versement"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="field_etudiant">Etudiant</label>
+            <select class="form-control" id="field_etudiant" name="etudiant" ng-model="vm.stage.etudiant"
+                    ng-options="etudiant as etudiant.id for etudiant in vm.etudiants track by etudiant.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="field_referent">Referent</label>
+            <select class="form-control" id="field_referent" name="referent" ng-model="vm.stage.referent"
+                    ng-options="enseignant as enseignant.id for enseignant in vm.enseignants track by enseignant.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="field_entreprise">Entreprise</label>
+            <select class="form-control" id="field_entreprise" name="entreprise" ng-model="vm.stage.entreprise"
+                    ng-options="entreprise as entreprise.id for entreprise in vm.entreprises track by entreprise.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="field_encadrant">Encadrant</label>
+            <select class="form-control" id="field_encadrant" name="encadrant" ng-model="vm.stage.encadrant"
+                    ng-options="contact as contact.id for contact in vm.contacts track by contact.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="field_responsable">Responsable</label>
+            <select class="form-control" id="field_responsable" name="responsable" ng-model="vm.stage.responsable"
+                    ng-options="contact as contact.id for contact in vm.contacts track by contact.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

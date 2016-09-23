@@ -1,0 +1,70 @@
+<div>
+    <h2><span>Stage</span> {{vm.stage.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Datedebut</span></dt>
+        <dd>
+            <span>{{vm.stage.datedebut | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Datefin</span></dt>
+        <dd>
+            <span>{{vm.stage.datefin | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Sujet</span></dt>
+        <dd>
+            <span>{{vm.stage.sujet}}</span>
+        </dd>
+        <dt><span>Service</span></dt>
+        <dd>
+            <span>{{vm.stage.service}}</span>
+        </dd>
+        <dt><span>Details</span></dt>
+        <dd>
+            <span>{{vm.stage.details}}</span>
+        </dd>
+        <dt><span>Jours</span></dt>
+        <dd>
+            <span>{{vm.stage.jours}}</span>
+        </dd>
+        <dt><span>Heures</span></dt>
+        <dd>
+            <span>{{vm.stage.heures}}</span>
+        </dd>
+        <dt><span>Versement</span></dt>
+        <dd>
+            <span>{{vm.stage.versement}}</span>
+        </dd>
+        <dt><span>Etudiant</span></dt>
+        <dd>
+            <a ui-sref="etudiant-detail({id:vm.stage.etudiant.id})">{{vm.stage.etudiant.id}}</a>
+        </dd>
+        <dt><span>Referent</span></dt>
+        <dd>
+            <a ui-sref="enseignant-detail({id:vm.stage.referent.id})">{{vm.stage.referent.id}}</a>
+        </dd>
+        <dt><span>Entreprise</span></dt>
+        <dd>
+            <a ui-sref="entreprise-detail({id:vm.stage.entreprise.id})">{{vm.stage.entreprise.id}}</a>
+        </dd>
+        <dt><span>Encadrant</span></dt>
+        <dd>
+            <a ui-sref="contact-detail({id:vm.stage.encadrant.id})">{{vm.stage.encadrant.id}}</a>
+        </dd>
+        <dt><span>Responsable</span></dt>
+        <dd>
+            <a ui-sref="contact-detail({id:vm.stage.responsable.id})">{{vm.stage.responsable.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="stage-detail.edit({id:vm.stage.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm"> Edit</span>
+    </button>
+</div>

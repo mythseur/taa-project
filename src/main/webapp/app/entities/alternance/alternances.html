@@ -1,0 +1,104 @@
+<div>
+    <h2>Alternances</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="alternance.new">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span class="hidden-xs">
+                        Create new Alternance
+                    </span>
+                </button>
+            </div>
+            <div class="col-xs-8 no-padding-right">
+                <form name="searchForm" class="form-inline">
+                    <div class="input-group pull-right">
+                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery"
+                               placeholder="Query">
+                        <span class="input-group-btn width-min">
+                            <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                        <span class="input-group-btn width-min" ng-if="vm.currentSearch">
+                            <button class="btn btn-info" ng-click="vm.clear()">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+            <tr>
+                <th><span>ID</span></th>
+                <th><span>Datedebut</span></th>
+                <th><span>Datefin</span></th>
+                <th><span>Sujet</span></th>
+                <th><span>Service</span></th>
+                <th><span>Details</span></th>
+                <th><span>Jours</span></th>
+                <th><span>Heures</span></th>
+                <th><span>Versement</span></th>
+                <th><span>Etudiant</span></th>
+                <th><span>Entreprise</span></th>
+                <th><span>Encadrant</span></th>
+                <th><span>Representant</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="alternance in vm.alternances track by alternance.id">
+                <td><a ui-sref="alternance-detail({id:alternance.id})">{{alternance.id}}</a></td>
+                <td>{{alternance.datedebut | date:'mediumDate'}}</td>
+                <td>{{alternance.datefin | date:'mediumDate'}}</td>
+                <td>{{alternance.sujet}}</td>
+                <td>{{alternance.service}}</td>
+                <td>{{alternance.details}}</td>
+                <td>{{alternance.jours}}</td>
+                <td>{{alternance.heures}}</td>
+                <td>{{alternance.versement}}</td>
+                <td>
+                    <a ui-sref="etudiant-detail({id:alternance.etudiant.id})">{{alternance.etudiant.id}}</a>
+                </td>
+                <td>
+                    <a ui-sref="entreprise-detail({id:alternance.entreprise.id})">{{alternance.entreprise.id}}</a>
+                </td>
+                <td>
+                    <a ui-sref="contact-detail({id:alternance.encadrant.id})">{{alternance.encadrant.id}}</a>
+                </td>
+                <td>
+                    <a ui-sref="contact-detail({id:alternance.representant.id})">{{alternance.representant.id}}</a>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                ui-sref="alternance-detail({id:alternance.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                            <span class="hidden-xs hidden-sm"></span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="alternance.edit({id:alternance.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            <span class="hidden-xs hidden-sm"></span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="alternance.delete({id:alternance.id})"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>
+                            <span class="hidden-xs hidden-sm"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,148 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myEnqueteLabel">Create or edit a Enquete</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.enquete.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   ng-model="vm.enquete.id" readonly/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_situation">Situation</label>
+            <input type="text" class="form-control" name="situation" id="field_situation"
+                   ng-model="vm.enquete.situation"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_modeObtention">Mode Obtention</label>
+            <input type="text" class="form-control" name="modeObtention" id="field_modeObtention"
+                   ng-model="vm.enquete.modeObtention"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_modeEnquete">Mode Enquete</label>
+            <input type="text" class="form-control" name="modeEnquete" id="field_modeEnquete"
+                   ng-model="vm.enquete.modeEnquete"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_date">Date</label>
+            <div class="input-group">
+                <input id="field_date" type="text" class="form-control" name="date"
+                       uib-datepicker-popup="{{dateformat}}" ng-model="vm.enquete.date"
+                       is-open="vm.datePickerOpenStatus.date"
+                />
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('date')"><i
+                            class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_nomUsuel">Nom Usuel</label>
+            <input type="text" class="form-control" name="nomUsuel" id="field_nomUsuel"
+                   ng-model="vm.enquete.nomUsuel"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_rue">Rue</label>
+            <input type="text" class="form-control" name="rue" id="field_rue"
+                   ng-model="vm.enquete.rue"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_complement">Complement</label>
+            <input type="text" class="form-control" name="complement" id="field_complement"
+                   ng-model="vm.enquete.complement"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_ville">Ville</label>
+            <input type="text" class="form-control" name="ville" id="field_ville"
+                   ng-model="vm.enquete.ville"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_codepostal">Codepostal</label>
+            <input type="text" class="form-control" name="codepostal" id="field_codepostal"
+                   ng-model="vm.enquete.codepostal"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_datedebut">Datedebut</label>
+            <div class="input-group">
+                <input id="field_datedebut" type="text" class="form-control" name="datedebut"
+                       uib-datepicker-popup="{{dateformat}}" ng-model="vm.enquete.datedebut"
+                       is-open="vm.datePickerOpenStatus.datedebut"
+                />
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('datedebut')"><i
+                            class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_dureeRecherche">Duree Recherche</label>
+            <input type="number" class="form-control" name="dureeRecherche" id="field_dureeRecherche"
+                   ng-model="vm.enquete.dureeRecherche"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_salaire">Salaire</label>
+            <input type="number" class="form-control" name="salaire" id="field_salaire"
+                   ng-model="vm.enquete.salaire"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_salaireFixe">Salaire Fixe</label>
+            <input type="number" class="form-control" name="salaireFixe" id="field_salaireFixe"
+                   ng-model="vm.enquete.salaireFixe"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_salaireVariable">Salaire Variable</label>
+            <input type="number" class="form-control" name="salaireVariable" id="field_salaireVariable"
+                   ng-model="vm.enquete.salaireVariable"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_pourcentage">Pourcentage</label>
+            <input type="number" class="form-control" name="pourcentage" id="field_pourcentage"
+                   ng-model="vm.enquete.pourcentage"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_avantage">Avantage</label>
+            <input type="number" class="form-control" name="avantage" id="field_avantage"
+                   ng-model="vm.enquete.avantage"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_devise">Devise</label>
+            <input type="text" class="form-control" name="devise" id="field_devise"
+                   ng-model="vm.enquete.devise"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="field_etudiant">Etudiant</label>
+            <select class="form-control" id="field_etudiant" name="etudiant" ng-model="vm.enquete.etudiant"
+                    ng-options="etudiant as etudiant.id for etudiant in vm.etudiants track by etudiant.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>
