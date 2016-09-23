@@ -1,125 +1,126 @@
-enum Sexe{
-	HOMME, FEMME
-}
+   enum Sexe{
+      HOMME, FEMME
+  }
 
-entity Etudiant{
-	INE String,
-    nom String,
-    prenom String,
-    sexe Sexe
-}
+  entity Etudiant{
+      INE String,
+      nom String,
+      prenom String,
+      sexe Sexe
+  }
 
-entity DonneesEtudiant{
-	datemodif Date,
-    adresse String,
-    ville String,
-    codepostal String,
-    telperso String,
-    telmobile String
-}
+  entity DonneesEtudiant{
+      Datemodif LocalDate,
+      adresse String,
+      ville String,
+      codepostal String,
+      telperso String,
+      telmobile String
+  }
 
-entity Diplome{
-	libelle String,
-    duree Number,
-    libellecourt String
-}
+  entity Diplome{
+      libelle String,
+      duree Integer,
+      libellecourt String
+  }
 
-entity Filiere{
-	libelle String
-}
+  entity Filiere{
+      libelle String
+  }
 
-entity Enseignant{
-	sesame String,
-    nom String,
-    prenom String,
-    sexe Sexe,
-    adresse String,
-    telpro String,
-    actif Boolean
-}
+  entity Enseignant{
+      sesame String,
+      nom String,
+      prenom String,
+      sexe Sexe,
+      adresse String,
+      telpro String,
+      actif Boolean
+  }
 
-entity Stage{
-    datedebut Date,
-    datefin Date,
-    sujet String,
-    service String,
-    details String,
-    jours Number,
-    heures Number,
-    versement Number
-}
+  entity Stage{
+      Datedebut LocalDate,
+      Datefin LocalDate,
+      sujet String,
+      service String,
+      details String,
+      jours Integer,
+      heures Integer,
+      versement Integer
+  }
 
-entity Entreprise{
-	siret String,
-    effectif Number
-}
+  entity Entreprise{
+      siret String,
+      effectif Integer
+  }
 
-entity DonneesEntreprise{
-	datemodif Date,
-	adresse String,
-    ville String,
-    codepostal String,
-    tel String,
-    url String,
-    commentaire String
-}
+  entity DonneesEntreprise{
+      Datemodif LocalDate,
+      adresse String,
+      ville String,
+      codepostal String,
+      tel String,
+      url String,
+      commentaire String
+  }
 
-entity Contact{
-	nom String,
-    prenom String,
-    role String,
-    tel String,
-    mail String,
-    commentaire String
-}
+  entity Contact{
+      nom String,
+      prenom String,
+      role String,
+      tel String,
+      mail String,
+      commentaire String
+  }
 
-entity Alternance{
-	datedebut Date,
-    datefin Date,
-    sujet String,
-    service String,
-    details String,
-    jours Number,
-    heures Number,
-    versement Number
-}
+  entity Alternance{
+      Datedebut LocalDate,
+      Datefin LocalDate,
+      sujet String,
+      service String,
+      details String,
+      jours Integer,
+      heures Integer,
+      versement Integer
+  }
 
-entity Enquete{
+  entity Enquete{
 
-}
+  }
 
-entity EtudiantDiplome{
-	annee String,
-    note Number,
-    mention String
-}
+  entity EtudiantDiplome{
+      annee String,
+      note Integer,
+      mention String
+  }
+
+  relationship OneToMany{
+      Etudiant to Stage,
+      Etudiant to Alternance,
+      Etudiant to Enquete,
+      Etudiant{diplomes} to EtudiantDiplome,
+      Diplome{etudDiplomes} to EtudiantDiplome,
+      Entreprise to DonneesEntreprise,
+      Etudiant to DonneesEtudiant,
+      Entreprise{employes} to Contact{entreprise},
+      Contact{stageEncadres} to Stage{encadrant},
+      Contact{stageGeres} to Stage{responsable}
+  }
+
+  relationship ManyToOne{
+      Filiere{diplome} to Diplome,
+      Filiere{responsable} to Enseignant,
+      Stage{referent} to Enseignant,
+      Stage{entreprise} to Entreprise,
+      Alternance{entreprise} to Entreprise,
+      Alternance{encadrant} to Contact,
+      Alternance{representant} to Contact
+  }
 
 
+  dto * with mapstruct
 
-
-relationship ManyToMany{
-	Etudiant to Diplome
-}
-
-relationship OneToMany{
-	Etudiant to Stage,
-    Etudiant to Alternance,
-    Etudiant to Enquete,
-    Etudiant to EtudiantDiplome,
-    Diplome to EtudiantDiplome,
-    Entreprise to DonneesEntreprise,
-    Etudiant to DonneesEtudiant
-}
-
-relationship ManyToOne{
-	Diplome to Filiere,
-    Filiere to Enseignant,
-    Stage to Enseignant,
-    Stage to Entreprise,
-    Stage to Contact{encadrant},
-    Stage to Contact{responsable},
-    Contact to Entreprise,
-    Alternance to Entreprise,
-    Alternance to Contact{encadrant},
-    Alternance to Contact{responsable}
-}
+  // Set service options to all except few
+  service all with serviceImpl
+  // Set an angular suffix
+  //angularSuffix * with mySuffix
