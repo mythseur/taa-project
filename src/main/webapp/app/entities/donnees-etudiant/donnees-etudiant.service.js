@@ -16,7 +16,6 @@
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);
-                        data.datemodif = DateUtils.convertLocalDateFromServer(data.datemodif);
                     }
                     return data;
                 }
@@ -24,14 +23,12 @@
             'update': {
                 method: 'PUT',
                 transformRequest: function (data) {
-                    data.datemodif = DateUtils.convertLocalDateToServer(data.datemodif);
                     return angular.toJson(data);
                 }
             },
             'save': {
                 method: 'POST',
                 transformRequest: function (data) {
-                    data.datemodif = DateUtils.convertLocalDateToServer(data.datemodif);
                     return angular.toJson(data);
                 }
             }
