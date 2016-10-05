@@ -21,8 +21,8 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="datemodif" type="date">
-                <constraints nullable="true"/>
+            <column name="datemodif" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
             </column>
 
             <column name="adresse" type="varchar(255)">

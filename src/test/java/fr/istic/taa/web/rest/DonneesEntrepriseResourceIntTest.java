@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,8 +42,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class DonneesEntrepriseResourceIntTest {
 
-    private static final LocalDate DEFAULT_DATEMODIF = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_DATEMODIF = LocalDate.now(ZoneId.systemDefault());
+    private static final ZonedDateTime DEFAULT_DATEMODIF = ZonedDateTime.now();
+    private static final ZonedDateTime UPDATED_DATEMODIF = ZonedDateTime.now(ZoneId.systemDefault());
     private static final String DEFAULT_ADRESSE = "AAAAA";
     private static final String UPDATED_ADRESSE = "BBBBB";
     private static final String DEFAULT_VILLE = "AAAAA";
