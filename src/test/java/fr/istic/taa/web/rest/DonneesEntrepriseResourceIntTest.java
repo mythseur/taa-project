@@ -26,6 +26,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+import static fr.istic.taa.config.JacksonConfiguration.ISO_FIXED_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -42,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class DonneesEntrepriseResourceIntTest {
 
-    private static final ZonedDateTime DEFAULT_DATEMODIF = ZonedDateTime.now();
+    private static final ZonedDateTime DEFAULT_DATEMODIF = ZonedDateTime.now(ZoneId.systemDefault());
     private static final ZonedDateTime UPDATED_DATEMODIF = ZonedDateTime.now(ZoneId.systemDefault());
     private static final String DEFAULT_ADRESSE = "AAAAA";
     private static final String UPDATED_ADRESSE = "BBBBB";
@@ -153,7 +154,7 @@ public class DonneesEntrepriseResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(donneesEntreprise.getId().intValue())))
-            .andExpect(jsonPath("$.[*].datemodif").value(hasItem(DEFAULT_DATEMODIF.toString())))
+            .andExpect(jsonPath("$.[*].datemodif").value(hasItem(DEFAULT_DATEMODIF.format(ISO_FIXED_FORMAT))))
             .andExpect(jsonPath("$.[*].adresse").value(hasItem(DEFAULT_ADRESSE.toString())))
             .andExpect(jsonPath("$.[*].ville").value(hasItem(DEFAULT_VILLE.toString())))
             .andExpect(jsonPath("$.[*].codepostal").value(hasItem(DEFAULT_CODEPOSTAL.toString())))
@@ -173,7 +174,7 @@ public class DonneesEntrepriseResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(donneesEntreprise.getId().intValue()))
-            .andExpect(jsonPath("$.datemodif").value(DEFAULT_DATEMODIF.toString()))
+            .andExpect(jsonPath("$.datemodif").value(DEFAULT_DATEMODIF.format(ISO_FIXED_FORMAT)))
             .andExpect(jsonPath("$.adresse").value(DEFAULT_ADRESSE.toString()))
             .andExpect(jsonPath("$.ville").value(DEFAULT_VILLE.toString()))
             .andExpect(jsonPath("$.codepostal").value(DEFAULT_CODEPOSTAL.toString()))
@@ -263,7 +264,7 @@ public class DonneesEntrepriseResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(donneesEntreprise.getId().intValue())))
-            .andExpect(jsonPath("$.[*].datemodif").value(hasItem(DEFAULT_DATEMODIF.toString())))
+            .andExpect(jsonPath("$.[*].datemodif").value(hasItem(DEFAULT_DATEMODIF.format(ISO_FIXED_FORMAT))))
             .andExpect(jsonPath("$.[*].adresse").value(hasItem(DEFAULT_ADRESSE.toString())))
             .andExpect(jsonPath("$.[*].ville").value(hasItem(DEFAULT_VILLE.toString())))
             .andExpect(jsonPath("$.[*].codepostal").value(hasItem(DEFAULT_CODEPOSTAL.toString())))
