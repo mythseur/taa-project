@@ -1,18 +1,20 @@
 package fr.istic.taa.service.impl;
 
-import fr.istic.taa.domain.DonneesEntreprise;
-import fr.istic.taa.repository.DonneesEntrepriseRepository;
-import fr.istic.taa.repository.search.DonneesEntrepriseSearchRepository;
-import fr.istic.taa.service.DonneesEntrepriseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import javax.inject.Inject;
+
+import fr.istic.taa.domain.DonneesEntreprise;
+import fr.istic.taa.repository.DonneesEntrepriseRepository;
+import fr.istic.taa.repository.search.DonneesEntrepriseSearchRepository;
+import fr.istic.taa.service.DonneesEntrepriseService;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
@@ -93,5 +95,12 @@ public class DonneesEntrepriseServiceImpl implements DonneesEntrepriseService {
         return StreamSupport
             .stream(donneesEntrepriseSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public DonneesEntreprise findLastByIdEntreprise(Long id) {
+        log.debug("Request to get DonneesEntreprise for Entreprise : {}", id);
+        DonneesEntreprise donneesEntreprise = donneesEntrepriseRepository.findLastByIdEntreprise(id);
+        return donneesEntreprise;
     }
 }

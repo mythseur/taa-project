@@ -5,9 +5,9 @@
         .module('taaProjectApp')
         .controller('EntrepriseDetailController', EntrepriseDetailController);
 
-    EntrepriseDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Entreprise', 'DonneesEntreprise', 'Contact'];
+    EntrepriseDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Entreprise', 'DonneesEntreprise', 'Contact', 'EntrepriseDernieresDonnees'];
 
-    function EntrepriseDetailController($scope, $rootScope, $stateParams, previousState, entity, Entreprise, DonneesEntreprise, Contact) {
+    function EntrepriseDetailController($scope, $rootScope, $stateParams, previousState, entity, Entreprise, DonneesEntreprise, Contact, EntrepriseDernieresDonnees) {
         var vm = this;
 
         vm.entreprise = entity;
@@ -17,5 +17,18 @@
             vm.entreprise = result;
         });
         $scope.$on('$destroy', unsubscribe);
+
+        EntrepriseDernieresDonnees.get(
+            {id: vm.entreprise.id},
+            function (data) {
+                vm.adresse = data.adresse;
+                vm.ville = data.ville;
+                vm.codepostal = data.codepostal;
+                vm.tel = data.tel;
+                vm.url = data.url;
+                vm.commentaire = data.commentaire;
+            }
+        );
+
     }
 })();

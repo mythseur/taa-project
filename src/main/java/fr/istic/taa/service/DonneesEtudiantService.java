@@ -1,8 +1,8 @@
 package fr.istic.taa.service;
 
-import fr.istic.taa.domain.DonneesEtudiant;
-
 import java.util.List;
+
+import fr.istic.taa.domain.DonneesEtudiant;
 
 /**
  * Service Interface for managing DonneesEtudiant.
@@ -46,4 +46,6 @@ public interface DonneesEtudiantService {
      * @return the list of entities
      */
     List<DonneesEtudiant> search(String query);
+
+    DonneesEtudiant findLastByIdEtudiant(Long id);
 }

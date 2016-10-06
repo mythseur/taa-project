@@ -1,21 +1,29 @@
 package fr.istic.taa.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import fr.istic.taa.domain.DonneesEtudiant;
-import fr.istic.taa.service.DonneesEtudiantService;
-import fr.istic.taa.web.rest.util.HeaderUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+
+import javax.inject.Inject;
+
+import fr.istic.taa.domain.DonneesEtudiant;
+import fr.istic.taa.service.DonneesEtudiantService;
+import fr.istic.taa.web.rest.util.HeaderUtil;
 
 /**
  * REST controller for managing DonneesEtudiant.
@@ -102,6 +110,26 @@ public class DonneesEtudiantResource {
     public ResponseEntity<DonneesEtudiant> getDonneesEtudiant(@PathVariable Long id) {
         log.debug("REST request to get DonneesEtudiant : {}", id);
         DonneesEtudiant donneesEtudiant = donneesEtudiantService.findOne(id);
+        return Optional.ofNullable(donneesEtudiant)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * GET  /donnees-etudiants/etudiant/:id : get the last donneesEtudiant for Etudiant id.
+     *
+     * @param id the id of the donneesEtudiant.Etudiant to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the donneesEtudiant, or with status 404 (Not Found)
+     */
+    @RequestMapping(value = "/donnees-etudiants/etudiant/{id}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<DonneesEtudiant> getDonneesEtudiantByIdEtudiant(@PathVariable Long id) {
+        log.debug("REST request to get DonneesEtudiant of Etudiant : {}", id);
+        DonneesEtudiant donneesEtudiant = donneesEtudiantService.findLastByIdEtudiant(id);
         return Optional.ofNullable(donneesEtudiant)
             .map(result -> new ResponseEntity<>(
                 result,

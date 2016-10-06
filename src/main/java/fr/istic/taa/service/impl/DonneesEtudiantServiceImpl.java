@@ -1,18 +1,20 @@
 package fr.istic.taa.service.impl;
 
-import fr.istic.taa.domain.DonneesEtudiant;
-import fr.istic.taa.repository.DonneesEtudiantRepository;
-import fr.istic.taa.repository.search.DonneesEtudiantSearchRepository;
-import fr.istic.taa.service.DonneesEtudiantService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import javax.inject.Inject;
+
+import fr.istic.taa.domain.DonneesEtudiant;
+import fr.istic.taa.repository.DonneesEtudiantRepository;
+import fr.istic.taa.repository.search.DonneesEtudiantSearchRepository;
+import fr.istic.taa.service.DonneesEtudiantService;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
@@ -93,5 +95,12 @@ public class DonneesEtudiantServiceImpl implements DonneesEtudiantService {
         return StreamSupport
             .stream(donneesEtudiantSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public DonneesEtudiant findLastByIdEtudiant(Long id) {
+        log.debug("Request to get DonneesEtudiant for Etudiant : {}", id);
+        DonneesEtudiant donneesEtudiant = donneesEtudiantRepository.findLastByIdEtudiant(id);
+        return donneesEtudiant;
     }
 }

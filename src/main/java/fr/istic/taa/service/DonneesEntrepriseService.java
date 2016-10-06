@@ -1,8 +1,8 @@
 package fr.istic.taa.service;
 
-import fr.istic.taa.domain.DonneesEntreprise;
-
 import java.util.List;
+
+import fr.istic.taa.domain.DonneesEntreprise;
 
 /**
  * Service Interface for managing DonneesEntreprise.
@@ -46,4 +46,6 @@ public interface DonneesEntrepriseService {
      * @return the list of entities
      */
     List<DonneesEntreprise> search(String query);
+
+    DonneesEntreprise findLastByIdEntreprise(Long id);
 }

@@ -1,21 +1,29 @@
 package fr.istic.taa.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import fr.istic.taa.domain.DonneesEntreprise;
-import fr.istic.taa.service.DonneesEntrepriseService;
-import fr.istic.taa.web.rest.util.HeaderUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+
+import javax.inject.Inject;
+
+import fr.istic.taa.domain.DonneesEntreprise;
+import fr.istic.taa.service.DonneesEntrepriseService;
+import fr.istic.taa.web.rest.util.HeaderUtil;
 
 /**
  * REST controller for managing DonneesEntreprise.
@@ -102,6 +110,26 @@ public class DonneesEntrepriseResource {
     public ResponseEntity<DonneesEntreprise> getDonneesEntreprise(@PathVariable Long id) {
         log.debug("REST request to get DonneesEntreprise : {}", id);
         DonneesEntreprise donneesEntreprise = donneesEntrepriseService.findOne(id);
+        return Optional.ofNullable(donneesEntreprise)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * GET  /donnees-entreprises/entreprise/:id : get the donneesEntreprise for Entreprise "id".
+     *
+     * @param id the id of the donneesEntreprise.entreprise to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the donneesEntreprise, or with status 404 (Not Found)
+     */
+    @RequestMapping(value = "/donnees-entreprises/entreprise/{id}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<DonneesEntreprise> getDonneesEntrepriseByIdEntreprise(@PathVariable Long id) {
+        log.debug("REST request to get DonneesEntreprise for Entreprise : {}", id);
+        DonneesEntreprise donneesEntreprise = donneesEntrepriseService.findLastByIdEntreprise(id);
         return Optional.ofNullable(donneesEntreprise)
             .map(result -> new ResponseEntity<>(
                 result,
