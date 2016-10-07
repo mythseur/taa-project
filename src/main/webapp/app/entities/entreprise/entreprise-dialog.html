@@ -15,19 +15,55 @@
         <div class="form-group">
             <label class="control-label" for="field_nom">Nom</label>
             <input type="text" class="form-control" name="nom" id="field_nom"
-                   ng-model="vm.entreprise.nom"
+                   ng-model="vm.entreprise.nom" required
             />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_siret">Siret</label>
             <input type="text" class="form-control" name="siret" id="field_siret"
-                   ng-model="vm.entreprise.siret"
+                   ng-model="vm.entreprise.siret" required
             />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_effectif">Effectif</label>
             <input type="number" class="form-control" name="effectif" id="field_effectif"
                    ng-model="vm.entreprise.effectif"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_adresse">Adresse</label>
+            <input type="text" class="form-control" name="adresse" id="field_adresse"
+                   ng-model="vm.donneesentreprise.adresse" required
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_ville">Ville</label>
+            <input type="text" class="form-control" name="ville" id="field_ville"
+                   ng-model="vm.donneesentreprise.ville" required
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_codepostal">Code Postal</label>
+            <input type="text" class="form-control" name="codepostal" id="field_codepostal"
+                   ng-model="vm.donneesentreprise.codepostal" required
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_tel">Téléphone</label>
+            <input type="text" class="form-control" name="tel" id="field_tel"
+                   ng-model="vm.donneesentreprise.tel"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_url">URL</label>
+            <input type="text" class="form-control" name="url" id="field_url"
+                   ng-model="vm.donneesentreprise.url"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_commentaire">Commentaire</label>
+            <input type="text" class="form-control" name="commentaire" id="field_commentaire"
+                   ng-model="vm.donneesentreprise.commentaire"
             />
         </div>
 
