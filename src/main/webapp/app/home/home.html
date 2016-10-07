@@ -1,41 +1,85 @@
 <div ng-cloak>
-    <div class="row">
-        <div class="col-md-4">
-            <span class="hipster img-responsive img-rounded"></span>
-        </div>
-        <div class="col-md-8">
-            <h1>Welcome, Java Hipster!</h1>
-            <p class="lead">This is your homepage</p>
-
-            <div ng-switch="vm.isAuthenticated()">
-                <div class="alert alert-success" ng-switch-when="true">
-                    You are logged in as user "{{vm.account.login}}".
-                </div>
-
-                <div class="alert alert-warning" ng-switch-when="false">
-                    If you want to <a class="alert-link" href="" ng-click="vm.login()">sign in</a>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").
-                </div>
-
-                <div class="alert alert-warning" ng-switch-when="false">
-                    You don't have an account yet? <a class="alert-link" ui-sref="register">Register a new account</a>
-                </div>
+    <h1>Bienvenue sur le Logiciel de Gestion des Stages de Rennes 1</h1>
+    <div ng-switch="vm.isAuthenticated()">
+        <div class="container-fluid" ng-switch-when="true">
+            <div class="row">
+                <form name="searchForm" class="form-horizontal">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery"
+                               placeholder="Query">
+                        <div class="input-group-btn">
+                            <div class="btn-group" uib-dropdown is-open="status.isopen">
+                                <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle
+                                        ng-disabled="disabled">
+                                    {{vm.type.s}} <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                    <li ng-repeat="t in vm.typeList" ng-click="vm.select(t)" role="menuitem"><a href="#">{{t.s}}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" ng-click="vm.search()">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                        <span class="input-group-btn width-min" ng-if="vm.currentSearch">
+                            <button class="btn btn-info" ng-click="vm.clear()">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
             </div>
-
-            <p>
-                If you have any question on JHipster:
-            </p>
-
-            <ul>
-                <li><a href="http://jhipster.github.io/" target="_blank">JHipster homepage</a></li>
-                <li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank">JHipster on Stack Overflow</a></li>
-                <li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank">JHipster bug tracker</a></li>
-                <li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank">JHipster public chat room</a></li>
-                <li><a href="https://twitter.com/java_hipster" target="_blank" >follow @java_hipster on Twitter</a></li>
-            </ul>
-
-            <p>
-             <span>If you like JHipster, don't forget to give us a star on </span>&nbsp;<a href="https://github.com/jhipster/generator-jhipster" target="_blank">Github</a>!
-            </p>
+            <!--<div ng-if="vm.Etudiants.length!=0" class="table-responsive row">-->
+                <!--<table class="jh-table table table-striped">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th><span>ID</span></th>-->
+                        <!--<th><span>Numero Etudiant</span></th>-->
+                        <!--<th><span>Nom</span></th>-->
+                        <!--<th><span>Prenom</span></th>-->
+                        <!--<th><span>Sexe</span></th>-->
+                        <!--<th></th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr ng-repeat="etudiant in vm.Etudiants track by etudiant.id">-->
+                        <!--<td><a ui-sref="etudiant-detail({id:etudiant.id})">{{etudiant.id}}</a></td>-->
+                        <!--<td>{{etudiant.iNe}}</td>-->
+                        <!--<td>{{etudiant.nom}}</td>-->
+                        <!--<td>{{etudiant.prenom}}</td>-->
+                        <!--<td>{{etudiant.sexe}}</td>-->
+                        <!--<td class="text-right">-->
+                            <!--<div class="btn-group flex-btn-group-container">-->
+                                <!--<button type="submit"-->
+                                        <!--ui-sref="etudiant-detail({id:etudiant.id})"-->
+                                        <!--class="btn btn-info btn-sm">-->
+                                    <!--<span class="glyphicon glyphicon-eye-open"></span>-->
+                                    <!--<span class="hidden-xs hidden-sm"></span>-->
+                                <!--</button>-->
+                                <!--<button type="submit"-->
+                                        <!--ui-sref="etudiant.edit({id:etudiant.id})"-->
+                                        <!--class="btn btn-primary btn-sm">-->
+                                    <!--<span class="glyphicon glyphicon-pencil"></span>-->
+                                    <!--<span class="hidden-xs hidden-sm"></span>-->
+                                <!--</button>-->
+                                <!--<button type="submit"-->
+                                        <!--ui-sref="etudiant.delete({id:etudiant.id})"-->
+                                        <!--class="btn btn-danger btn-sm">-->
+                                    <!--<span class="glyphicon glyphicon-remove-circle"></span>-->
+                                    <!--<span class="hidden-xs hidden-sm"></span>-->
+                                <!--</button>-->
+                            <!--</div>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+        </div>
+        <div class="alert alert-warning" ng-switch-when="false">
+            L'utilisation de l'application nécessite d'être connecté.
         </div>
     </div>
 </div>
+
