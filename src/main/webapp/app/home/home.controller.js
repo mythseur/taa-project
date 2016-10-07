@@ -5,9 +5,9 @@
         .module('taaProjectApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$scope', 'Principal', 'LoginService', '$state'];
+    HomeController.$inject = ['$scope', 'Principal', 'Etudiant', 'EtudiantSearch','StageSearch', 'EntrepriseSearch', 'LoginService', '$state'];
 
-    function HomeController ($scope, Principal, LoginService, $state) {
+    function HomeController ($scope, Principal, Etudiant, EtudiantSearch, StageSearch, EntrepriseSearch, LoginService, $state) {
         var vm = this;
 
         vm.account = null;
@@ -20,6 +20,24 @@
 
         getAccount();
 
+        vm.Result = [];
+        vm.search = search;
+        vm.select = select;
+        vm.loadAll = loadAll;
+        vm.typeList = [
+            {s:"Etudiant", f:EtudiantSearch},
+            {s:"Entreprise", f:EntrepriseSearch},
+            {s:"Stage", f:StageSearch}
+        ];
+        vm.type = vm.typeList[0];
+
+        function loadAll() {
+            Etudiant.query(function (result) {
+                vm.Etudiants = result;
+            });
+        }
+
+
         function getAccount() {
             Principal.identity().then(function(account) {
                 vm.account = account;
@@ -28,6 +46,20 @@
         }
         function register () {
             $state.go('register');
+        }
+
+        function search() {
+            if (!vm.searchQuery) {
+                return ;
+            }
+            vm.type.f.query({query: vm.searchQuery}, function (result) {
+                vm.Result = result;
+                console.log(vm.Result);
+            });
+        }
+
+        function select(type) {
+            vm.type = type;
         }
     }
 })();
