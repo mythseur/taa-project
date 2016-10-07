@@ -15,19 +15,28 @@
 
         var unsubscribe = $rootScope.$on('taaProjectApp:etudiantUpdate', function (event, result) {
             vm.etudiant = result;
+
+            if(vm.etudiant.id != null) {
+                chargerDonnees();
+            }
         });
         $scope.$on('$destroy', unsubscribe);
 
+        if(vm.etudiant.id != null) {
+            chargerDonnees();
+        }
 
-        EtudiantDernieresDonnees.get(
-            {id: vm.etudiant.id},
-            function (data) {
-                vm.adresse = (data.adresse);
-                vm.ville = (data.ville);
-                vm.codepostal = (data.codepostal);
-                vm.tel = (data.telperso);
-                vm.mobile = (data.telmobile);
-            }
-        );
+        function chargerDonnees(){
+            EtudiantDernieresDonnees.get(
+                {id: vm.etudiant.id},
+                function (data) {
+                    vm.adresse = (data.adresse);
+                    vm.ville = (data.ville);
+                    vm.codepostal = (data.codepostal);
+                    vm.tel = (data.telperso);
+                    vm.mobile = (data.telmobile);
+                }
+            );
+        }
     }
 })();
