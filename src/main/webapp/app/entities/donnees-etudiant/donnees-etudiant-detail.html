@@ -1,3 +1,4 @@
+
 <div>
     <h2><span>Donnees Etudiant</span> {{vm.donneesEtudiant.id}}</h2>
     <hr>
@@ -5,7 +6,7 @@
     <dl class="dl-horizontal jh-entity-details">
         <dt><span>Datemodif</span></dt>
         <dd>
-            <span>{{vm.donneesEtudiant.datemodif | date:'dd/MM/yy HH:mm'}}</span>
+            <span>{{vm.donneesEtudiant.datemodif | date:'medium'}}</span>
         </dd>
         <dt><span>Adresse</span></dt>
         <dd>
@@ -26,6 +27,10 @@
         <dt><span>Telmobile</span></dt>
         <dd>
             <span>{{vm.donneesEtudiant.telmobile}}</span>
+        </dd>
+        <dt><span>Mail</span></dt>
+        <dd>
+            <span>{{vm.donneesEtudiant.mail}}</span>
         </dd>
         <dt><span>Etudiant</span></dt>
         <dd>

@@ -22,11 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static fr.istic.taa.config.JacksonConfiguration.ISO_FIXED_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -42,9 +43,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TaaProjectApp.class)
 
 public class DonneesEtudiantResourceIntTest {
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("Z"));
 
-    private static final ZonedDateTime DEFAULT_DATEMODIF = ZonedDateTime.now();
-    private static final ZonedDateTime UPDATED_DATEMODIF = ZonedDateTime.now(ZoneId.systemDefault());
+    private static final ZonedDateTime DEFAULT_DATEMODIF = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.systemDefault());
+    private static final ZonedDateTime UPDATED_DATEMODIF = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final String DEFAULT_DATEMODIF_STR = dateTimeFormatter.format(DEFAULT_DATEMODIF);
     private static final String DEFAULT_ADRESSE = "AAAAA";
     private static final String UPDATED_ADRESSE = "BBBBB";
     private static final String DEFAULT_VILLE = "AAAAA";
@@ -55,6 +58,8 @@ public class DonneesEtudiantResourceIntTest {
     private static final String UPDATED_TELPERSO = "BBBBB";
     private static final String DEFAULT_TELMOBILE = "AAAAA";
     private static final String UPDATED_TELMOBILE = "BBBBB";
+    private static final String DEFAULT_MAIL = "AAAAA";
+    private static final String UPDATED_MAIL = "BBBBB";
 
     @Inject
     private DonneesEtudiantRepository donneesEtudiantRepository;
@@ -90,7 +95,7 @@ public class DonneesEtudiantResourceIntTest {
 
     /**
      * Create an entity for this test.
-     * <p>
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -102,6 +107,7 @@ public class DonneesEtudiantResourceIntTest {
         donneesEtudiant.setCodepostal(DEFAULT_CODEPOSTAL);
         donneesEtudiant.setTelperso(DEFAULT_TELPERSO);
         donneesEtudiant.setTelmobile(DEFAULT_TELMOBILE);
+        donneesEtudiant.setMail(DEFAULT_MAIL);
         return donneesEtudiant;
     }
 
@@ -133,6 +139,7 @@ public class DonneesEtudiantResourceIntTest {
         assertThat(testDonneesEtudiant.getCodepostal()).isEqualTo(DEFAULT_CODEPOSTAL);
         assertThat(testDonneesEtudiant.getTelperso()).isEqualTo(DEFAULT_TELPERSO);
         assertThat(testDonneesEtudiant.getTelmobile()).isEqualTo(DEFAULT_TELMOBILE);
+        assertThat(testDonneesEtudiant.getMail()).isEqualTo(DEFAULT_MAIL);
 
         // Validate the DonneesEtudiant in ElasticSearch
         DonneesEtudiant donneesEtudiantEs = donneesEtudiantSearchRepository.findOne(testDonneesEtudiant.getId());
@@ -150,12 +157,13 @@ public class DonneesEtudiantResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(donneesEtudiant.getId().intValue())))
-            .andExpect(jsonPath("$.[*].datemodif").value(hasItem(DEFAULT_DATEMODIF.format(ISO_FIXED_FORMAT))))
+            .andExpect(jsonPath("$.[*].datemodif").value(hasItem(DEFAULT_DATEMODIF_STR)))
             .andExpect(jsonPath("$.[*].adresse").value(hasItem(DEFAULT_ADRESSE.toString())))
             .andExpect(jsonPath("$.[*].ville").value(hasItem(DEFAULT_VILLE.toString())))
             .andExpect(jsonPath("$.[*].codepostal").value(hasItem(DEFAULT_CODEPOSTAL.toString())))
             .andExpect(jsonPath("$.[*].telperso").value(hasItem(DEFAULT_TELPERSO.toString())))
-            .andExpect(jsonPath("$.[*].telmobile").value(hasItem(DEFAULT_TELMOBILE.toString())));
+            .andExpect(jsonPath("$.[*].telmobile").value(hasItem(DEFAULT_TELMOBILE.toString())))
+            .andExpect(jsonPath("$.[*].mail").value(hasItem(DEFAULT_MAIL.toString())));
     }
 
     @Test
@@ -169,12 +177,13 @@ public class DonneesEtudiantResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(donneesEtudiant.getId().intValue()))
-            .andExpect(jsonPath("$.datemodif").value(DEFAULT_DATEMODIF.format(ISO_FIXED_FORMAT)))
+            .andExpect(jsonPath("$.datemodif").value(DEFAULT_DATEMODIF_STR))
             .andExpect(jsonPath("$.adresse").value(DEFAULT_ADRESSE.toString()))
             .andExpect(jsonPath("$.ville").value(DEFAULT_VILLE.toString()))
             .andExpect(jsonPath("$.codepostal").value(DEFAULT_CODEPOSTAL.toString()))
             .andExpect(jsonPath("$.telperso").value(DEFAULT_TELPERSO.toString()))
-            .andExpect(jsonPath("$.telmobile").value(DEFAULT_TELMOBILE.toString()));
+            .andExpect(jsonPath("$.telmobile").value(DEFAULT_TELMOBILE.toString()))
+            .andExpect(jsonPath("$.mail").value(DEFAULT_MAIL.toString()));
     }
 
     @Test
@@ -201,6 +210,7 @@ public class DonneesEtudiantResourceIntTest {
         updatedDonneesEtudiant.setCodepostal(UPDATED_CODEPOSTAL);
         updatedDonneesEtudiant.setTelperso(UPDATED_TELPERSO);
         updatedDonneesEtudiant.setTelmobile(UPDATED_TELMOBILE);
+        updatedDonneesEtudiant.setMail(UPDATED_MAIL);
 
         restDonneesEtudiantMockMvc.perform(put("/api/donnees-etudiants")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -217,6 +227,7 @@ public class DonneesEtudiantResourceIntTest {
         assertThat(testDonneesEtudiant.getCodepostal()).isEqualTo(UPDATED_CODEPOSTAL);
         assertThat(testDonneesEtudiant.getTelperso()).isEqualTo(UPDATED_TELPERSO);
         assertThat(testDonneesEtudiant.getTelmobile()).isEqualTo(UPDATED_TELMOBILE);
+        assertThat(testDonneesEtudiant.getMail()).isEqualTo(UPDATED_MAIL);
 
         // Validate the DonneesEtudiant in ElasticSearch
         DonneesEtudiant donneesEtudiantEs = donneesEtudiantSearchRepository.findOne(testDonneesEtudiant.getId());
@@ -256,11 +267,12 @@ public class DonneesEtudiantResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(donneesEtudiant.getId().intValue())))
-            .andExpect(jsonPath("$.[*].datemodif").value(hasItem(DEFAULT_DATEMODIF.format(ISO_FIXED_FORMAT))))
+            .andExpect(jsonPath("$.[*].datemodif").value(hasItem(DEFAULT_DATEMODIF_STR)))
             .andExpect(jsonPath("$.[*].adresse").value(hasItem(DEFAULT_ADRESSE.toString())))
             .andExpect(jsonPath("$.[*].ville").value(hasItem(DEFAULT_VILLE.toString())))
             .andExpect(jsonPath("$.[*].codepostal").value(hasItem(DEFAULT_CODEPOSTAL.toString())))
             .andExpect(jsonPath("$.[*].telperso").value(hasItem(DEFAULT_TELPERSO.toString())))
-            .andExpect(jsonPath("$.[*].telmobile").value(hasItem(DEFAULT_TELMOBILE.toString())));
+            .andExpect(jsonPath("$.[*].telmobile").value(hasItem(DEFAULT_TELMOBILE.toString())))
+            .andExpect(jsonPath("$.[*].mail").value(hasItem(DEFAULT_MAIL.toString())));
     }
 }

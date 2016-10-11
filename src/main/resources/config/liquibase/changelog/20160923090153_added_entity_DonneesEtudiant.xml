@@ -21,8 +21,8 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="datemodif" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
+            <column name="datemodif" type="timestamp">
+                <constraints nullable="true"/>
             </column>
 
             <column name="adresse" type="varchar(255)">
@@ -45,12 +45,17 @@
                 <constraints nullable="true"/>
             </column>
 
+            <column name="mail" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
             <column name="etudiant_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
+        <dropDefaultValue tableName="donnees_etudiant" columnName="datemodif" columnDataType="datetime"/>
 
     </changeSet>
 </databaseChangeLog>

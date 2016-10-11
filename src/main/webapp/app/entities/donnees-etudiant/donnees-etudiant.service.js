@@ -16,22 +16,12 @@
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);
+                        data.datemodif = DateUtils.convertDateTimeFromServer(data.datemodif);
                     }
                     return data;
                 }
             },
-            'update': {
-                method: 'PUT',
-                transformRequest: function (data) {
-                    return angular.toJson(data);
-                }
-            },
-            'save': {
-                method: 'POST',
-                transformRequest: function (data) {
-                    return angular.toJson(data);
-                }
-            }
+            'update': {method: 'PUT'}
         });
     }
 })();

@@ -1,3 +1,4 @@
+
 <div>
     <h2><span>Donnees Entreprise</span> {{vm.donneesEntreprise.id}}</h2>
     <hr>
@@ -5,7 +6,7 @@
     <dl class="dl-horizontal jh-entity-details">
         <dt><span>Datemodif</span></dt>
         <dd>
-            <span>{{vm.donneesEntreprise.datemodif | date:'mediumDate'}}</span>
+            <span>{{vm.donneesEntreprise.datemodif | date:'medium'}}</span>
         </dd>
         <dt><span>Adresse</span></dt>
         <dd>
@@ -30,6 +31,10 @@
         <dt><span>Commentaire</span></dt>
         <dd>
             <span>{{vm.donneesEntreprise.commentaire}}</span>
+        </dd>
+        <dt><span>Mail</span></dt>
+        <dd>
+            <span>{{vm.donneesEntreprise.mail}}</span>
         </dd>
         <dt><span>Entreprise</span></dt>
         <dd>

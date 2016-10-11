@@ -45,10 +45,10 @@ spring:
             cluster-name: TAA-dev
             cluster-nodes: 37.187.113.96:9300
     mail:
-        host: localhost
-        port: 25
-        username:
-        password:
+        host: mail.prunierbenjamin.fr
+        port: 587
+        username: test@prunierbenjamin.fr
+        password: devApp
     messages:
         cache-seconds: 1
     thymeleaf:

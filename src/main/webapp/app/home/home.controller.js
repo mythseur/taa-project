@@ -4,7 +4,7 @@
     angular
         .module('taaProjectApp')
         .controller('HomeController', HomeController)
-        .directive('etudiant', function () {
+        .directive('tableRes', function () {
             return {
                 link: function(scope, element, attrs)
                 {

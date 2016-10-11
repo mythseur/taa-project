@@ -42,6 +42,9 @@ public class DonneesEtudiant implements Serializable {
     @Column(name = "telmobile")
     private String telmobile;
 
+    @Column(name = "mail")
+    private String mail;
+
     @ManyToOne
     private Etudiant etudiant;
 
@@ -101,6 +104,14 @@ public class DonneesEtudiant implements Serializable {
         this.telmobile = telmobile;
     }
 
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
     public Etudiant getEtudiant() {
         return etudiant;
     }
@@ -139,6 +150,7 @@ public class DonneesEtudiant implements Serializable {
             ", codepostal='" + codepostal + "'" +
             ", telperso='" + telperso + "'" +
             ", telmobile='" + telmobile + "'" +
+            ", mail='" + mail + "'" +
             '}';
     }
 }

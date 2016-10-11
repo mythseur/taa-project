@@ -21,7 +21,7 @@
                         templateUrl: 'app/entities/donnees-entreprise/donnees-entreprises.html',
                         controller: 'DonneesEntrepriseController',
                         controllerAs: 'vm'
-                    }
+                }
                 },
                 resolve: {}
             })
@@ -50,7 +50,7 @@
                             url: $state.href($state.current.name, $state.params)
                         };
                         return currentStateData;
-                    }]
+                }]
                 }
             })
             .state('donnees-entreprise-detail.edit', {
@@ -101,9 +101,10 @@
                                     tel: null,
                                     url: null,
                                     commentaire: null,
+                                    mail: null,
                                     id: null
                                 };
-                            }
+                        }
                         }
                     }).result.then(function () {
                         $state.go('donnees-entreprise', null, {reload: 'donnees-entreprise'});

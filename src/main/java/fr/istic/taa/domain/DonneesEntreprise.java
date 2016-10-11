@@ -45,6 +45,9 @@ public class DonneesEntreprise implements Serializable {
     @Column(name = "commentaire")
     private String commentaire;
 
+    @Column(name = "mail")
+    private String mail;
+
     @ManyToOne
     private Entreprise entreprise;
 
@@ -112,6 +115,14 @@ public class DonneesEntreprise implements Serializable {
         this.commentaire = commentaire;
     }
 
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
     public Entreprise getEntreprise() {
         return entreprise;
     }
@@ -151,6 +162,7 @@ public class DonneesEntreprise implements Serializable {
             ", tel='" + tel + "'" +
             ", url='" + url + "'" +
             ", commentaire='" + commentaire + "'" +
+            ", mail='" + mail + "'" +
             '}';
     }
 }

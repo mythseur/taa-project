@@ -21,7 +21,7 @@
                         templateUrl: 'app/entities/donnees-etudiant/donnees-etudiants.html',
                         controller: 'DonneesEtudiantController',
                         controllerAs: 'vm'
-                    }
+                }
                 },
                 resolve: {}
             })
@@ -50,7 +50,7 @@
                             url: $state.href($state.current.name, $state.params)
                         };
                         return currentStateData;
-                    }]
+                }]
                 }
             })
             .state('donnees-etudiant-detail.edit', {
@@ -100,9 +100,10 @@
                                     codepostal: null,
                                     telperso: null,
                                     telmobile: null,
+                                    mail: null,
                                     id: null
                                 };
-                            }
+                        }
                         }
                     }).result.then(function () {
                         $state.go('donnees-etudiant', null, {reload: 'donnees-etudiant'});

@@ -16,13 +16,13 @@
     <!--
         Added the entity DonneesEntreprise.
     -->
-    <changeSet id="20160923090159-1" author="jhipster">
+    <changeSet id="20160923090161-1" author="jhipster">
         <createTable tableName="donnees_entreprise">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="datemodif" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
+            <column name="datemodif" type="timestamp">
+                <constraints nullable="true"/>
             </column>
 
             <column name="adresse" type="varchar(255)">
@@ -49,12 +49,17 @@
                 <constraints nullable="true"/>
             </column>
 
+            <column name="mail" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
             <column name="entreprise_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
+        <dropDefaultValue tableName="donnees_entreprise" columnName="datemodif" columnDataType="datetime"/>
 
     </changeSet>
 </databaseChangeLog>
