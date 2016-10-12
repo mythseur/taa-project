@@ -5,9 +5,9 @@
         .module('taaProjectApp')
         .controller('EntrepriseDialogController', EntrepriseDialogController);
 
-    EntrepriseDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Entreprise', 'DonneesEntreprise', 'Contact', 'EntrepriseDernieresDonnees'];
+    EntrepriseDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Entreprise', 'DonneesEntreprise', 'Contact', 'EntrepriseDernieresDonnees', 'User'];
 
-    function EntrepriseDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, Entreprise, DonneesEntreprise, Contact, EntrepriseDernieresDonnees) {
+    function EntrepriseDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, Entreprise, DonneesEntreprise, Contact, EntrepriseDernieresDonnees, User) {
         var vm = this;
 
         vm.entreprise = entity;
@@ -44,7 +44,18 @@
             vm.donneesentreprise.datemodif = null;
             vm.donneesentreprise.id = null;
             vm.donneesentreprise.entreprise = result;
-            DonneesEntreprise.save(vm.donneesentreprise, onSaveSuccess, onSaveError);
+            DonneesEntreprise.save(vm.donneesentreprise, createUser, onSaveError);
+        }
+
+
+        function createUser(result) {
+            vm.user = entity;
+            vm.user.login = result.entreprise.id;
+            vm.user.lastName = result.entreprise.Nom;
+            vm.user.authorities = ['ROLE_ENTREPRISE'];
+            vm.user.activated = true;
+            vm.user.email = result.mail;
+            User.save(vm.user, onSaveSuccess, onSaveError);
         }
 
         function onSaveSuccess(result) {

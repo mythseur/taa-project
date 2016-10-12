@@ -4,7 +4,7 @@
     angular
         .module('taaProjectApp')
         .controller('HomeController', HomeController)
-        .directive('tableRes', function () {
+        .directive('tableres', function () {
             return {
                 link: function(scope, element, attrs)
                 {
@@ -50,7 +50,16 @@
         function getAccount() {
             Principal.identity().then(function(account) {
                 vm.account = account;
+                console.log(account);
                 vm.isAuthenticated = Principal.isAuthenticated;
+
+                if (account.authorities[0] == 'ROLE_ETUDIANT') {
+                    $state.go('home.etud');
+                }
+                else if (account.authorities[0] == 'ROLE_ENTREPRISE') {
+                    $state.go('home.entre');
+                }
+
             });
         }
         function register () {

@@ -35,6 +35,7 @@
                     vm.codepostal = (data.codepostal);
                     vm.tel = (data.telperso);
                     vm.mobile = (data.telmobile);
+                    vm.mail = (data.mail);
                 }
             );
         }

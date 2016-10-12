@@ -2,38 +2,42 @@
     <h1>Bienvenue sur le Logiciel de Gestion des Stages de Rennes 1</h1>
     <div ng-switch="vm.isAuthenticated()">
         <div class="container-fluid" ng-switch-when="true">
-            <div class="row">
-                <form name="searchForm" class="form-horizontal">
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery"
-                               placeholder="Query">
-                        <div class="input-group-btn">
-                            <div class="btn-group" uib-dropdown is-open="status.isopen">
-                                <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle
-                                        ng-disabled="disabled">
-                                    {{vm.type.s}} <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                                    <li ng-repeat="t in vm.typeList" ng-click="vm.select(t)" role="menuitem"><a href="#">{{t.s}}</a></li>
-                                </ul>
+            <div ng-if="vm.account.authorities[0] == 'ROLE_USER'">
+                <div class="row">
+                    <form name="searchForm" class="form-horizontal">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery"
+                                   placeholder="Query">
+                            <div class="input-group-btn">
+                                <div class="btn-group" uib-dropdown is-open="status.isopen">
+                                    <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle
+                                            ng-disabled="disabled">
+                                        {{vm.type.s}} <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu"
+                                        aria-labelledby="single-button">
+                                        <li ng-repeat="t in vm.typeList" ng-click="vm.select(t)" role="menuitem"><a
+                                            href="#">{{t.s}}</a></li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <span class="input-group-btn">
+                            <span class="input-group-btn">
                             <button class="btn btn-info" ng-click="vm.search()">
                                 <span class="glyphicon glyphicon-search"></span>
                             </button>
                         </span>
-                        <span class="input-group-btn width-min" ng-if="vm.currentSearch">
+                            <span class="input-group-btn width-min" ng-if="vm.currentSearch">
                             <button class="btn btn-info" ng-click="vm.clear()">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </button>
                         </span>
-                    </div>
-                </form>
-            </div>
-            <div ng-if="vm.Result.length!=0">
-                <tableRes urltable="{{vm.type.t}}"></tableRes>
+                        </div>
+                    </form>
                 </div>
+                <div ng-if="vm.Result.length!=0">
+                    <tableres urltable="{{vm.type.t}}"></tableres>
+                </div>
+            </div>
         </div>
         <div class="alert alert-warning" ng-switch-when="false">
             L'utilisation de l'application nécessite d'être connecté.

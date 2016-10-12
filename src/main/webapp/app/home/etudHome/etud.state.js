@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -8,16 +8,16 @@
     stateConfig.$inject = ['$stateProvider'];
 
     function stateConfig($stateProvider) {
-        $stateProvider.state('home', {
+        $stateProvider.state('home.etud', {
             parent: 'app',
             url: '/',
             data: {
-                authorities: ['ROLE_USER', 'ROLE_ETUDIANT', 'ROLE_ENTREPRISE']
+                authorities: []
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/home/home.html',
-                    controller: 'HomeController',
+                    templateUrl: 'app/home/etudHome/etud.html',
+                    controller: 'EtudHomeController',
                     controllerAs: 'vm'
                 }
             }
