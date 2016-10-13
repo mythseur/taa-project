@@ -141,11 +141,11 @@ public class EtudiantResource {
         return etudiantService.search(query);
     }
 
-    @RequestMapping(value = "/etudiant/ine/{ine}",
+    @RequestMapping(value = "/etudiants/ine/{ine}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public Etudiant getEtudiantByIne(@RequestParam Long ine) {
+    public Etudiant getEtudiantByIne(@PathVariable String ine) {
         log.debug("REST request to get Etudiant by INE : {}", ine);
         return etudiantService.getByIne(ine);
     }

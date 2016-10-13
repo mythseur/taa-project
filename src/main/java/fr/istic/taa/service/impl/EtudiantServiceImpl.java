@@ -96,7 +96,7 @@ public class EtudiantServiceImpl implements EtudiantService {
     }
 
     @Override
-    public Etudiant getByIne(Long ine) {
+    public Etudiant getByIne(String ine) {
         log.debug("Request to get Etudiant by ine : {}", ine);
         return etudiantRepository.getByIne(ine);
     }

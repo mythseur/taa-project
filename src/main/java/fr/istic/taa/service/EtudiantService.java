@@ -47,5 +47,5 @@ public interface EtudiantService {
      */
     List<Etudiant> search(String query);
 
-    Etudiant getByIne(Long ine);
+    Etudiant getByIne(String ine);
 }

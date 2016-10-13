@@ -22,8 +22,8 @@
                 }
             },
             resolve: {
-                entity: ['$stateParams', 'Etudiant', function ($stateParams, Etudiant) {
-                    return Etudiant.get({id: $stateParams.id}).promise;
+                entity: ['$stateParams', 'EtudiantIne', function ($stateParams, EtudiantIne) {
+                    return EtudiantIne.get({ine: $stateParams.id}).promise;
                 }]
             }
         });

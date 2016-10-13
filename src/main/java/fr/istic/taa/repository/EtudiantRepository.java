@@ -2,6 +2,8 @@ package fr.istic.taa.repository;
 
 import fr.istic.taa.domain.Etudiant;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  * Spring Data JPA repository for the Etudiant entity.
@@ -9,6 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @SuppressWarnings("unused")
 public interface EtudiantRepository extends JpaRepository<Etudiant, Long> {
 
-    //TODO Faire la putain de requête
-    Etudiant getByIne(Long ine);
+    @Query(value = "select etudiant from Etudiant as etudiant where etudiant.iNe = :ine")
+    Etudiant getByIne(@Param("ine") String ine);
 }

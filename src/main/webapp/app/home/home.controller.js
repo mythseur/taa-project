@@ -50,11 +50,11 @@
         function getAccount() {
             Principal.identity().then(function(account) {
                 vm.account = account;
-                console.log(account);
                 vm.isAuthenticated = Principal.isAuthenticated;
 
                 if (account.authorities[0] == 'ROLE_ETUDIANT') {
-                    $state.go('home.etud', {id: vm.account.login});
+                    console.log("Je passe");
+                    $state.go('home.etud', {id: account.login});
                 }
                 else if (account.authorities[0] == 'ROLE_ENTREPRISE') {
                     $state.go('home.entre');
