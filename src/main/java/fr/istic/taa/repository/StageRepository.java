@@ -1,7 +1,12 @@
 package fr.istic.taa.repository;
 
-import fr.istic.taa.domain.Stage;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
+import fr.istic.taa.domain.Stage;
 
 /**
  * Spring Data JPA repository for the Stage entity.
@@ -9,4 +14,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @SuppressWarnings("unused")
 public interface StageRepository extends JpaRepository<Stage, Long> {
 
+    @Query(value = "select stage from Stage as stage where stage.etudiant.id = :id")
+    List<Stage> findAllByEtudiant(@Param("id") Long id);
+
+    @Query(value = "select stage from Stage as stage where stage.entreprise.id = :id")
+    List<Stage> findAllByEntreprise(@Param("id") Long id);
 }

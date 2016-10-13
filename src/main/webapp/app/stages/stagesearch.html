@@ -1,0 +1,90 @@
+<div>
+    <h2>Page de recherche des stages et alternances</h2>
+    <jhi-alert></jhi-alert>
+
+    <label>
+        <input type="radio" name="searchMode" value="etudiant" ng-model="vm.searchMode">
+        Rechercher les stages d'un étudiant
+    </label>
+    <div ng-show="vm.searchMode == 'etudiant'">
+        <input type="text" ng-model="vm.queryEtudiant" placeholder="Nom, Prénom, INE, etc." />
+        <input type="button" class="btn btn-info" ng-click="vm.searchEtudiant()" value="Rechercher un étudiant" ng-disabled="vm.queryEtudiant == null || vm.queryEtudiant == ''" />
+
+        <div class="btn-group" uib-dropdown is-open="status.isopen">
+            <button id="drop-etudiant" type="button" class="btn btn-primary" uib-dropdown-toggle
+                    ng-disabled="disabled">
+                {{vm.selectedEtudiant.iNe}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="drop-etudiant">
+                <li ng-repeat="etudiant in vm.etudiants" ng-click="vm.selectEtudiant(etudiant)" role="menuitem">{{etudiant.iNe}} - {{etudiant.prenom}} {{etudiant.nom}}</li>
+            </ul>
+        </div>
+        <div>
+            INE : {{vm.selectedEtudiant.iNe}}
+            <br/>
+            Prénom : {{vm.selectedEtudiant.prenom}}
+            <br/>
+            Nom : {{vm.selectedEtudiant.nom}}
+            <br/>
+            Sexe : {{vm.selectedEtudiant.sexe}}
+        </div>
+        <br/>
+        <ul>
+            <li ng-repeat="stage in vm.stagesEtudiant"><a ui-sref="stage-detail({id:stage.id})">{{stage.sujet}} - de {{stage.datedebut}} à {{stage.datefin}}</a></li>
+        </ul>
+    </div>
+
+    <br/>
+
+    <label>
+        <input type="radio" name="searchMode" value="entreprise" ng-model="vm.searchMode">
+        Rechercher les stages d'une entreprise
+    </label>
+    <div ng-show="vm.searchMode == 'entreprise'">
+        <input type="text" ng-model="vm.queryEntreprise" placeholder="Nom, etc." />
+        <input type="button" class="btn btn-info" ng-click="vm.searchEntreprise()" value="Rechercher une entreprise" ng-disabled="vm.queryEntreprise == null || vm.queryEntreprise == ''" />
+
+        <div class="btn-group" uib-dropdown is-open="status.isopen">
+            <button id="drop-entreprise" type="button" class="btn btn-primary" uib-dropdown-toggle
+                    ng-disabled="disabled">
+                {{vm.selectedEntreprise.nom}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="drop-entreprise">
+                <li ng-repeat="entreprise in vm.entreprises" ng-click="vm.selectEntreprise(entreprise)" role="menuitem">{{entreprise.nom}}</li>
+            </ul>
+        </div>
+        <div>
+            Nom : {{vm.selectedEntreprise.nom}}
+            <br/>
+            Siret : {{vm.selectedEntreprise.siret}}
+            <br/>
+            Effectif : {{vm.selectedEntreprise.effectif}}
+        </div>
+        <br/>
+        <ul>
+            <li ng-repeat="stage in vm.stagesEntreprise"><a ui-sref="stage-detail({id:stage.id})">{{stage.sujet}} - de {{stage.datedebut}} à {{stage.datefin}}</a></li>
+        </ul>
+    </div>
+
+    <br/>
+
+    <label>
+        <input type="radio" name="searchMode" value="enseignant" ng-model="vm.searchMode">
+        Rechercher les stages d'un enseignant référent
+    </label>
+    <div ng-show="vm.searchMode == 'enseignant'">
+        TODO
+    </div>
+
+    <br/>
+
+    <label>
+        <input type="radio" name="searchMode" value="contact" ng-model="vm.searchMode">
+        Rechercher les stages d'un contact professionnel
+    </label>
+    <div ng-show="vm.searchMode == 'contact'">
+        TODO
+    </div>
+
+    <br/>
+</div>

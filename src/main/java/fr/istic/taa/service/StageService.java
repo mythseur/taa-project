@@ -1,8 +1,8 @@
 package fr.istic.taa.service;
 
-import fr.istic.taa.domain.Stage;
-
 import java.util.List;
+
+import fr.istic.taa.domain.Stage;
 
 /**
  * Service Interface for managing Stage.
@@ -46,4 +46,20 @@ public interface StageService {
      * @return the list of entities
      */
     List<Stage> search(String query);
+
+    /**
+     * Get the stages for etudiant "id"
+     *
+     * @param id the id of the etudiant
+     * @return the list of entities
+     */
+    List<Stage> findAllByEtudiant(Long id);
+
+    /**
+     * Get the stages for entreprise "id"
+     *
+     * @param id the id of the entreprise
+     * @return the list of entities
+     */
+    List<Stage> findAllByEntreprise(Long id);
 }

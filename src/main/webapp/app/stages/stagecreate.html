@@ -1,0 +1,108 @@
+<div>
+    <h2>Page de création des stages et alternances</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="stage.new">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span class="hidden-xs">
+                        Create new Stage
+                    </span>
+                </button>
+            </div>
+            <div class="col-xs-8 no-padding-right">
+                <form name="searchForm" class="form-inline">
+                    <div class="input-group pull-right">
+                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery"
+                               placeholder="Query">
+                        <span class="input-group-btn width-min">
+                            <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                        <span class="input-group-btn width-min" ng-if="vm.currentSearch">
+                            <button class="btn btn-info" ng-click="vm.clear()">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+            <tr>
+                <th><span>ID</span></th>
+                <th><span>Datedebut</span></th>
+                <th><span>Datefin</span></th>
+                <th><span>Sujet</span></th>
+                <th><span>Service</span></th>
+                <th><span>Details</span></th>
+                <th><span>Jours</span></th>
+                <th><span>Heures</span></th>
+                <th><span>Versement</span></th>
+                <th><span>Etudiant</span></th>
+                <th><span>Referent</span></th>
+                <th><span>Entreprise</span></th>
+                <th><span>Encadrant</span></th>
+                <th><span>Responsable</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="stage in vm.stages track by stage.id">
+                <td><a ui-sref="stage-detail({id:stage.id})">{{stage.id}}</a></td>
+                <td>{{stage.datedebut | date:'mediumDate'}}</td>
+                <td>{{stage.datefin | date:'mediumDate'}}</td>
+                <td>{{stage.sujet}}</td>
+                <td>{{stage.service}}</td>
+                <td>{{stage.details}}</td>
+                <td>{{stage.jours}}</td>
+                <td>{{stage.heures}}</td>
+                <td>{{stage.versement}}</td>
+                <td>
+                    <a ui-sref="etudiant-detail({id:stage.etudiant.id})">{{stage.etudiant.id}}</a>
+                </td>
+                <td>
+                    <a ui-sref="enseignant-detail({id:stage.referent.id})">{{stage.referent.id}}</a>
+                </td>
+                <td>
+                    <a ui-sref="entreprise-detail({id:stage.entreprise.id})">{{stage.entreprise.id}}</a>
+                </td>
+                <td>
+                    <a ui-sref="contact-detail({id:stage.encadrant.id})">{{stage.encadrant.id}}</a>
+                </td>
+                <td>
+                    <a ui-sref="contact-detail({id:stage.responsable.id})">{{stage.responsable.id}}</a>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                ui-sref="stage-detail({id:stage.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                            <span class="hidden-xs hidden-sm"></span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="stage.edit({id:stage.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            <span class="hidden-xs hidden-sm"></span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="stage.delete({id:stage.id})"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>
+                            <span class="hidden-xs hidden-sm"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

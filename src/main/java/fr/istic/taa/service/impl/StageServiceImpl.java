@@ -1,18 +1,20 @@
 package fr.istic.taa.service.impl;
 
-import fr.istic.taa.domain.Stage;
-import fr.istic.taa.repository.StageRepository;
-import fr.istic.taa.repository.search.StageSearchRepository;
-import fr.istic.taa.service.StageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import javax.inject.Inject;
+
+import fr.istic.taa.domain.Stage;
+import fr.istic.taa.repository.StageRepository;
+import fr.istic.taa.repository.search.StageSearchRepository;
+import fr.istic.taa.service.StageService;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
@@ -93,5 +95,33 @@ public class StageServiceImpl implements StageService {
         return StreamSupport
             .stream(stageSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Get the stages for etudiant id
+     *
+     * @param id the id of the etudiant
+     * @return the list of entities
+     */
+    @Override
+    public List<Stage> findAllByEtudiant(Long id) {
+        log.debug("Request to get all Stages for Etudiant : {}",id);
+        List<Stage> result = stageRepository.findAllByEtudiant(id);
+
+        return result;
+    }
+
+    /**
+     * Get the stages for entreprise id
+     *
+     * @param id the id of the entreprise
+     * @return the list of entities
+     */
+    @Override
+    public List<Stage> findAllByEntreprise(Long id) {
+        log.debug("Request to get all Stages for Entreprise : {}",id);
+        List<Stage> result = stageRepository.findAllByEntreprise(id);
+
+        return result;
     }
 }
