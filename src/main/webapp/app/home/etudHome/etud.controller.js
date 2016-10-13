@@ -14,11 +14,12 @@
     //     };
     // });
 
-    EtudHomeController.$inject = ['$scope', 'Principal', 'Etudiant', 'EtudiantSearch', 'StageSearch', 'EntrepriseSearch', 'LoginService', '$state'];
+    EtudHomeController.$inject = ['$scope', 'Principal', 'entity', 'LoginService', '$state'];
 
-    function EtudHomeController($scope, Principal, LoginService, $state) {
+    function EtudHomeController($scope, Principal, entity, LoginService, $state) {
         var vm = this;
 
+        vm.etudiant = entity;
         vm.account = null;
         vm.isAuthenticated = null;
         vm.login = LoginService.open;

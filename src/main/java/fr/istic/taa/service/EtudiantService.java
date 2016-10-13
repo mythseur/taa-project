@@ -46,4 +46,6 @@ public interface EtudiantService {
      * @return the list of entities
      */
     List<Etudiant> search(String query);
+
+    Etudiant getByIne(Long ine);
 }

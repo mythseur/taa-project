@@ -54,7 +54,7 @@
                 vm.isAuthenticated = Principal.isAuthenticated;
 
                 if (account.authorities[0] == 'ROLE_ETUDIANT') {
-                    $state.go('home.etud');
+                    $state.go('home.etud', {id: vm.account.login});
                 }
                 else if (account.authorities[0] == 'ROLE_ENTREPRISE') {
                     $state.go('home.entre');

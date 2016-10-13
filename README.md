@@ -1,6 +1,7 @@
 # TODO
 
 - [ ] Rendre la colonne de l'INE Unique
+- [ ] Pages d'accueil pour visiteurs
 
 
 # TAAProject

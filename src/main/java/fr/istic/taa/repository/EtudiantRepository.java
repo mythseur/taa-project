@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @SuppressWarnings("unused")
 public interface EtudiantRepository extends JpaRepository<Etudiant, Long> {
 
+    //TODO Faire la putain de requête
+    Etudiant getByIne(Long ine);
 }

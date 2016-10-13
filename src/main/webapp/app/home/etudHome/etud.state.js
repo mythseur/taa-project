@@ -10,7 +10,7 @@
     function stateConfig($stateProvider) {
         $stateProvider.state('home.etud', {
             parent: 'app',
-            url: '/',
+            url: '/{id}',
             data: {
                 authorities: []
             },
@@ -20,6 +20,11 @@
                     controller: 'EtudHomeController',
                     controllerAs: 'vm'
                 }
+            },
+            resolve: {
+                entity: ['$stateParams', 'Etudiant', function ($stateParams, Etudiant) {
+                    return Etudiant.get({id: $stateParams.id}).promise;
+                }]
             }
         });
     }

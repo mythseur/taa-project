@@ -94,4 +94,10 @@ public class EtudiantServiceImpl implements EtudiantService {
             .stream(etudiantSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @Override
+    public Etudiant getByIne(Long ine) {
+        log.debug("Request to get Etudiant by ine : {}", ine);
+        return etudiantRepository.getByIne(ine);
+    }
 }
