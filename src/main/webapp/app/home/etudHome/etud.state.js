@@ -23,7 +23,7 @@
             },
             resolve: {
                 entity: ['$stateParams', 'EtudiantIne', function ($stateParams, EtudiantIne) {
-                    return EtudiantIne.get({ine: $stateParams.id}).promise;
+                    return EtudiantIne.get({ine: $stateParams.id}).$promise;
                 }]
             }
         });
