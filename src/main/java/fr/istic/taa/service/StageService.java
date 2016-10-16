@@ -62,4 +62,20 @@ public interface StageService {
      * @return the list of entities
      */
     List<Stage> findAllByEntreprise(Long id);
+
+    /**
+     * Get the stages for enseignant "id"
+     *
+     * @param id the id of the enseignant
+     * @return the list of entities
+     */
+    List<Stage> findAllByEnseignant(Long id);
+
+    /**
+     * Get the stages for contact "id"
+     *
+     * @param id the id of the contact
+     * @return the list of entities
+     */
+    List<Stage> findAllByContact(Long id);
 }
