@@ -34,6 +34,7 @@
                     vm.codepostal = data.codepostal;
                     vm.tel = data.tel;
                     vm.url = data.url;
+                    vm.mail = data.mail;
                     vm.commentaire = data.commentaire;
                 }
             );

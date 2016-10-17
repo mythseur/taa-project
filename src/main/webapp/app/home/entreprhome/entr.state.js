@@ -20,6 +20,11 @@
                     controller: 'EntrHomeController',
                     controllerAs: 'vm'
                 }
+            },
+            resolve: {
+                entity: ['$stateParams', 'Entreprise', function ($stateParams, Entreprise) {
+                    return Entreprise.get({id: $stateParams.id}).$promise;
+                }]
             }
         });
     }

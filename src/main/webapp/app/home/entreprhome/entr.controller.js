@@ -14,11 +14,12 @@
     //     };
     // });
 
-    EntrHomeController.$inject = ['$scope', 'Principal', 'Etudiant', 'EtudiantSearch', 'StageSearch', 'EntrepriseSearch', 'LoginService', '$state'];
+    EntrHomeController.$inject = ['$scope', 'Principal', 'LoginService', 'entity', 'EntrepriseDernieresDonnees', '$state'];
 
-    function EntrHomeController($scope, Principal, LoginService, $state) {
+    function EntrHomeController($scope, Principal, LoginService, entity, EntrepriseDernieresDonnees, $state) {
         var vm = this;
 
+        vm.entreprise = entity;
         vm.account = null;
         vm.isAuthenticated = null;
         vm.login = LoginService.open;
@@ -28,6 +29,25 @@
         });
 
         getAccount();
+
+        if (vm.entreprise.id != null) {
+            chargerDonnees();
+        }
+
+        function chargerDonnees() {
+            EntrepriseDernieresDonnees.get(
+                {id: vm.entreprise.id},
+                function (data) {
+                    vm.adresse = data.adresse;
+                    vm.ville = data.ville;
+                    vm.codepostal = data.codepostal;
+                    vm.tel = data.tel;
+                    vm.url = data.url;
+                    vm.mail = data.mail;
+                    vm.commentaire = data.commentaire;
+                }
+            );
+        }
 
         // vm.Result = [];
         // vm.search = search;

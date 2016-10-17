@@ -58,7 +58,7 @@
                 }
                 else if (account.authorities[0] == 'ROLE_ENTREPRISE') {
                     console.log("Je passe");
-                    $state.go('home.entre');
+                    $state.go('home.entre', {id: account.login});
                 }
 
             });
