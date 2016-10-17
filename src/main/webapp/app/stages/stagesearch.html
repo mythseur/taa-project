@@ -7,20 +7,24 @@
         Rechercher les stages d'un étudiant
     </label>
     <div ng-show="vm.searchMode == 'etudiant'">
-        <input type="text" ng-model="vm.queryEtudiant" placeholder="Nom, Prénom, INE, etc." />
-        <input type="button" class="btn btn-info" ng-click="vm.searchEtudiant()" value="Rechercher un étudiant" ng-disabled="vm.queryEtudiant == null || vm.queryEtudiant == ''" />
+        <input type="text" ng-model="vm.queryEtudiant" placeholder="Nom, Prénom, INE, etc."/>
+        <input type="button" class="btn btn-info" ng-click="vm.searchEtudiant()"
+               value="Rechercher un étudiant"
+               ng-disabled="vm.queryEtudiant == null || vm.queryEtudiant == ''"/>
 
-        <div class="btn-group" uib-dropdown is-open="status.isopen">
+        <div class="btn-group" uib-dropdown>
             <button id="drop-etudiant" type="button" class="btn btn-primary" uib-dropdown-toggle
                     ng-disabled="disabled">
                 {{vm.selectedEtudiant.iNe}} <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="drop-etudiant">
-                <li ng-repeat="etudiant in vm.etudiants" ng-click="vm.selectEtudiant(etudiant)" role="menuitem">{{etudiant.iNe}} - {{etudiant.prenom}} {{etudiant.nom}}</li>
+                <li ng-repeat="etudiant in vm.etudiants" ng-click="vm.selectEtudiant(etudiant)"
+                    role="menuitem">{{etudiant.iNe}} - {{etudiant.prenom}} {{etudiant.nom}}
+                </li>
             </ul>
         </div>
-        <div>
-            INE : {{vm.selectedEtudiant.iNe}}
+        <div ng-show="vm.selectedEtudiant != null">
+            INE : <a ui-sref="etudiant-detail({id:vm.selectedEtudiant.id})">{{vm.selectedEtudiant.iNe}}</a>
             <br/>
             Prénom : {{vm.selectedEtudiant.prenom}}
             <br/>
@@ -30,7 +34,8 @@
         </div>
         <br/>
         <ul>
-            <li ng-repeat="stage in vm.stagesEtudiant"><a ui-sref="stage-detail({id:stage.id})">{{stage.sujet}} - de {{stage.datedebut}} à {{stage.datefin}}</a></li>
+            <li ng-repeat="stage in vm.stagesEtudiant"><a ui-sref="stage-detail({id:stage.id})">{{stage.sujet}}
+                - de {{stage.datedebut}} à {{stage.datefin}}</a></li>
         </ul>
     </div>
 
@@ -41,20 +46,25 @@
         Rechercher les stages d'une entreprise
     </label>
     <div ng-show="vm.searchMode == 'entreprise'">
-        <input type="text" ng-model="vm.queryEntreprise" placeholder="Nom, etc." />
-        <input type="button" class="btn btn-info" ng-click="vm.searchEntreprise()" value="Rechercher une entreprise" ng-disabled="vm.queryEntreprise == null || vm.queryEntreprise == ''" />
+        <input type="text" ng-model="vm.queryEntreprise" placeholder="Nom, etc."/>
+        <input type="button" class="btn btn-info" ng-click="vm.searchEntreprise()"
+               value="Rechercher une entreprise"
+               ng-disabled="vm.queryEntreprise == null || vm.queryEntreprise == ''"/>
 
-        <div class="btn-group" uib-dropdown is-open="status.isopen">
+        <div class="btn-group" uib-dropdown>
             <button id="drop-entreprise" type="button" class="btn btn-primary" uib-dropdown-toggle
                     ng-disabled="disabled">
                 {{vm.selectedEntreprise.nom}} <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="drop-entreprise">
-                <li ng-repeat="entreprise in vm.entreprises" ng-click="vm.selectEntreprise(entreprise)" role="menuitem">{{entreprise.nom}}</li>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu"
+                aria-labelledby="drop-entreprise">
+                <li ng-repeat="entreprise in vm.entreprises"
+                    ng-click="vm.selectEntreprise(entreprise)" role="menuitem">{{entreprise.nom}}
+                </li>
             </ul>
         </div>
-        <div>
-            Nom : {{vm.selectedEntreprise.nom}}
+        <div ng-show="vm.selectedEntreprise != null">
+            Nom : <a ui-sref="entreprise-detail({id:vm.selectedEntreprise.id})">{{vm.selectedEntreprise.nom}}</a>
             <br/>
             Siret : {{vm.selectedEntreprise.siret}}
             <br/>
@@ -62,7 +72,8 @@
         </div>
         <br/>
         <ul>
-            <li ng-repeat="stage in vm.stagesEntreprise"><a ui-sref="stage-detail({id:stage.id})">{{stage.sujet}} - de {{stage.datedebut}} à {{stage.datefin}}</a></li>
+            <li ng-repeat="stage in vm.stagesEntreprise"><a ui-sref="stage-detail({id:stage.id})">{{stage.sujet}}
+                - de {{stage.datedebut}} à {{stage.datefin}}</a></li>
         </ul>
     </div>
 
@@ -73,7 +84,35 @@
         Rechercher les stages d'un enseignant référent
     </label>
     <div ng-show="vm.searchMode == 'enseignant'">
-        TODO
+        <input type="text" ng-model="vm.queryEnseignant" placeholder="Nom, Prénom, etc."/>
+        <input type="button" class="btn btn-info" ng-click="vm.searchEnseignant()"
+               value="Rechercher un enseignant"
+               ng-disabled="vm.queryEnseignant == null || vm.queryEnseignant == ''"/>
+
+        <div class="btn-group" uib-dropdown>
+            <button id="drop-enseignant" type="button" class="btn btn-primary" uib-dropdown-toggle
+                    ng-disabled="disabled">
+                {{vm.selectedEnseignant.prenom}} {{vm.selectedEnseignant.nom}}<span
+                class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu"
+                aria-labelledby="drop-enseignant">
+                <li ng-repeat="enseignant in vm.enseignants"
+                    ng-click="vm.selectEnseignant(enseignant)" role="menuitem">{{enseignant.prenom}}
+                    {{enseignant.nom}}
+                </li>
+            </ul>
+        </div>
+        <div ng-show="vm.selectedEnseignant != null">
+            Prénom : <a ui-sref="enseignant-detail({id:vm.selectedEnseignant.id})">{{vm.selectedEnseignant.prenom}}</a>
+            <br/>
+            Nom : {{vm.selectedEnseignant.nom}}
+        </div>
+        <br/>
+        <ul>
+            <li ng-repeat="stage in vm.stagesEnseignant"><a ui-sref="stage-detail({id:stage.id})">{{stage.sujet}}
+                - de {{stage.datedebut}} à {{stage.datefin}}</a></li>
+        </ul>
     </div>
 
     <br/>
@@ -83,8 +122,37 @@
         Rechercher les stages d'un contact professionnel
     </label>
     <div ng-show="vm.searchMode == 'contact'">
-        TODO
-    </div>
+        <input type="text" ng-model="vm.queryContact" placeholder="Nom, Prénom, etc."/>
+        <input type="button" class="btn btn-info" ng-click="vm.searchContact()"
+               value="Rechercher un contact"
+               ng-disabled="vm.queryContact == null || vm.queryContact == ''"/>
 
-    <br/>
+        <div class="btn-group" uib-dropdown>
+            <button id="drop-contact" type="button" class="btn btn-primary" uib-dropdown-toggle
+                    ng-disabled="disabled">
+                {{vm.selectedContact.prenom}} {{vm.selectedContact.nom}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="drop-contact">
+                <li ng-repeat="contact in vm.contacts" ng-click="vm.selectContact(contact)"
+                    role="menuitem">{{contact.prenom}} {{contact.nom}}
+                </li>
+            </ul>
+        </div>
+        <div ng-show="vm.selectedContact != null">
+            Prénom : <a ui-sref="contact-detail({id:vm.selectedContact.id})">{{vm.selectedContact.prenom}}</a>
+            <br/>
+            Nom : {{vm.selectedContact.nom}}
+            <br/>
+            Entreprise : {{vm.selectedContact.entreprise.nom}}
+            <br/>
+            Role : {{vm.selectedContact.role}}
+            <br/>
+            Mail : {{vm.selectedContact.mail}}
+        </div>
+        <br/>
+        <ul>
+            <li ng-repeat="stage in vm.stagesContact"><a ui-sref="stage-detail({id:stage.id})">
+                {{stage.sujet}} - de {{stage.datedebut}} à {{stage.datefin}}</a></li>
+        </ul>
+    </div>
 </div>

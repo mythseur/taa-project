@@ -19,4 +19,10 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
 
     @Query(value = "select stage from Stage as stage where stage.entreprise.id = :id")
     List<Stage> findAllByEntreprise(@Param("id") Long id);
+
+    @Query(value = "select stage from Stage as stage where stage.referent.id = :id")
+    List<Stage> findAllByEnseignant(@Param("id") Long id);
+
+    @Query(value = "select stage from Stage as stage where stage.encadrant.id = :id or stage.responsable.id = :id")
+    List<Stage> findAllByContact(@Param("id") Long id);
 }

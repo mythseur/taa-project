@@ -150,7 +150,7 @@ public class StageResource {
     }
 
     /**
-     * GET  /stages/etudiant/:id : get all the stages.
+     * GET  /stages/etudiant/:id : get all the stages of etudiant "id".
      *
      * @param id the id of the Etudiant
      * @return the ResponseEntity with status 200 (OK) and the list of stages in body
@@ -165,7 +165,7 @@ public class StageResource {
     }
 
     /**
-     * GET  /stages/entreprise/:id : get all the stages.
+     * GET  /stages/entreprise/:id : get all the stages of entreprise "id".
      *
      * @param id the id of the Entreprise
      * @return the ResponseEntity with status 200 (OK) and the list of stages in body
@@ -177,6 +177,36 @@ public class StageResource {
     public List<Stage> getAllStagesByEntreprise(@PathVariable Long id) {
         log.debug("REST request to get all Stages for Entreprise : {}",id);
         return stageService.findAllByEntreprise(id);
+    }
+
+    /**
+     * GET  /stages/enseignant/:id : get all the stages of enseignant "id".
+     *
+     * @param id the id of the Enseignant
+     * @return the ResponseEntity with status 200 (OK) and the list of stages in body
+     */
+    @RequestMapping(value = "/stages/enseignant/{id}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<Stage> getAllStagesByEnseignant(@PathVariable Long id) {
+        log.debug("REST request to get all Stages for Enseignant : {}",id);
+        return stageService.findAllByEnseignant(id);
+    }
+
+    /**
+     * GET  /stages/contact/:id : get all the stages of contact "id".
+     *
+     * @param id the id of the Contact
+     * @return the ResponseEntity with status 200 (OK) and the list of stages in body
+     */
+    @RequestMapping(value = "/stages/contact/{id}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<Stage> getAllStagesByContact(@PathVariable Long id) {
+        log.debug("REST request to get all Stages for Contact : {}",id);
+        return stageService.findAllByContact(id);
     }
 
 

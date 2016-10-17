@@ -124,4 +124,32 @@ public class StageServiceImpl implements StageService {
 
         return result;
     }
+
+    /**
+     * Get the stages for enseignant id
+     *
+     * @param id the id of the enseignant
+     * @return the list of entities
+     */
+    @Override
+    public List<Stage> findAllByEnseignant(Long id) {
+        log.debug("Request to get all Stages for Enseignant : {}",id);
+        List<Stage> result = stageRepository.findAllByEnseignant(id);
+
+        return result;
+    }
+
+    /**
+     * Get the stages for contact id
+     *
+     * @param id the id of the contact
+     * @return the list of entities
+     */
+    @Override
+    public List<Stage> findAllByContact(Long id) {
+        log.debug("Request to get all Stages for Contact : {}",id);
+        List<Stage> result = stageRepository.findAllByContact(id);
+
+        return result;
+    }
 }

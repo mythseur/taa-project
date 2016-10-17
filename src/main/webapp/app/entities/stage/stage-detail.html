@@ -3,11 +3,11 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="dl-horizontal jh-entity-details">
-        <dt><span>Datedebut</span></dt>
+        <dt><span>Date de début</span></dt>
         <dd>
             <span>{{vm.stage.datedebut | date:'mediumDate'}}</span>
         </dd>
-        <dt><span>Datefin</span></dt>
+        <dt><span>Date de fin</span></dt>
         <dd>
             <span>{{vm.stage.datefin | date:'mediumDate'}}</span>
         </dd>
@@ -19,7 +19,7 @@
         <dd>
             <span>{{vm.stage.service}}</span>
         </dd>
-        <dt><span>Details</span></dt>
+        <dt><span>Détails</span></dt>
         <dd>
             <span>{{vm.stage.details}}</span>
         </dd>
@@ -37,23 +37,23 @@
         </dd>
         <dt><span>Etudiant</span></dt>
         <dd>
-            <a ui-sref="etudiant-detail({id:vm.stage.etudiant.id})">{{vm.stage.etudiant.id}}</a>
+            <a ui-sref="etudiant-detail({id:vm.stage.etudiant.id})">{{vm.stage.etudiant.prenom}} {{vm.stage.etudiant.nom}}</a>
         </dd>
-        <dt><span>Referent</span></dt>
+        <dt><span>Enseignant référent</span></dt>
         <dd>
-            <a ui-sref="enseignant-detail({id:vm.stage.referent.id})">{{vm.stage.referent.id}}</a>
+            <a ui-sref="enseignant-detail({id:vm.stage.referent.id})">{{vm.stage.referent.prenom}} {{vm.stage.referent.nom}}</a>
         </dd>
-        <dt><span>Entreprise</span></dt>
+        <dt><span>Entreprise d'accueil</span></dt>
         <dd>
-            <a ui-sref="entreprise-detail({id:vm.stage.entreprise.id})">{{vm.stage.entreprise.id}}</a>
+            <a ui-sref="entreprise-detail({id:vm.stage.entreprise.id})">{{vm.stage.entreprise.nom}}</a>
         </dd>
         <dt><span>Encadrant</span></dt>
         <dd>
-            <a ui-sref="contact-detail({id:vm.stage.encadrant.id})">{{vm.stage.encadrant.id}}</a>
+            <a ui-sref="contact-detail({id:vm.stage.encadrant.id})">{{vm.stage.encadrant.prenom}} {{vm.stage.encadrant.nom}}</a>
         </dd>
         <dt><span>Responsable</span></dt>
         <dd>
-            <a ui-sref="contact-detail({id:vm.stage.responsable.id})">{{vm.stage.responsable.id}}</a>
+            <a ui-sref="contact-detail({id:vm.stage.responsable.id})">{{vm.stage.responsable.prenom}} {{vm.stage.responsable.nom}}</a>
         </dd>
     </dl>
 
