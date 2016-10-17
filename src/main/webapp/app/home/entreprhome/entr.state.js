@@ -10,9 +10,9 @@
     function stateConfig($stateProvider) {
         $stateProvider.state('home.entre', {
             parent: 'app',
-            url: '/',
+            url: '/homentre/{id}',
             data: {
-                authorities: []
+                authorities: ['ROLE_ENTREPRISE']
             },
             views: {
                 'content@': {

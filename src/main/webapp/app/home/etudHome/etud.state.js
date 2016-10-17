@@ -10,9 +10,9 @@
     function stateConfig($stateProvider) {
         $stateProvider.state('home.etud', {
             parent: 'app',
-            url: '/{id}',
+            url: '/hometud/{id}',
             data: {
-                authorities: []
+                authorities: ['ROLE_ETUDIANT']
             },
             views: {
                 'content@': {
