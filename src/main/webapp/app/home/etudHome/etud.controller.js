@@ -5,14 +5,17 @@
         .module('taaProjectApp')
         .controller('EtudHomeController', EtudHomeController);
 
-    EtudHomeController.$inject = ['$scope', '$rootScope', 'Principal', 'entity', 'LoginService', '$state', 'EtudiantDernieresDonnees'];
+    EtudHomeController.$inject = ['$scope', '$rootScope', 'Principal', 'entity','LoginService', '$state', 'EtudiantDernieresDonnees', 'StageEtudiant'];
 
-    function EtudHomeController($scope, $rootScope, Principal, entity, LoginService, $state, EtudiantDernieresDonnees) {
+    function EtudHomeController($scope, $rootScope, Principal, entity, LoginService, $state, EtudiantDernieresDonnees, StageEtudiant) {
         var vm = this;
 
+        vm.stages = [];
         vm.etudiant = entity;
+        vm.toogle=true;
         vm.account = null;
         vm.isAuthenticated = null;
+        vm.getButtonText = getButtonText;
         vm.login = LoginService.open;
         vm.register = register;
         $scope.$on('authenticationSuccess', function () {
@@ -20,6 +23,7 @@
         });
 
         getAccount();
+        getStages();
 
         function getAccount() {
             Principal.identity().then(function (account) {
@@ -57,6 +61,20 @@
                     vm.mail = (data.mail);
                 }
             );
+        }
+
+        function getStages() {
+            StageEtudiant.get({id : vm.etudiant.id},
+            function (data) {
+                vm.stages = data;
+            });
+        }
+
+        function getButtonText() {
+            if(vm.toogle)
+                return "Afficher les stages";
+            else
+                return "Afficher les informations";
         }
     }
 })();
