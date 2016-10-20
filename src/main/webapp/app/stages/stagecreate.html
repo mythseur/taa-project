@@ -1,108 +1,253 @@
 <div>
     <h2>Page de création des stages et alternances</h2>
     <jhi-alert></jhi-alert>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="stage.new">
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span class="hidden-xs">
-                        Create new Stage
-                    </span>
-                </button>
-            </div>
-            <div class="col-xs-8 no-padding-right">
-                <form name="searchForm" class="form-inline">
-                    <div class="input-group pull-right">
-                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery"
-                               placeholder="Query">
-                        <span class="input-group-btn width-min">
-                            <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                        <span class="input-group-btn width-min" ng-if="vm.currentSearch">
-                            <button class="btn btn-info" ng-click="vm.clear()">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </button>
-                        </span>
-                    </div>
-                </form>
-            </div>
+
+    <label>
+        Sélectionnez un étudiant
+    </label>
+    <div>
+        <input type="text" ng-model="vm.queryEtudiant" placeholder="Nom, Prénom, INE, etc."/>
+        <input type="button" class="btn btn-info" ng-click="vm.searchEtudiant()"
+               value="Sélectionnez un étudiant"
+               ng-disabled="vm.queryEtudiant == null || vm.queryEtudiant == ''"/>
+
+        <div class="btn-group" uib-dropdown>
+            <button id="drop-etudiant" type="button" class="btn btn-primary" uib-dropdown-toggle
+                    ng-disabled="disabled">
+                {{vm.selectedEtudiant.iNe}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="drop-etudiant">
+                <li ng-repeat="etudiant in vm.etudiants" ng-click="vm.selectEtudiant(etudiant)"
+                    role="menuitem">{{etudiant.iNe}} - {{etudiant.prenom}} {{etudiant.nom}}
+                </li>
+            </ul>
+        </div>
+
+        Si l'étudiant n'existe pas, créez le <a ui-sref="etudiant.new.stage">ici</a>.
+
+        <div ng-show="vm.selectedEtudiant != null">
+            INE : <a ui-sref="etudiant-detail({id:vm.selectedEtudiant.id})">{{vm.selectedEtudiant.iNe}}</a>
+            <br/>
+            Prénom : {{vm.selectedEtudiant.prenom}}
+            <br/>
+            Nom : {{vm.selectedEtudiant.nom}}
+            <br/>
+            Sexe : {{vm.selectedEtudiant.sexe}}
         </div>
     </div>
     <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-            <tr>
-                <th><span>ID</span></th>
-                <th><span>Datedebut</span></th>
-                <th><span>Datefin</span></th>
-                <th><span>Sujet</span></th>
-                <th><span>Service</span></th>
-                <th><span>Details</span></th>
-                <th><span>Jours</span></th>
-                <th><span>Heures</span></th>
-                <th><span>Versement</span></th>
-                <th><span>Etudiant</span></th>
-                <th><span>Referent</span></th>
-                <th><span>Entreprise</span></th>
-                <th><span>Encadrant</span></th>
-                <th><span>Responsable</span></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="stage in vm.stages track by stage.id">
-                <td><a ui-sref="stage-detail({id:stage.id})">{{stage.id}}</a></td>
-                <td>{{stage.datedebut | date:'mediumDate'}}</td>
-                <td>{{stage.datefin | date:'mediumDate'}}</td>
-                <td>{{stage.sujet}}</td>
-                <td>{{stage.service}}</td>
-                <td>{{stage.details}}</td>
-                <td>{{stage.jours}}</td>
-                <td>{{stage.heures}}</td>
-                <td>{{stage.versement}}</td>
-                <td>
-                    <a ui-sref="etudiant-detail({id:stage.etudiant.id})">{{stage.etudiant.id}}</a>
-                </td>
-                <td>
-                    <a ui-sref="enseignant-detail({id:stage.referent.id})">{{stage.referent.id}}</a>
-                </td>
-                <td>
-                    <a ui-sref="entreprise-detail({id:stage.entreprise.id})">{{stage.entreprise.id}}</a>
-                </td>
-                <td>
-                    <a ui-sref="contact-detail({id:stage.encadrant.id})">{{stage.encadrant.id}}</a>
-                </td>
-                <td>
-                    <a ui-sref="contact-detail({id:stage.responsable.id})">{{stage.responsable.id}}</a>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                ui-sref="stage-detail({id:stage.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>
-                            <span class="hidden-xs hidden-sm"></span>
-                        </button>
-                        <button type="submit"
-                                ui-sref="stage.edit({id:stage.id})"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                            <span class="hidden-xs hidden-sm"></span>
-                        </button>
-                        <button type="submit"
-                                ui-sref="stage.delete({id:stage.id})"
-                                class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>
-                            <span class="hidden-xs hidden-sm"></span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <label>
+        Sélectionnez une entreprise
+    </label>
+    <div>
+        <input type="text" ng-model="vm.queryEntreprise" placeholder="Nom, etc."/>
+        <input type="button" class="btn btn-info" ng-click="vm.searchEntreprise()"
+               value="Sélectionnez une entreprise"
+               ng-disabled="vm.queryEntreprise == null || vm.queryEntreprise == ''"/>
+
+        <div class="btn-group" uib-dropdown>
+            <button id="drop-entreprise" type="button" class="btn btn-primary" uib-dropdown-toggle
+                    ng-disabled="disabled">
+                {{vm.selectedEntreprise.nom}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu"
+                aria-labelledby="drop-entreprise">
+                <li ng-repeat="entreprise in vm.entreprises"
+                    ng-click="vm.selectEntreprise(entreprise)" role="menuitem">{{entreprise.nom}}
+                </li>
+            </ul>
+        </div>
+
+        Si l'entreprise n'existe pas, créez la <a ui-sref="entreprise.new.stage">ici</a>.
+
+        <div ng-show="vm.selectedEntreprise != null">
+            Nom : <a ui-sref="entreprise-detail({id:vm.selectedEntreprise.id})">{{vm.selectedEntreprise.nom}}</a>
+            <br/>
+            Siret : {{vm.selectedEntreprise.siret}}
+            <br/>
+            Effectif : {{vm.selectedEntreprise.effectif}}
+        </div>
     </div>
+    <br/>
+    <label>
+        Sélectionnez un enseignant référent
+    </label>
+    <div>
+        <input type="text" ng-model="vm.queryEnseignant" placeholder="Nom, Prénom, etc."/>
+        <input type="button" class="btn btn-info" ng-click="vm.searchEnseignant()"
+               value="Sélectionnez un enseignant"
+               ng-disabled="vm.queryEnseignant == null || vm.queryEnseignant == ''"/>
+
+        <div class="btn-group" uib-dropdown>
+            <button id="drop-enseignant" type="button" class="btn btn-primary" uib-dropdown-toggle
+                    ng-disabled="disabled">
+                {{vm.selectedEnseignant.prenom}} {{vm.selectedEnseignant.nom}}<span
+                class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu"
+                aria-labelledby="drop-enseignant">
+                <li ng-repeat="enseignant in vm.enseignants"
+                    ng-click="vm.selectEnseignant(enseignant)" role="menuitem">{{enseignant.prenom}}
+                    {{enseignant.nom}}
+                </li>
+            </ul>
+        </div>
+
+        Si l'enseignant n'existe pas, créez le <a ui-sref="enseignant.new.stage">ici</a>.
+
+        <div ng-show="vm.selectedEnseignant != null">
+            Prénom : <a ui-sref="enseignant-detail({id:vm.selectedEnseignant.id})">{{vm.selectedEnseignant.prenom}}</a>
+            <br/>
+            Nom : {{vm.selectedEnseignant.nom}}
+        </div>
+    </div>
+    <br/>
+    <label>
+        Sélectionnez un encadrant (tuteur professionnel)
+    </label>
+    <div>
+        <input type="text" ng-model="vm.queryEncadrant" placeholder="Nom, Prénom, etc."/>
+        <input type="button" class="btn btn-info" ng-click="vm.searchEncadrant()"
+               value="Sélectionnez un encadrant"
+               ng-disabled="vm.queryEncadrant == null || vm.queryEncadrant == ''"/>
+
+        <div class="btn-group" uib-dropdown>
+            <button id="drop-encadrant" type="button" class="btn btn-primary" uib-dropdown-toggle
+                    ng-disabled="disabled">
+                {{vm.selectedEncadrant.prenom}} {{vm.selectedEncadrant.nom}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="drop-encadrant">
+                <li ng-repeat="encadrant in vm.encadrants" ng-click="vm.selectEncadrant(encadrant)"
+                    role="menuitem">{{encadrant.prenom}} {{encadrant.nom}}
+                </li>
+            </ul>
+        </div>
+
+        Si l'encadrant n'existe pas, créez le <a ui-sref="contact.new.stage">ici</a>.
+
+        <div ng-show="vm.selectedEncadrant != null">
+            Prénom : <a ui-sref="encadrant-detail({id:vm.selectedEncadrant.id})">{{vm.selectedEncadrant.prenom}}</a>
+            <br/>
+            Nom : {{vm.selectedEncadrant.nom}}
+            <br/>
+            Entreprise : {{vm.selectedEncadrant.entreprise.nom}}
+            <br/>
+            Role : {{vm.selectedEncadrant.role}}
+            <br/>
+            Mail : {{vm.selectedEncadrant.mail}}
+        </div>
+    </div>
+    <br/>
+    <label>
+        Sélectionnez un responsable (signataire de la convention)
+    </label>
+    <div>
+        <input type="text" ng-model="vm.queryResponsable" placeholder="Nom, Prénom, etc."/>
+        <input type="button" class="btn btn-info" ng-click="vm.searchResponsable()"
+               value="Sélectionnez un responsable"
+               ng-disabled="vm.queryResponsable == null || vm.queryResponsable == ''"/>
+
+        <div class="btn-group" uib-dropdown>
+            <button id="drop-responsable" type="button" class="btn btn-primary" uib-dropdown-toggle
+                    ng-disabled="disabled">
+                {{vm.selectedResponsable.prenom}} {{vm.selectedResponsable.nom}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="drop-responsable">
+                <li ng-repeat="responsable in vm.responsables" ng-click="vm.selectResponsable(responsable)"
+                    role="menuitem">{{responsable.prenom}} {{responsable.nom}}
+                </li>
+            </ul>
+        </div>
+
+        Si le responsable n'existe pas, créez le <a ui-sref="contact.new.stage">ici</a>.
+
+        <div ng-show="vm.selectedResponsable != null">
+            Prénom : <a ui-sref="responsable-detail({id:vm.selectedResponsable.id})">{{vm.selectedResponsable.prenom}}</a>
+            <br/>
+            Nom : {{vm.selectedResponsable.nom}}
+            <br/>
+            Entreprise : {{vm.selectedResponsable.entreprise.nom}}
+            <br/>
+            Role : {{vm.selectedResponsable.role}}
+            <br/>
+            Mail : {{vm.selectedResponsable.mail}}
+        </div>
+    </div>
+
+    <br/>
+    <form name="editForm" role="form" novalidate ng-submit="vm.save()">
+        <div class="form-group">
+            <label class="control-label" for="field_datedebut">Datedebut</label>
+            <div class="input-group">
+                <input id="field_datedebut" type="text" class="form-control" name="datedebut"
+                       uib-datepicker-popup="{{dateformat}}" ng-model="vm.stage.datedebut"
+                       is-open="vm.datePickerOpenStatus.datedebut" required
+                />
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"
+                                ng-click="vm.openCalendar('datedebut')"><i
+                            class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_datefin">Datefin</label>
+            <div class="input-group">
+                <input id="field_datefin" type="text" class="form-control" name="datefin"
+                       uib-datepicker-popup="{{dateformat}}" ng-model="vm.stage.datefin"
+                       is-open="vm.datePickerOpenStatus.datefin" required
+                />
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"
+                                ng-click="vm.openCalendar('datefin')"><i
+                            class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_sujet">Sujet</label>
+            <input type="text" class="form-control" name="sujet" id="field_sujet"
+                   ng-model="vm.stage.sujet" required
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_service">Service</label>
+            <input type="text" class="form-control" name="service" id="field_service"
+                   ng-model="vm.stage.service"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_details">Details</label>
+            <input type="text" class="form-control" name="details" id="field_details"
+                   ng-model="vm.stage.details"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_jours">Jours</label>
+            <input type="number" class="form-control" name="jours" id="field_jours"
+                   ng-model="vm.stage.jours" required
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_heures">Heures</label>
+            <input type="number" class="form-control" name="heures" id="field_heures"
+                   ng-model="vm.stage.heures" required
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_versement">Versement</label>
+            <input type="number" class="form-control" name="versement" id="field_versement"
+                   ng-model="vm.stage.versement"
+            />
+        </div>
+        <br/>
+        <button type="submit"
+                ng-disabled="editForm.$invalid || vm.isSaving || 
+                vm.selectedEtudiant == null || vm.selectedEntreprise == null || vm.selectedEnseignant == null || vm.selectedResponsable == null || vm.selectedEncadrant == null"
+                class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+
+    </form>
+
 </div>
