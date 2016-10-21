@@ -78,21 +78,21 @@
         <div class="form-group">
             <label for="field_etudiant">Etudiant</label>
             <select class="form-control" id="field_etudiant" name="etudiant" ng-model="vm.alternance.etudiant"
-                    ng-options="etudiant as etudiant.id for etudiant in vm.etudiants track by etudiant.id">
+                    ng-options='etudiant as (etudiant.prenom+" "+etudiant.nom) for etudiant in vm.etudiants track by etudiant.id'>
                 <option value=""></option>
             </select>
         </div>
         <div class="form-group">
             <label for="field_entreprise">Entreprise</label>
             <select class="form-control" id="field_entreprise" name="entreprise" ng-model="vm.alternance.entreprise"
-                    ng-options="entreprise as entreprise.id for entreprise in vm.entreprises track by entreprise.id">
+                    ng-options="entreprise as entreprise.nom for entreprise in vm.entreprises track by entreprise.id">
                 <option value=""></option>
             </select>
         </div>
         <div class="form-group">
             <label for="field_encadrant">Encadrant</label>
             <select class="form-control" id="field_encadrant" name="encadrant" ng-model="vm.alternance.encadrant"
-                    ng-options="contact as contact.id for contact in vm.contacts track by contact.id">
+                    ng-options='contact as (contact.prenom+" "+contact.nom) for contact in vm.contacts track by contact.id'>
                 <option value=""></option>
             </select>
         </div>
@@ -100,7 +100,7 @@
             <label for="field_representant">Representant</label>
             <select class="form-control" id="field_representant" name="representant"
                     ng-model="vm.alternance.representant"
-                    ng-options="contact as contact.id for contact in vm.contacts track by contact.id">
+                    ng-options='contact as (contact.prenom+" "+contact.nom) for contact in vm.contacts track by contact.id'>
                 <option value=""></option>
             </select>
         </div>

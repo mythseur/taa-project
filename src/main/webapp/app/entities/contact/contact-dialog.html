@@ -52,7 +52,7 @@
         <div class="form-group">
             <label for="field_entreprise">Entreprise</label>
             <select class="form-control" id="field_entreprise" name="entreprise" ng-model="vm.contact.entreprise"
-                    ng-options="entreprise as entreprise.id for entreprise in vm.entreprises track by entreprise.id">
+                    ng-options='entreprise as (entreprise.nom+" - "+entreprise.siret) for entreprise in vm.entreprises track by entreprise.id'>
                 <option value=""></option>
             </select>
         </div>
