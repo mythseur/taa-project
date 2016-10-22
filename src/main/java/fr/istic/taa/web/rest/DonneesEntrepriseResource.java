@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -130,6 +134,32 @@ public class DonneesEntrepriseResource {
     public ResponseEntity<DonneesEntreprise> getDonneesEntrepriseByIdEntreprise(@PathVariable Long id) {
         log.debug("REST request to get DonneesEntreprise for Entreprise : {}", id);
         DonneesEntreprise donneesEntreprise = donneesEntrepriseService.findLastByIdEntreprise(id);
+        return Optional.ofNullable(donneesEntreprise)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * GET  /donnees-entreprises/entreprisedate/:id/:date : get the donneesEntreprise for Entreprise "id".
+     *
+     * @param id the id of the donneesEntreprise.entreprise to retrieve
+     * @param date the date with format yyyy-MM-dd
+     * @return the ResponseEntity with status 200 (OK) and with body the donneesEntreprise, or with status 404 (Not Found)
+     */
+    @RequestMapping(value = "/donnees-entreprises/entreprisedate/{id}/{date}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<DonneesEntreprise> getDonneesEntrepriseByIdEntrepriseAndDate(@PathVariable Long id, @PathVariable("date") String date) {
+        log.debug("REST request to get DonneesEntreprise of Entreprise by date : {}", date);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate ldate = LocalDate.parse(date, formatter);
+        ZonedDateTime dateTime = ldate.atStartOfDay(ZoneId.systemDefault());
+
+        DonneesEntreprise donneesEntreprise = donneesEntrepriseService.findLastByIdEntrepriseAndDate(id,dateTime);
         return Optional.ofNullable(donneesEntreprise)
             .map(result -> new ResponseEntity<>(
                 result,

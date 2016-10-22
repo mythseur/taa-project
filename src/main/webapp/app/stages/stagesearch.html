@@ -34,7 +34,7 @@
         </div>
         <br/>
         <ul>
-            <li ng-repeat="stage in vm.stagesEtudiant"><a ui-sref="stage-detail({id:stage.id})">{{stage.sujet}}
+            <li ng-repeat="stage in vm.stagesEtudiant"><a ui-sref="stageShow({id:stage.id})">{{stage.sujet}}
                 - de {{stage.datedebut}} à {{stage.datefin}}</a></li>
         </ul>
     </div>
@@ -72,7 +72,7 @@
         </div>
         <br/>
         <ul>
-            <li ng-repeat="stage in vm.stagesEntreprise"><a ui-sref="stage-detail({id:stage.id})">{{stage.sujet}}
+            <li ng-repeat="stage in vm.stagesEntreprise"><a ui-sref="stageShow({id:stage.id})">{{stage.sujet}}
                 - de {{stage.datedebut}} à {{stage.datefin}}</a></li>
         </ul>
     </div>
@@ -110,7 +110,7 @@
         </div>
         <br/>
         <ul>
-            <li ng-repeat="stage in vm.stagesEnseignant"><a ui-sref="stage-detail({id:stage.id})">{{stage.sujet}}
+            <li ng-repeat="stage in vm.stagesEnseignant"><a ui-sref="stageShow({id:stage.id})">{{stage.sujet}}
                 - de {{stage.datedebut}} à {{stage.datefin}}</a></li>
         </ul>
     </div>
@@ -151,7 +151,7 @@
         </div>
         <br/>
         <ul>
-            <li ng-repeat="stage in vm.stagesContact"><a ui-sref="stage-detail({id:stage.id})">
+            <li ng-repeat="stage in vm.stagesContact"><a ui-sref="stageShow({id:stage.id})">
                 {{stage.sujet}} - de {{stage.datedebut}} à {{stage.datefin}}</a></li>
         </ul>
     </div>

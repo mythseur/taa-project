@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -130,6 +134,32 @@ public class DonneesEtudiantResource {
     public ResponseEntity<DonneesEtudiant> getDonneesEtudiantByIdEtudiant(@PathVariable Long id) {
         log.debug("REST request to get DonneesEtudiant of Etudiant : {}", id);
         DonneesEtudiant donneesEtudiant = donneesEtudiantService.findLastByIdEtudiant(id);
+        return Optional.ofNullable(donneesEtudiant)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * GET  /donnees-etudiants/etudiant/:id/:date : get the last donneesEtudiant for Etudiant id at the date :date.
+     *
+     * @param id the id of the donneesEtudiant.Etudiant to retrieve
+     * @param date the date with format yyyy-MM-dd
+     * @return the ResponseEntity with status 200 (OK) and with body the donneesEtudiant, or with status 404 (Not Found)
+     */
+    @RequestMapping(value = "/donnees-etudiants/etudiantdate/{id}/{date}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<DonneesEtudiant> getDonneesEtudiantByIdEtudiant(@PathVariable Long id, @PathVariable("date") String date) {
+        log.debug("REST request to get DonneesEtudiant of Etudiant by date : {}", date);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate ldate = LocalDate.parse(date, formatter);
+        ZonedDateTime dateTime = ldate.atStartOfDay(ZoneId.systemDefault());
+
+        DonneesEtudiant donneesEtudiant = donneesEtudiantService.findLastByIdEtudiantAndDate(id, dateTime);
         return Optional.ofNullable(donneesEtudiant)
             .map(result -> new ResponseEntity<>(
                 result,

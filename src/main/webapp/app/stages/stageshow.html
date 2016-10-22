@@ -1,0 +1,333 @@
+<script src="https://use.fontawesome.com/0104f3bd1a.js"></script>
+
+<div>
+    <h2>Détails du stage</h2>
+    <jhi-alert></jhi-alert>
+
+    <!-- Etudiant -->
+    <div>
+        <h3>Etudiant : <a ui-sref="etudiant-detail({id:vm.etudiant.id})">{{vm.etudiant.prenom}}
+            {{vm.etudiant.nom}}</a>
+            <i class="fa fa-mars" ng-show="vm.etudiant.sexe == 'HOMME'"></i>
+            <i class="fa fa-venus" ng-show="vm.etudiant.sexe == 'FEMME'"></i>
+        </h3>
+
+        <dl class="dl-horizontal">
+            <dt><span>INE</span></dt>
+            <dd>
+                <span>{{vm.etudiant.iNe}}</span>
+            </dd>
+        </dl>
+
+        <dl class="dl-horizontal">
+            <dt><span>Adresse</span></dt>
+            <dd>
+                <span
+                    ng-show="vm.exists(vm.anciennedonneesetudiant.adresse)">{{vm.anciennedonneesetudiant.adresse}}</span>
+                <span
+                    ng-hide="vm.exists(vm.anciennedonneesetudiant.adresse)"><i>inconnue</i></span>
+            </dd>
+            <dd ng-show="showDetailsEtudiant && vm.dernieredonneesetudiant.adresse != vm.anciennedonneesetudiant.adresse">
+                <span><i class="fa fa-angle-double-right"></i> {{vm.dernieredonneesetudiant.adresse}}</span>
+            </dd>
+
+            <dt><span>Ville</span></dt>
+            <dd>
+                <span
+                    ng-show="vm.exists(vm.anciennedonneesetudiant.ville) || vm.exists(vm.anciennedonneesetudiant.codepostal)">{{vm.anciennedonneesetudiant.codepostal}} {{vm.anciennedonneesetudiant.ville}}</span>
+                <span
+                    ng-hide="vm.exists(vm.anciennedonneesetudiant.ville) || vm.exists(vm.anciennedonneesetudiant.codepostal)"><i>inconnue</i></span>
+            </dd>
+            <dd ng-show="showDetailsEtudiant && (vm.dernieredonneesetudiant.ville != vm.anciennedonneesetudiant.ville || vm.dernieredonneesetudiant.codepostal != vm.anciennedonneesetudiant.codepostal)">
+                <span><i class="fa fa-angle-double-right"></i> {{vm.dernieredonneesetudiant.codepostal}} {{vm.dernieredonneesetudiant.ville}}</span>
+            </dd>
+
+            <dt><span>Téléphone</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.anciennedonneesetudiant.telperso)">{{vm.anciennedonneesetudiant.telperso}}</span>
+                <span ng-hide="vm.exists(vm.anciennedonneesetudiant.telperso)"><i>inconnu</i></span>
+            </dd>
+            <dd ng-show="showDetailsEtudiant && vm.dernieredonneesetudiant.telperso != vm.anciennedonneesetudiant.telperso">
+                <span><i class="fa fa-angle-double-right"></i>{{vm.dernieredonneesetudiant.telperso}}</span>
+            </dd>
+
+            <dt><span>Mobile</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.anciennedonneesetudiant.telmobile)">{{vm.anciennedonneesetudiant.telmobile}}</span>
+                <span ng-hide="vm.exists(vm.anciennedonneesetudiant.telmobile)"><i>inconnu</i></span>
+            </dd>
+            <dd ng-show="showDetailsEtudiant && vm.dernieredonneesetudiant.telmobile != vm.anciennedonneesetudiant.telmobile">
+                <span><i class="fa fa-angle-double-right"></i>{{vm.dernieredonneesetudiant.telmobile}}</span>
+            </dd>
+
+            <dt><span>Mail</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.anciennedonneesetudiant.mail)">{{vm.anciennedonneesetudiant.mail}}</span>
+                <span ng-hide="vm.exists(vm.anciennedonneesetudiant.mail)"><i>inconnu</i></span>
+            </dd>
+            <dd ng-show="showDetailsEtudiant && vm.dernieredonneesetudiant.mail != vm.anciennedonneesetudiant.mail">
+                <span><i
+                    class="fa fa-angle-double-right"></i>{{vm.dernieredonneesetudiant.mail}}</span>
+            </dd>
+        </dl>
+        <a ng-click="showDetailsEtudiant = ! showDetailsEtudiant" ng-hide="showDetailsEtudiant">Afficher
+            les informations actuelles</a>
+        <a ng-click="showDetailsEtudiant = ! showDetailsEtudiant" ng-show="showDetailsEtudiant">Cacher
+            les informations actuelles</a>
+    </div>
+    <br/>
+
+    <!-- Entreprise -->
+    <div>
+        <h3>Entreprise : <a
+            ui-sref="entreprise-detail({id:vm.entreprise.id})">{{vm.entreprise.nom}}</a></h3>
+
+        <dl class="dl-horizontal">
+            <dt><span>SIRET</span></dt>
+            <dd>
+                <span>{{vm.entreprise.siret}}</span>
+            </dd>
+            <dt><span>Effectif</span></dt>
+            <dd>
+                <span>{{vm.entreprise.effectif}}</span>
+            </dd>
+        </dl>
+
+        <dl class="dl-horizontal">
+            <dt><span>Adresse</span></dt>
+            <dd>
+                <span
+                    ng-show="vm.exists(vm.anciennedonneesentreprise.adresse)">{{vm.anciennedonneesentreprise.adresse}}</span>
+                <span
+                    ng-hide="vm.exists(vm.anciennedonneesentreprise.adresse)"><i>inconnue</i></span>
+            </dd>
+            <dd ng-show="showDetailsEntreprise && vm.dernieredonneesentreprise.adresse != vm.anciennedonneesentreprise.adresse">
+                <span><i class="fa fa-angle-double-right"></i> {{vm.dernieredonneesentreprise.adresse}}</span>
+            </dd>
+
+            <dt><span>Ville</span></dt>
+            <dd>
+                    <span
+                        ng-show="vm.exists(vm.anciennedonneesentreprise.ville) || vm.exists(vm.anciennedonneesentreprise.codepostal)">{{vm.anciennedonneesentreprise.codepostal}} {{vm.anciennedonneesentreprise.ville}}</span>
+                <span
+                    ng-hide="vm.exists(vm.anciennedonneesentreprise.ville) || vm.exists(vm.anciennedonneesentreprise.codepostal)"><i>inconnue</i></span>
+            </dd>
+            <dd ng-show="showDetailsEntreprise && (vm.dernieredonneesentreprise.ville != vm.anciennedonneesentreprise.ville || vm.dernieredonneesentreprise.codepostal != vm.anciennedonneesentreprise.codepostal)">
+                <span><i class="fa fa-angle-double-right"></i> {{vm.dernieredonneesentreprise.codepostal}} {{vm.dernieredonneesentreprise.ville}}</span>
+            </dd>
+
+            <dt><span>Téléphone</span></dt>
+            <dd>
+                <span
+                    ng-show="vm.exists(vm.anciennedonneesentreprise.tel)">{{vm.anciennedonneesentreprise.tel}}</span>
+                <span
+                    ng-hide="vm.exists(vm.anciennedonneesentreprise.tel)"><i>inconnu</i></span>
+            </dd>
+            <dd ng-show="showDetailsEntreprise && vm.dernieredonneesentreprise.tel != vm.anciennedonneesentreprise.tel">
+                <span><i class="fa fa-angle-double-right"></i> {{vm.dernieredonneesentreprise.tel}}</span>
+            </dd>
+
+            <dt><span>Site web</span></dt>
+            <dd>
+                <span
+                    ng-show="vm.exists(vm.anciennedonneesentreprise.url)">{{vm.anciennedonneesentreprise.url}}</span>
+                <span
+                    ng-hide="vm.exists(vm.anciennedonneesentreprise.url)"><i>inconnu</i></span>
+            </dd>
+            <dd ng-show="showDetailsEntreprise && vm.dernieredonneesentreprise.url != vm.anciennedonneesentreprise.url">
+                <span><i class="fa fa-angle-double-right"></i> {{vm.dernieredonneesentreprise.url}}</span>
+            </dd>
+
+            <dt><span>Mail</span></dt>
+            <dd>
+                <span
+                    ng-show="vm.exists(vm.anciennedonneesentreprise.mail)">{{vm.anciennedonneesentreprise.mail}}</span>
+                <span
+                    ng-hide="vm.exists(vm.anciennedonneesentreprise.mail)"><i>inconnu</i></span>
+            </dd>
+            <dd ng-show="showDetailsEntreprise && vm.dernieredonneesentreprise.mail != vm.anciennedonneesentreprise.mail">
+                <span><i class="fa fa-angle-double-right"></i> {{vm.dernieredonneesentreprise.mail}}</span>
+            </dd>
+
+            <dt><span>Commentaire</span></dt>
+            <dd>
+                <span
+                    ng-show="vm.exists(vm.anciennedonneesentreprise.commentaire)">{{vm.anciennedonneesentreprise.commentaire}}</span>
+                <span
+                    ng-hide="vm.exists(vm.anciennedonneesentreprise.commentaire)"><i>inconnu</i></span>
+            </dd>
+            <dd ng-show="showDetailsEntreprise && vm.dernieredonneesentreprise.commentaire != vm.anciennedonneesentreprise.commentaire">
+                <span><i class="fa fa-angle-double-right"></i> {{vm.dernieredonneesentreprise.commentaire}}</span>
+            </dd>
+        </dl>
+
+        <a ng-click="showDetailsEntreprise = ! showDetailsEntreprise"
+           ng-hide="showDetailsEntreprise">Afficher
+            les informations actuelles</a>
+        <a ng-click="showDetailsEntreprise = ! showDetailsEntreprise"
+           ng-show="showDetailsEntreprise">Cacher
+            les informations actuelles</a>
+    </div>
+    <br/>
+
+    <!-- Referent -->
+    <div>
+        <h3>Enseignant référent : <a ui-sref="enseignant-detail({id:vm.referent.id})">
+            {{vm.referent.prenom}} {{vm.referent.nom}}</a>
+            <i class="fa fa-mars" ng-show="vm.referent.sexe == 'HOMME'"></i>
+            <i class="fa fa-venus" ng-show="vm.referent.sexe == 'FEMME'"></i>
+        </h3>
+
+        <dl class="dl-horizontal">
+            <dt><span>Adresse</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.referent.adresse)">{{vm.referent.adresse}}</span>
+                <span
+                    ng-hide="vm.exists(vm.referent.adresse)"><i>inconnue</i></span>
+            </dd>
+            <dt><span>Téléphone</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.referent.telpro)">{{vm.referent.telpro}}</span>
+                <span
+                    ng-hide="vm.exists(vm.referent.telpro)"><i>inconnu</i></span>
+            </dd>
+            <dt><span>Actif</span></dt>
+            <dd>
+                <span>
+                    <i class="glyphicon glyphicon-ok" ng-show="vm.referent.actif"></i>
+                    <i class="glyphicon glyphicon-remove" ng-hide="vm.referent.actif"></i>
+                </span>
+            </dd>
+        </dl>
+    </div>
+
+    <!-- Encadrant -->
+    <div>
+        <h3>Encadrant professionnel : <a ui-sref="contact-detail({id:vm.encadrant.id})">
+            {{vm.encadrant.prenom}} {{vm.encadrant.nom}}</a>
+        </h3>
+
+        <dl class="dl-horizontal">
+            <dt><span>Rôle</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.encadrant.role)">{{vm.encadrant.role}}</span>
+                <span ng-hide="vm.exists(vm.encadrant.role)"><i>inconnue</i></span>
+            </dd>
+
+            <dt><span>Téléphone</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.encadrant.tel)">{{vm.encadrant.tel}}</span>
+                <span
+                    ng-hide="vm.exists(vm.encadrant.tel)"><i>inconnu</i></span>
+            </dd>
+
+            <dt><span>Mail</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.encadrant.mail)">{{vm.encadrant.mail}}</span>
+                <span ng-hide="vm.exists(vm.encadrant.mail)"><i>inconnu</i></span>
+            </dd>
+
+            <dt><span>Commentaire</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.encadrant.commentaire)">{{vm.encadrant.commentaire}}</span>
+                <span
+                    ng-hide="vm.exists(vm.encadrant.commentaire)"><i>inconnu</i></span>
+            </dd>
+        </dl>
+    </div>
+
+    <!-- Responsable -->
+    <div>
+        <h3>Responsable professionnel : <a ui-sref="contact-detail({id:vm.responsable.id})">
+            {{vm.responsable.prenom}} {{vm.responsable.nom}}</a>
+        </h3>
+
+        <dl class="dl-horizontal">
+            <dt><span>Rôle</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.responsable.role)">{{vm.responsable.role}}</span>
+                <span
+                    ng-hide="vm.exists(vm.responsable.role)"><i>inconnue</i></span>
+            </dd>
+
+            <dt><span>Téléphone</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.responsable.tel)">{{vm.responsable.tel}}</span>
+                <span
+                    ng-hide="vm.exists(vm.responsable.tel)"><i>inconnu</i></span>
+            </dd>
+
+            <dt><span>Mail</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.responsable.mail)">{{vm.responsable.mail}}</span>
+                <span
+                    ng-hide="vm.exists(vm.responsable.mail)"><i>inconnu</i></span>
+            </dd>
+
+            <dt><span>Commentaire</span></dt>
+            <dd>
+                <span
+                    ng-show="vm.exists(vm.responsable.commentaire)">{{vm.responsable.commentaire}}</span>
+                <span
+                    ng-hide="vm.exists(vm.responsable.commentaire)"><i>inconnu</i></span>
+            </dd>
+        </dl>
+    </div>
+
+    <!-- Autres informations -->
+    <div>
+        <h3>Autres informations</h3>
+
+        <dl class="dl-horizontal">
+            <dt><span>Date de début</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.stage.datedebut)">{{vm.stage.datedebut | date:'mediumDate'}}</span>
+                <span
+                    ng-hide="vm.exists(vm.stage.datedebut)"><i>inconnue</i></span>
+            </dd>
+            <dt><span>Date de fin</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.stage.datefin)">{{vm.stage.datefin | date:'mediumDate'}}</span>
+                <span ng-hide="vm.exists(vm.stage.datefin)"><i>inconnue</i></span>
+            </dd>
+            <dt><span>Sujet</span></dt>
+            <dd>
+                <span
+                    ng-show="vm.exists(vm.stage.sujet)">{{vm.stage.sujet}}</span>
+                <span
+                    ng-hide="vm.exists(vm.stage.sujet)"><i>inconnu</i></span>
+            </dd>
+            <dt><span>Service</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.stage.service)">{{vm.stage.service}}</span>
+                <span
+                    ng-hide="vm.exists(vm.stage.service)"><i>inconnu</i></span>
+            </dd>
+            <dt><span>Détails</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.stage.details)">{{vm.stage.details}}</span>
+                <span ng-hide="vm.exists(vm.stage.details)"><i>inconnus</i></span>
+            </dd>
+            <dt><span>Jours</span></dt>
+            <dd>
+                <span
+                    ng-show="vm.exists(vm.stage.jours)">{{vm.stage.jours}}</span>
+                <span
+                    ng-hide="vm.exists(vm.stage.jours)"><i>inconnus</i></span>
+            </dd>
+            <dt><span>Heures</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.stage.heures)">{{vm.stage.heures}}</span>
+                <span
+                    ng-hide="vm.exists(vm.stage.heures)"><i>inconnues</i></span>
+            </dd>
+            <dt><span>Versement</span></dt>
+            <dd>
+                <span ng-show="vm.exists(vm.stage.versement)">{{vm.stage.versement}}</span>
+                <span
+                    ng-hide="vm.exists(vm.stage.versement)"><i>inconnu</i></span>
+            </dd>
+        </dl>
+    </div>
+
+</div>

@@ -1,5 +1,6 @@
 package fr.istic.taa.service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import fr.istic.taa.domain.DonneesEtudiant;
@@ -48,4 +49,6 @@ public interface DonneesEtudiantService {
     List<DonneesEtudiant> search(String query);
 
     DonneesEtudiant findLastByIdEtudiant(Long id);
+
+    DonneesEtudiant findLastByIdEtudiantAndDate(Long id, ZonedDateTime date);
 }

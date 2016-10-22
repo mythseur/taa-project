@@ -172,6 +172,34 @@
                         $state.go('stageCreate');
                     });
                 }]
+            })
+            .state('stageShow', {
+                parent: 'entity',
+                url: '/stageShow/{id}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                    pageTitle: 'Stage'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/stages/stageshow.html',
+                        controller: 'StageShowController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    entity: ['$stateParams', 'Stage', function ($stateParams, Stage) {
+                        return Stage.get({id: $stateParams.id}).$promise;
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'stage',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
             });
     }
 })();

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -101,6 +102,13 @@ public class DonneesEntrepriseServiceImpl implements DonneesEntrepriseService {
     public DonneesEntreprise findLastByIdEntreprise(Long id) {
         log.debug("Request to get DonneesEntreprise for Entreprise : {}", id);
         DonneesEntreprise donneesEntreprise = donneesEntrepriseRepository.findLastByIdEntreprise(id);
+        return donneesEntreprise;
+    }
+
+    @Override
+    public DonneesEntreprise findLastByIdEntrepriseAndDate(Long id, ZonedDateTime date) {
+        log.debug("Request to get DonneesEntreprise for Entreprise : {}, {}", id, date);
+        DonneesEntreprise donneesEntreprise = donneesEntrepriseRepository.findLastByIdEntrepriseAndDate(id, date);
         return donneesEntreprise;
     }
 }
