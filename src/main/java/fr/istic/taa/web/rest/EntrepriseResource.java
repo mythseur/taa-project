@@ -1,21 +1,29 @@
 package fr.istic.taa.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import fr.istic.taa.domain.Entreprise;
-import fr.istic.taa.service.EntrepriseService;
-import fr.istic.taa.web.rest.util.HeaderUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+
+import javax.inject.Inject;
+
+import fr.istic.taa.dto.EntrepriseIHM;
+import fr.istic.taa.service.EntrepriseService;
+import fr.istic.taa.web.rest.util.HeaderUtil;
 
 /**
  * REST controller for managing Entreprise.
@@ -40,12 +48,12 @@ public class EntrepriseResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Entreprise> createEntreprise(@RequestBody Entreprise entreprise) throws URISyntaxException {
+    public ResponseEntity<EntrepriseIHM> createEntreprise(@RequestBody EntrepriseIHM entreprise) throws URISyntaxException {
         log.debug("REST request to save Entreprise : {}", entreprise);
         if (entreprise.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("entreprise", "idexists", "A new entreprise cannot already have an ID")).body(null);
         }
-        Entreprise result = entrepriseService.save(entreprise);
+        EntrepriseIHM result = entrepriseService.save(entreprise);
         return ResponseEntity.created(new URI("/api/entreprises/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("entreprise", result.getId().toString()))
             .body(result);
@@ -64,12 +72,12 @@ public class EntrepriseResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Entreprise> updateEntreprise(@RequestBody Entreprise entreprise) throws URISyntaxException {
+    public ResponseEntity<EntrepriseIHM> updateEntreprise(@RequestBody EntrepriseIHM entreprise) throws URISyntaxException {
         log.debug("REST request to update Entreprise : {}", entreprise);
         if (entreprise.getId() == null) {
             return createEntreprise(entreprise);
         }
-        Entreprise result = entrepriseService.save(entreprise);
+        EntrepriseIHM result = entrepriseService.save(entreprise);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("entreprise", entreprise.getId().toString()))
             .body(result);
@@ -84,7 +92,7 @@ public class EntrepriseResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Entreprise> getAllEntreprises() {
+    public List<EntrepriseIHM> getAllEntreprises() {
         log.debug("REST request to get all Entreprises");
         return entrepriseService.findAll();
     }
@@ -99,9 +107,9 @@ public class EntrepriseResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Entreprise> getEntreprise(@PathVariable Long id) {
+    public ResponseEntity<EntrepriseIHM> getEntreprise(@PathVariable Long id) {
         log.debug("REST request to get Entreprise : {}", id);
-        Entreprise entreprise = entrepriseService.findOne(id);
+        EntrepriseIHM entreprise = entrepriseService.findOne(id);
         return Optional.ofNullable(entreprise)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -136,7 +144,7 @@ public class EntrepriseResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Entreprise> searchEntreprises(@RequestParam String query) {
+    public List<EntrepriseIHM> searchEntreprises(@RequestParam String query) {
         log.debug("REST request to search Entreprises for query {}", query);
         return entrepriseService.search(query);
     }

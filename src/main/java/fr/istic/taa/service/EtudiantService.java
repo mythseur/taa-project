@@ -1,8 +1,8 @@
 package fr.istic.taa.service;
 
-import fr.istic.taa.domain.Etudiant;
-
 import java.util.List;
+
+import fr.istic.taa.dto.EtudiantIHM;
 
 /**
  * Service Interface for managing Etudiant.
@@ -15,14 +15,14 @@ public interface EtudiantService {
      * @param etudiant the entity to save
      * @return the persisted entity
      */
-    Etudiant save(Etudiant etudiant);
+    EtudiantIHM save(EtudiantIHM etudiant);
 
     /**
      * Get all the etudiants.
      *
      * @return the list of entities
      */
-    List<Etudiant> findAll();
+    List<EtudiantIHM> findAll();
 
     /**
      * Get the "id" etudiant.
@@ -30,7 +30,7 @@ public interface EtudiantService {
      * @param id the id of the entity
      * @return the entity
      */
-    Etudiant findOne(Long id);
+    EtudiantIHM findOne(Long id);
 
     /**
      * Delete the "id" etudiant.
@@ -45,7 +45,13 @@ public interface EtudiantService {
      * @param query the query of the search
      * @return the list of entities
      */
-    List<Etudiant> search(String query);
+    List<EtudiantIHM> search(String query);
 
-    Etudiant getByIne(String ine);
+    /**
+     * Get the etudiant with ine "ine".
+     *
+     * @param ine the ine of the entity
+     * @return the entity
+     */
+    EtudiantIHM getByIne(String ine);
 }

@@ -1,9 +1,10 @@
 package fr.istic.taa.dto;
 
+import java.util.Objects;
+
+import fr.istic.taa.domain.DonneesEtudiant;
 import fr.istic.taa.domain.Etudiant;
 import fr.istic.taa.domain.enumeration.Sexe;
-
-import java.util.Objects;
 
 public class EtudiantIHM extends Etudiant{
     private static final long serialVersionUID = 1L;
@@ -154,5 +155,46 @@ public class EtudiantIHM extends Etudiant{
             ", telmobile='" + telmobile + "'" +
             ", mail='" + mail + "'" +
             '}';
+    }
+
+    public static EtudiantIHM create(Etudiant etu, DonneesEtudiant don) {
+        EtudiantIHM res = new EtudiantIHM();
+        if(etu != null){
+            res.setId(etu.getId());
+            res.setiNe(etu.getiNe());
+            res.setPrenom(etu.getPrenom());
+            res.setNom(etu.getNom());
+            res.setSexe(etu.getSexe());
+        }
+        if(don != null){
+            res.setAdresse(don.getAdresse());
+            res.setCodepostal(don.getCodepostal());
+            res.setVille(don.getVille());
+            res.setMail(don.getMail());
+            res.setTelmobile(don.getTelmobile());
+            res.setTelperso(don.getTelperso());
+        }
+        return res;
+    }
+
+    public Etudiant createEtudiant(){
+        Etudiant etu = new Etudiant();
+        etu.setId(getId());
+        etu.setiNe(getiNe());
+        etu.setPrenom(getPrenom());
+        etu.setNom(getNom());
+        etu.setSexe(getSexe());
+        return etu;
+    }
+
+    public DonneesEtudiant createDonnees(){
+        DonneesEtudiant don = new DonneesEtudiant();
+        don.setAdresse(getAdresse());
+        don.setCodepostal(getCodepostal());
+        don.setVille(getVille());
+        don.setTelperso(getTelperso());
+        don.setTelmobile(getTelmobile());
+        don.setMail(getMail());
+        return don;
     }
 }

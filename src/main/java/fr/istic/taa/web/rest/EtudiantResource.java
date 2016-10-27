@@ -1,21 +1,29 @@
 package fr.istic.taa.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import fr.istic.taa.domain.Etudiant;
-import fr.istic.taa.service.EtudiantService;
-import fr.istic.taa.web.rest.util.HeaderUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+
+import javax.inject.Inject;
+
+import fr.istic.taa.dto.EtudiantIHM;
+import fr.istic.taa.service.EtudiantService;
+import fr.istic.taa.web.rest.util.HeaderUtil;
 
 /**
  * REST controller for managing Etudiant.
@@ -40,12 +48,12 @@ public class EtudiantResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Etudiant> createEtudiant(@RequestBody Etudiant etudiant) throws URISyntaxException {
+    public ResponseEntity<EtudiantIHM> createEtudiant(@RequestBody EtudiantIHM etudiant) throws URISyntaxException {
         log.debug("REST request to save Etudiant : {}", etudiant);
         if (etudiant.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("etudiant", "idexists", "A new etudiant cannot already have an ID")).body(null);
         }
-        Etudiant result = etudiantService.save(etudiant);
+        EtudiantIHM result = etudiantService.save(etudiant);
         return ResponseEntity.created(new URI("/api/etudiants/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("etudiant", result.getId().toString()))
             .body(result);
@@ -64,12 +72,12 @@ public class EtudiantResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Etudiant> updateEtudiant(@RequestBody Etudiant etudiant) throws URISyntaxException {
+    public ResponseEntity<EtudiantIHM> updateEtudiant(@RequestBody EtudiantIHM etudiant) throws URISyntaxException {
         log.debug("REST request to update Etudiant : {}", etudiant);
         if (etudiant.getId() == null) {
             return createEtudiant(etudiant);
         }
-        Etudiant result = etudiantService.save(etudiant);
+        EtudiantIHM result = etudiantService.save(etudiant);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("etudiant", etudiant.getId().toString()))
             .body(result);
@@ -84,7 +92,7 @@ public class EtudiantResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Etudiant> getAllEtudiants() {
+    public List<EtudiantIHM> getAllEtudiants() {
         log.debug("REST request to get all Etudiants");
         return etudiantService.findAll();
     }
@@ -99,9 +107,9 @@ public class EtudiantResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Etudiant> getEtudiant(@PathVariable Long id) {
+    public ResponseEntity<EtudiantIHM> getEtudiant(@PathVariable Long id) {
         log.debug("REST request to get Etudiant : {}", id);
-        Etudiant etudiant = etudiantService.findOne(id);
+        EtudiantIHM etudiant = etudiantService.findOne(id);
         return Optional.ofNullable(etudiant)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -136,16 +144,22 @@ public class EtudiantResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Etudiant> searchEtudiants(@RequestParam String query) {
+    public List<EtudiantIHM> searchEtudiants(@RequestParam String query) {
         log.debug("REST request to search Etudiants for query {}", query);
         return etudiantService.search(query);
     }
 
+    /**
+     * GET  /etudiants/ine/:ine : get the etudiant with ine "ine".
+     *
+     * @param ine the ine of the etudiant to retrieve
+     * @return the Etudiant with ine "ine"
+     */
     @RequestMapping(value = "/etudiants/ine/{ine}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public Etudiant getEtudiantByIne(@PathVariable String ine) {
+    public EtudiantIHM getEtudiantByIne(@PathVariable String ine) {
         log.debug("REST request to get Etudiant by INE : {}", ine);
         return etudiantService.getByIne(ine);
     }

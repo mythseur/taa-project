@@ -1,8 +1,8 @@
 package fr.istic.taa.service;
 
-import fr.istic.taa.domain.Entreprise;
-
 import java.util.List;
+
+import fr.istic.taa.dto.EntrepriseIHM;
 
 /**
  * Service Interface for managing Entreprise.
@@ -15,14 +15,14 @@ public interface EntrepriseService {
      * @param entreprise the entity to save
      * @return the persisted entity
      */
-    Entreprise save(Entreprise entreprise);
+    EntrepriseIHM save(EntrepriseIHM entreprise);
 
     /**
      * Get all the entreprises.
      *
      * @return the list of entities
      */
-    List<Entreprise> findAll();
+    List<EntrepriseIHM> findAll();
 
     /**
      * Get the "id" entreprise.
@@ -30,7 +30,7 @@ public interface EntrepriseService {
      * @param id the id of the entity
      * @return the entity
      */
-    Entreprise findOne(Long id);
+    EntrepriseIHM findOne(Long id);
 
     /**
      * Delete the "id" entreprise.
@@ -45,5 +45,5 @@ public interface EntrepriseService {
      * @param query the query of the search
      * @return the list of entities
      */
-    List<Entreprise> search(String query);
+    List<EntrepriseIHM> search(String query);
 }
