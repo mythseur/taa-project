@@ -21,7 +21,7 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
-import fr.istic.taa.domain.Stage;
+import fr.istic.taa.dto.StageIHM;
 import fr.istic.taa.service.StageService;
 import fr.istic.taa.web.rest.util.HeaderUtil;
 
@@ -48,12 +48,12 @@ public class StageResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Stage> createStage(@RequestBody Stage stage) throws URISyntaxException {
+    public ResponseEntity<StageIHM> createStage(@RequestBody StageIHM stage) throws URISyntaxException {
         log.debug("REST request to save Stage : {}", stage);
         if (stage.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("stage", "idexists", "A new stage cannot already have an ID")).body(null);
         }
-        Stage result = stageService.save(stage);
+        StageIHM result = stageService.save(stage);
         return ResponseEntity.created(new URI("/api/stages/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("stage", result.getId().toString()))
             .body(result);
@@ -72,12 +72,12 @@ public class StageResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Stage> updateStage(@RequestBody Stage stage) throws URISyntaxException {
+    public ResponseEntity<StageIHM> updateStage(@RequestBody StageIHM stage) throws URISyntaxException {
         log.debug("REST request to update Stage : {}", stage);
         if (stage.getId() == null) {
             return createStage(stage);
         }
-        Stage result = stageService.save(stage);
+        StageIHM result = stageService.save(stage);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("stage", stage.getId().toString()))
             .body(result);
@@ -92,7 +92,7 @@ public class StageResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Stage> getAllStages() {
+    public List<StageIHM> getAllStages() {
         log.debug("REST request to get all Stages");
         return stageService.findAll();
     }
@@ -107,9 +107,9 @@ public class StageResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Stage> getStage(@PathVariable Long id) {
+    public ResponseEntity<StageIHM> getStage(@PathVariable Long id) {
         log.debug("REST request to get Stage : {}", id);
-        Stage stage = stageService.findOne(id);
+        StageIHM stage = stageService.findOne(id);
         return Optional.ofNullable(stage)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -144,7 +144,7 @@ public class StageResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Stage> searchStages(@RequestParam String query) {
+    public List<StageIHM> searchStages(@RequestParam String query) {
         log.debug("REST request to search Stages for query {}", query);
         return stageService.search(query);
     }
@@ -159,7 +159,7 @@ public class StageResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Stage> getAllStagesByEtudiant(@PathVariable Long id) {
+    public List<StageIHM> getAllStagesByEtudiant(@PathVariable Long id) {
         log.debug("REST request to get all Stages for Etudiant : {}",id);
         return stageService.findAllByEtudiant(id);
     }
@@ -174,7 +174,7 @@ public class StageResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Stage> getAllStagesByEntreprise(@PathVariable Long id) {
+    public List<StageIHM> getAllStagesByEntreprise(@PathVariable Long id) {
         log.debug("REST request to get all Stages for Entreprise : {}",id);
         return stageService.findAllByEntreprise(id);
     }
@@ -189,7 +189,7 @@ public class StageResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Stage> getAllStagesByEnseignant(@PathVariable Long id) {
+    public List<StageIHM> getAllStagesByEnseignant(@PathVariable Long id) {
         log.debug("REST request to get all Stages for Enseignant : {}",id);
         return stageService.findAllByEnseignant(id);
     }
@@ -204,7 +204,7 @@ public class StageResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Stage> getAllStagesByContact(@PathVariable Long id) {
+    public List<StageIHM> getAllStagesByContact(@PathVariable Long id) {
         log.debug("REST request to get all Stages for Contact : {}",id);
         return stageService.findAllByContact(id);
     }
