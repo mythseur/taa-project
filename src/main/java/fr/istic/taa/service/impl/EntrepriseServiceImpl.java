@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -136,5 +137,15 @@ public class EntrepriseServiceImpl implements EntrepriseService {
         }
         return res;
 
+    }
+
+    @Override
+    public EntrepriseIHM findOneByDate(Long id, ZonedDateTime date) {
+        log.debug("Request to get Entreprise : {}", id);
+        Entreprise entreprise = entrepriseRepository.findOne(id);
+        DonneesEntreprise donneesEntreprise = donneesEntrepriseRepository.findLastByIdEntrepriseAndDate(id, date);
+        return Optional.ofNullable(entreprise)
+            .map(result -> EntrepriseIHM.create(entreprise,donneesEntreprise))
+            .orElse(null);
     }
 }

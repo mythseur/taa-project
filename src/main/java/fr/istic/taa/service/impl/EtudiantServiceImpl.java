@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -143,5 +144,15 @@ public class EtudiantServiceImpl implements EtudiantService {
         Etudiant etu = etudiantRepository.getByIne(ine);
         DonneesEtudiant donnee = donneesEtudiantRepository.findLastByIdEtudiant(etu.getId());
         return EtudiantIHM.create(etu,donnee);
+    }
+
+    @Override
+    public EtudiantIHM findOneByDate(Long id, ZonedDateTime date) {
+        log.debug("Request to get Etudiant : {}", id);
+        Etudiant etudiant = etudiantRepository.findOne(id);
+        DonneesEtudiant donneesEtudiant = donneesEtudiantRepository.findLastByIdEtudiantAndDate(id, date);
+        return Optional.ofNullable(etudiant)
+            .map(result -> EtudiantIHM.create(etudiant,donneesEtudiant))
+            .orElse(null);
     }
 }

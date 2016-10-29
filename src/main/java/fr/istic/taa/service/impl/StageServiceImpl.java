@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -12,8 +14,12 @@ import java.util.stream.StreamSupport;
 import javax.inject.Inject;
 
 import fr.istic.taa.domain.Stage;
+import fr.istic.taa.dto.EntrepriseIHM;
+import fr.istic.taa.dto.EtudiantIHM;
 import fr.istic.taa.repository.StageRepository;
 import fr.istic.taa.repository.search.StageSearchRepository;
+import fr.istic.taa.service.EntrepriseService;
+import fr.istic.taa.service.EtudiantService;
 import fr.istic.taa.service.StageService;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
@@ -32,6 +38,12 @@ public class StageServiceImpl implements StageService {
 
     @Inject
     private StageSearchRepository stageSearchRepository;
+
+    @Inject
+    private EtudiantService etudiantService;
+
+    @Inject
+    private EntrepriseService entrepriseService;
 
     /**
      * Save a stage.
@@ -69,6 +81,15 @@ public class StageServiceImpl implements StageService {
     public Stage findOne(Long id) {
         log.debug("Request to get Stage : {}", id);
         Stage stage = stageRepository.findOne(id);
+
+        ZonedDateTime date = stage.getDatedebut().atStartOfDay(ZoneId.systemDefault());
+
+        EtudiantIHM etudiant = etudiantService.findOneByDate(stage.getEtudiant().getId(), date);
+        EntrepriseIHM entreprise = entrepriseService.findOneByDate(stage.getEntreprise().getId(), date);
+
+        if(etudiant != null) stage.setEtudiant(etudiant);
+        if(entreprise != null) stage.setEntreprise(entreprise);
+
         return stage;
     }
 
