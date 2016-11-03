@@ -204,7 +204,7 @@ public class StageResourceIntTest {
     @Transactional
     public void updateStage() throws Exception {
         // Initialize the database
-        stageService.save(stage);
+//        stageService.save(stage);
 
         int databaseSizeBeforeUpdate = stageRepository.findAll().size();
 
@@ -246,7 +246,7 @@ public class StageResourceIntTest {
     @Transactional
     public void deleteStage() throws Exception {
         // Initialize the database
-        stageService.save(stage);
+//        stageService.save(stage);
 
         int databaseSizeBeforeDelete = stageRepository.findAll().size();
 
@@ -268,7 +268,7 @@ public class StageResourceIntTest {
     @Transactional
     public void searchStage() throws Exception {
         // Initialize the database
-        stageService.save(stage);
+//        stageService.save(stage);
 
         // Search the stage
         restStageMockMvc.perform(get("/api/_search/stages?query=id:" + stage.getId()))

@@ -1,16 +1,16 @@
 package fr.istic.taa.dto;
 
-import java.time.LocalDate;
-import java.util.Objects;
-
 import fr.istic.taa.domain.Contact;
 import fr.istic.taa.domain.Enseignant;
 import fr.istic.taa.domain.Stage;
 
+import java.time.LocalDate;
+import java.util.Objects;
+
 /**
  * Created by guillaume on 29/10/16.
  */
-public class StageIHM extends Stage {
+public class StageIHM {
 
     private Long id;
 
@@ -40,97 +40,78 @@ public class StageIHM extends Stage {
 
     private Contact responsable;
 
-    @Override
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
 
-    @Override
     public LocalDate getDatedebut() {
         return datedebut;
     }
 
-    @Override
     public void setDatedebut(LocalDate datedebut) {
         this.datedebut = datedebut;
     }
 
-    @Override
     public LocalDate getDatefin() {
         return datefin;
     }
 
-    @Override
     public void setDatefin(LocalDate datefin) {
         this.datefin = datefin;
     }
 
-    @Override
     public String getSujet() {
         return sujet;
     }
 
-    @Override
     public void setSujet(String sujet) {
         this.sujet = sujet;
     }
 
-    @Override
     public String getService() {
         return service;
     }
 
-    @Override
     public void setService(String service) {
         this.service = service;
     }
 
-    @Override
     public String getDetails() {
         return details;
     }
 
-    @Override
     public void setDetails(String details) {
         this.details = details;
     }
 
-    @Override
     public Integer getJours() {
         return jours;
     }
 
-    @Override
     public void setJours(Integer jours) {
         this.jours = jours;
     }
 
-    @Override
     public Integer getHeures() {
         return heures;
     }
 
-    @Override
     public void setHeures(Integer heures) {
         this.heures = heures;
     }
 
-    @Override
     public Integer getVersement() {
         return versement;
     }
 
-    @Override
     public void setVersement(Integer versement) {
         this.versement = versement;
     }
 
-    @Override
     public EtudiantIHM getEtudiant() {
         return etudiant;
     }
@@ -139,17 +120,14 @@ public class StageIHM extends Stage {
         this.etudiant = etudiant;
     }
 
-    @Override
     public Enseignant getReferent() {
         return referent;
     }
 
-    @Override
     public void setReferent(Enseignant referent) {
         this.referent = referent;
     }
 
-    @Override
     public EntrepriseIHM getEntreprise() {
         return entreprise;
     }
@@ -158,22 +136,18 @@ public class StageIHM extends Stage {
         this.entreprise = entreprise;
     }
 
-    @Override
     public Contact getEncadrant() {
         return encadrant;
     }
 
-    @Override
     public void setEncadrant(Contact encadrant) {
         this.encadrant = encadrant;
     }
 
-    @Override
     public Contact getResponsable() {
         return responsable;
     }
 
-    @Override
     public void setResponsable(Contact responsable) {
         this.responsable = responsable;
     }

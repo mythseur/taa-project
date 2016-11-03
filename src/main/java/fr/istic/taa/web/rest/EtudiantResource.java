@@ -1,29 +1,25 @@
 package fr.istic.taa.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-
+import fr.istic.taa.domain.DonneesEtudiant;
+import fr.istic.taa.domain.Etudiant;
+import fr.istic.taa.dto.EtudiantIHM;
+import fr.istic.taa.service.DonneesEtudiantService;
+import fr.istic.taa.service.EtudiantService;
+import fr.istic.taa.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
-import javax.inject.Inject;
-
-import fr.istic.taa.dto.EtudiantIHM;
-import fr.istic.taa.service.EtudiantService;
-import fr.istic.taa.web.rest.util.HeaderUtil;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Etudiant.
@@ -36,6 +32,9 @@ public class EtudiantResource {
 
     @Inject
     private EtudiantService etudiantService;
+
+    @Inject
+    private DonneesEtudiantService donneesEtudiantService;
 
     /**
      * POST  /etudiants : Create a new etudiant.
@@ -53,7 +52,11 @@ public class EtudiantResource {
         if (etudiant.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("etudiant", "idexists", "A new etudiant cannot already have an ID")).body(null);
         }
-        EtudiantIHM result = etudiantService.save(etudiant);
+        Etudiant etu = etudiantService.save(etudiant.createEtudiant());
+        DonneesEtudiant don = donneesEtudiantService.save(etudiant.createDonnees());
+
+        EtudiantIHM result = EtudiantIHM.create(etu, don);
+
         return ResponseEntity.created(new URI("/api/etudiants/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("etudiant", result.getId().toString()))
             .body(result);
@@ -77,7 +80,9 @@ public class EtudiantResource {
         if (etudiant.getId() == null) {
             return createEtudiant(etudiant);
         }
-        EtudiantIHM result = etudiantService.save(etudiant);
+        Etudiant etu = etudiantService.save(etudiant.createEtudiant());
+        DonneesEtudiant donnees = donneesEtudiantService.save(etudiant.createDonnees());
+        EtudiantIHM result = EtudiantIHM.create(etu, donnees);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("etudiant", etudiant.getId().toString()))
             .body(result);
@@ -94,7 +99,11 @@ public class EtudiantResource {
     @Timed
     public List<EtudiantIHM> getAllEtudiants() {
         log.debug("REST request to get all Etudiants");
-        return etudiantService.findAll();
+        List<Etudiant> etudiants = etudiantService.findAll();
+
+        return etudiants.stream()
+            .map(etudiant -> EtudiantIHM.create(etudiant, donneesEtudiantService.findLastByIdEtudiant(etudiant.getId())))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -109,8 +118,9 @@ public class EtudiantResource {
     @Timed
     public ResponseEntity<EtudiantIHM> getEtudiant(@PathVariable Long id) {
         log.debug("REST request to get Etudiant : {}", id);
-        EtudiantIHM etudiant = etudiantService.findOne(id);
-        return Optional.ofNullable(etudiant)
+        Etudiant etu = etudiantService.findOne(id);
+        DonneesEtudiant donnees = donneesEtudiantService.findLastByIdEtudiant(etu.getId());
+        return Optional.ofNullable(EtudiantIHM.create(etu, donnees))
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))
@@ -146,7 +156,9 @@ public class EtudiantResource {
     @Timed
     public List<EtudiantIHM> searchEtudiants(@RequestParam String query) {
         log.debug("REST request to search Etudiants for query {}", query);
-        return etudiantService.search(query);
+        return etudiantService.search(query).stream()
+            .map(etudiant -> EtudiantIHM.create(etudiant, donneesEtudiantService.findLastByIdEtudiant(etudiant.getId())))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -161,7 +173,9 @@ public class EtudiantResource {
     @Timed
     public EtudiantIHM getEtudiantByIne(@PathVariable String ine) {
         log.debug("REST request to get Etudiant by INE : {}", ine);
-        return etudiantService.getByIne(ine);
+        Etudiant etu = etudiantService.getByIne(ine);
+        DonneesEtudiant donnees = donneesEtudiantService.findLastByIdEtudiant(etu.getId());
+        return EtudiantIHM.create(etu, donnees);
     }
 
 
