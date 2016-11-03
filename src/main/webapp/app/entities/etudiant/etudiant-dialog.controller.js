@@ -5,9 +5,9 @@
         .module('taaProjectApp')
         .controller('EtudiantDialogController', EtudiantDialogController);
 
-    EtudiantDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Etudiant', 'Stage', 'Alternance', 'Enquete', 'EtudiantDiplome', 'DonneesEtudiant', 'EtudiantDernieresDonnees', 'User'];
+    EtudiantDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Etudiant', 'Stage', 'Alternance', 'Enquete', 'EtudiantDiplome', 'DonneesEtudiant', 'User'];
 
-    function EtudiantDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, Etudiant, Stage, Alternance, Enquete, EtudiantDiplome, DonneesEtudiant, EtudiantDernieresDonnees, User) {
+    function EtudiantDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, Etudiant, Stage, Alternance, Enquete, EtudiantDiplome, DonneesEtudiant, User) {
         var vm = this;
 
         vm.etudiant = entity;
@@ -17,14 +17,6 @@
         vm.alternances = Alternance.query();
         vm.enquetes = Enquete.query();
         vm.etudiantdiplomes = EtudiantDiplome.query();
-
-        if(vm.etudiant.id != null) {
-            EtudiantDernieresDonnees.get(
-                {id: vm.etudiant.id},
-                function (data) {
-                    vm.donneesetudiant = data;
-                });
-        }
 
         $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
@@ -38,28 +30,10 @@
             vm.isSaving = true;
 
             if (vm.etudiant.id !== null) {
-                Etudiant.update(vm.etudiant, saveDonnees, onSaveError);
+                Etudiant.update(vm.etudiant, onSaveSuccess, onSaveError);
             } else {
-                Etudiant.save(vm.etudiant, saveDonnees, onSaveError);
+                Etudiant.save(vm.etudiant, onSaveSuccess, onSaveError);
             }
-        }
-
-        function saveDonnees(result){
-            vm.donneesetudiant.datemodif = null;
-            vm.donneesetudiant.id = null;
-            vm.donneesetudiant.etudiant = result;
-            DonneesEtudiant.save(vm.donneesetudiant, createUser, onSaveError);
-        }
-
-        function createUser(result) {
-            vm.user = entity;
-            vm.user.login = result.etudiant.iNe;
-            vm.user.lastName = result.etudiant.Nom;
-            vm.user.firstName = result.etudiant.Prenom;
-            vm.user.authorities = ['ROLE_ETUDIANT'];
-            vm.user.activated = true;
-            vm.user.email = result.mail;
-            User.save(vm.user, onSaveSuccess, onSaveError);
         }
 
         function onSaveSuccess(result) {
