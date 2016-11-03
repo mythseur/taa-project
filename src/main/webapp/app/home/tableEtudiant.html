@@ -2,7 +2,6 @@
 <table class="jh-table table table-striped">
 <thead>
 <tr>
-<th><span>ID</span></th>
 <th><span>Numero Etudiant</span></th>
 <th><span>Nom</span></th>
 <th><span>Prenom</span></th>
@@ -12,7 +11,6 @@
 </thead>
 <tbody>
 <tr ng-repeat="etudiant in vm.Result track by etudiant.id">
-<td><a ui-sref="etudiant-detail({id:etudiant.id})">{{etudiant.id}}</a></td>
 <td>{{etudiant.iNe}}</td>
 <td>{{etudiant.nom}}</td>
 <td>{{etudiant.prenom}}</td>

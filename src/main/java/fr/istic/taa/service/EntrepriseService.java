@@ -1,9 +1,10 @@
 package fr.istic.taa.service;
 
+import fr.istic.taa.domain.Entreprise;
+
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import fr.istic.taa.dto.EntrepriseIHM;
 
 /**
  * Service Interface for managing Entreprise.
@@ -16,14 +17,14 @@ public interface EntrepriseService {
      * @param entreprise the entity to save
      * @return the persisted entity
      */
-    EntrepriseIHM save(EntrepriseIHM entreprise);
+    Entreprise save(Entreprise entreprise);
 
     /**
      * Get all the entreprises.
      *
      * @return the list of entities
      */
-    List<EntrepriseIHM> findAll();
+    List<Entreprise> findAll();
 
     /**
      * Get the "id" entreprise.
@@ -31,7 +32,7 @@ public interface EntrepriseService {
      * @param id the id of the entity
      * @return the entity
      */
-    EntrepriseIHM findOne(Long id);
+    Entreprise findOne(Long id);
 
     /**
      * Delete the "id" entreprise.
@@ -46,7 +47,7 @@ public interface EntrepriseService {
      * @param query the query of the search
      * @return the list of entities
      */
-    List<EntrepriseIHM> search(String query);
+    List<Entreprise> search(String query);
 
     /**
      * Get the "id" entreprise with its data from the given "date"
@@ -55,5 +56,5 @@ public interface EntrepriseService {
      * @param date the date of the data
      * @return the entity
      */
-    EntrepriseIHM findOneByDate(Long id, ZonedDateTime date);
+    Entreprise findOneByDate(Long id, ZonedDateTime date);
 }

@@ -32,6 +32,8 @@ public class EtudiantIHM {
 
     private String mail;
 
+    private ZonedDateTime dateModif;
+
     public Long getId() {
         return id;
     }
@@ -143,7 +145,7 @@ public class EtudiantIHM {
 
     @Override
     public String toString() {
-        return "Etudiant{" +
+        return "EtudiantIHM{" +
             "id=" + id +
             ", iNe='" + iNe + "'" +
             ", nom='" + nom + "'" +
@@ -159,23 +161,47 @@ public class EtudiantIHM {
     }
 
     public static EtudiantIHM create(Etudiant etu, DonneesEtudiant don) {
+        if (etu == null || don == null) {
+            return null;
+        }
+
         EtudiantIHM res = new EtudiantIHM();
-        if(etu != null){
             res.setId(etu.getId());
             res.setiNe(etu.getiNe());
             res.setPrenom(etu.getPrenom());
             res.setNom(etu.getNom());
             res.setSexe(etu.getSexe());
-        }
-        if(don != null){
             res.setAdresse(don.getAdresse());
             res.setCodepostal(don.getCodepostal());
             res.setVille(don.getVille());
             res.setMail(don.getMail());
             res.setTelmobile(don.getTelmobile());
             res.setTelperso(don.getTelperso());
-        }
+        res.setDateModif(don.getDatemodif());
+
         return res;
+    }
+
+    public void setEtudiant(Etudiant etu) {
+        if (etu != null) {
+            this.setId(etu.getId());
+            this.setiNe(etu.getiNe());
+            this.setPrenom(etu.getPrenom());
+            this.setNom(etu.getNom());
+            this.setSexe(etu.getSexe());
+        }
+    }
+
+    public void setDonnees(DonneesEtudiant don) {
+        if (don != null) {
+            this.setAdresse(don.getAdresse());
+            this.setCodepostal(don.getCodepostal());
+            this.setVille(don.getVille());
+            this.setMail(don.getMail());
+            this.setTelmobile(don.getTelmobile());
+            this.setTelperso(don.getTelperso());
+            this.setDateModif(don.getDatemodif());
+        }
     }
 
     public Etudiant createEtudiant(){
@@ -190,13 +216,22 @@ public class EtudiantIHM {
 
     public DonneesEtudiant createDonnees(){
         DonneesEtudiant don = new DonneesEtudiant();
-        don.setDatemodif(ZonedDateTime.now());
+        don.setDatemodif(getDateModif());
         don.setAdresse(getAdresse());
         don.setCodepostal(getCodepostal());
         don.setVille(getVille());
         don.setTelperso(getTelperso());
         don.setTelmobile(getTelmobile());
         don.setMail(getMail());
+        don.setEtudiant(createEtudiant());
         return don;
+    }
+
+    public ZonedDateTime getDateModif() {
+        return dateModif;
+    }
+
+    public void setDateModif(ZonedDateTime dateModif) {
+        this.dateModif = dateModif;
     }
 }

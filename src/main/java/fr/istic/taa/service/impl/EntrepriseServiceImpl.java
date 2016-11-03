@@ -1,19 +1,5 @@
 package fr.istic.taa.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import javax.inject.Inject;
-
 import fr.istic.taa.domain.DonneesEntreprise;
 import fr.istic.taa.domain.Entreprise;
 import fr.istic.taa.dto.EntrepriseIHM;
@@ -22,8 +8,16 @@ import fr.istic.taa.repository.EntrepriseRepository;
 import fr.istic.taa.repository.search.DonneesEntrepriseSearchRepository;
 import fr.istic.taa.repository.search.EntrepriseSearchRepository;
 import fr.istic.taa.service.EntrepriseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import javax.inject.Inject;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Entreprise.
@@ -52,22 +46,25 @@ public class EntrepriseServiceImpl implements EntrepriseService {
      * @param entreprise the entity to save
      * @return the persisted entity
      */
-    public EntrepriseIHM save(EntrepriseIHM entreprise) {
+    public Entreprise save(Entreprise entreprise) {
+        //TODO Virer l'héritage pour mettre le bordel dans le code
         log.debug("Request to save Entreprise : {}", entreprise);
 
-        Entreprise ent = entreprise.createEntreprise();
-        DonneesEntreprise don = entreprise.createDonnees();
+//        Entreprise ent = entreprise.createEntreprise();
+//        DonneesEntreprise don = entreprise.createDonnees();
 
-        Entreprise entRes = entrepriseRepository.save(ent);
-        entrepriseSearchRepository.save(entRes);
-
-        don.setEntreprise(entRes);
-
-        DonneesEntreprise donRes = donneesEntrepriseRepository.save(don);
-        donneesEntrepriseSearchRepository.save(donRes);
-
-        return EntrepriseIHM.create(entRes,donRes);
+//        Entreprise entRes = entrepriseRepository.save(ent);
+//        entrepriseSearchRepository.save(entRes);
+//
+//        don.setEntreprise(entRes);
+//
+//        DonneesEntreprise donRes = donneesEntrepriseRepository.save(don);
+//        donneesEntrepriseSearchRepository.save(donRes);
+//
+//        return EntrepriseIHM.create(entRes,donRes);
+        return null;
     }
+
 
     /**
      * Get all the entreprises.
@@ -75,15 +72,15 @@ public class EntrepriseServiceImpl implements EntrepriseService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<EntrepriseIHM> findAll() {
+    public List<Entreprise> findAll() {
         log.debug("Request to get all Entreprises");
         List<Entreprise> entreprises = entrepriseRepository.findAll();
 
-        List<EntrepriseIHM> result = new ArrayList<>();
+        List<Entreprise> result = new ArrayList<>();
 
         for (Entreprise ent : entreprises) {
             DonneesEntreprise don = donneesEntrepriseRepository.findLastByIdEntreprise(ent.getId());
-            EntrepriseIHM entI = EntrepriseIHM.create(ent,don);
+            Entreprise entI = EntrepriseIHM.create(ent, don);
             result.add(entI);
         }
 
@@ -124,19 +121,19 @@ public class EntrepriseServiceImpl implements EntrepriseService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<EntrepriseIHM> search(String query) {
-        log.debug("Request to search Entreprises for query {}", query);
-        List<Entreprise> entreprises = StreamSupport
-            .stream(entrepriseSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
-        List<EntrepriseIHM> res = new ArrayList<>();
-        for (Entreprise ent : entreprises) {
-            DonneesEntreprise don = donneesEntrepriseRepository.findLastByIdEntreprise(ent.getId());
-            EntrepriseIHM entI = EntrepriseIHM.create(ent,don);
-            res.add(entI);
-        }
-        return res;
-
+    public List<Entreprise> search(String query) {
+//        log.debug("Request to search Entreprises for query {}", query);
+//        List<Entreprise> entreprises = StreamSupport
+//            .stream(entrepriseSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+//            .collect(Collectors.toList());
+//        List<EntrepriseIHM> res = new ArrayList<>();
+//        for (Entreprise ent : entreprises) {
+//            DonneesEntreprise don = donneesEntrepriseRepository.findLastByIdEntreprise(ent.getId());
+//            EntrepriseIHM entI = EntrepriseIHM.create(ent,don);
+//            res.add(entI);
+//        }
+//        return res;
+        return null;
     }
 
     @Override

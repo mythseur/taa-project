@@ -53,13 +53,13 @@ public class EtudiantResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("etudiant", "idexists", "A new etudiant cannot already have an ID")).body(null);
         }
         Etudiant etu = etudiantService.save(etudiant.createEtudiant());
+        etudiant.setEtudiant(etu);
         DonneesEtudiant don = donneesEtudiantService.save(etudiant.createDonnees());
+        etudiant.setDonnees(don);
 
-        EtudiantIHM result = EtudiantIHM.create(etu, don);
-
-        return ResponseEntity.created(new URI("/api/etudiants/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("etudiant", result.getId().toString()))
-            .body(result);
+        return ResponseEntity.created(new URI("/api/etudiants/" + etudiant.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert("etudiant", etudiant.getId().toString()))
+            .body(etudiant);
     }
 
     /**
@@ -119,7 +119,10 @@ public class EtudiantResource {
     public ResponseEntity<EtudiantIHM> getEtudiant(@PathVariable Long id) {
         log.debug("REST request to get Etudiant : {}", id);
         Etudiant etu = etudiantService.findOne(id);
-        DonneesEtudiant donnees = donneesEtudiantService.findLastByIdEtudiant(etu.getId());
+        DonneesEtudiant donnees = null;
+        if (etu != null) {
+            donnees = donneesEtudiantService.findLastByIdEtudiant(etu.getId());
+        }
         return Optional.ofNullable(EtudiantIHM.create(etu, donnees))
             .map(result -> new ResponseEntity<>(
                 result,

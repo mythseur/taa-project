@@ -1,21 +1,19 @@
 package fr.istic.taa.service.impl;
 
+import fr.istic.taa.domain.DonneesEtudiant;
+import fr.istic.taa.repository.DonneesEtudiantRepository;
+import fr.istic.taa.repository.search.DonneesEtudiantSearchRepository;
+import fr.istic.taa.service.DonneesEtudiantService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import javax.inject.Inject;
-
-import fr.istic.taa.domain.DonneesEtudiant;
-import fr.istic.taa.repository.DonneesEtudiantRepository;
-import fr.istic.taa.repository.search.DonneesEtudiantSearchRepository;
-import fr.istic.taa.service.DonneesEtudiantService;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
@@ -42,6 +40,9 @@ public class DonneesEtudiantServiceImpl implements DonneesEtudiantService {
      */
     public DonneesEtudiant save(DonneesEtudiant donneesEtudiant) {
         log.debug("Request to save DonneesEtudiant : {}", donneesEtudiant);
+        if (donneesEtudiant.getDatemodif() == null) {
+            donneesEtudiant.setDatemodif(ZonedDateTime.now());
+        }
         DonneesEtudiant result = donneesEtudiantRepository.save(donneesEtudiant);
         donneesEtudiantSearchRepository.save(result);
         return result;

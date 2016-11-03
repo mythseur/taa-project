@@ -2,7 +2,6 @@
     <table class="jh-table table table-striped">
         <thead>
         <tr>
-            <th><span>ID</span></th>
             <th><span>Nom</span></th>
             <th><span>Siret</span></th>
             <th><span>Effectif</span></th>
@@ -11,7 +10,6 @@
         </thead>
         <tbody>
         <tr ng-repeat="entreprise in vm.Result track by entreprise.id">
-            <td><a ui-sref="entreprise-detail({id:entreprise.id})">{{entreprise.id}}</a></td>
             <td>{{entreprise.nom}}</td>
             <td>{{entreprise.siret}}</td>
             <td>{{entreprise.effectif}}</td>

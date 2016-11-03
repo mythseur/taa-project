@@ -113,6 +113,7 @@ public class EtudiantResourceIntTest {
         MockitoAnnotations.initMocks(this);
         EtudiantResource etudiantResource = new EtudiantResource();
         ReflectionTestUtils.setField(etudiantResource, "etudiantService", etudiantService);
+        ReflectionTestUtils.setField(etudiantResource, "donneesEtudiantService", donneesEtudiantService);
         this.restEtudiantMockMvc = MockMvcBuilders.standaloneSetup(etudiantResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -136,6 +137,7 @@ public class EtudiantResourceIntTest {
         etudiant.setTelperso(DEFAULT_TELPERSO);
         etudiant.setTelmobile(DEFAULT_TELMOBILE);
         etudiant.setMail(DEFAULT_MAIL);
+        etudiant.setDateModif(DEFAULT_DATEMODIF);
         return etudiant;
     }
 
@@ -187,8 +189,8 @@ public class EtudiantResourceIntTest {
     @Transactional
     public void getAllEtudiants() throws Exception {
         // Initialize the database
-        etudiantRepository.saveAndFlush(etudiant.createEtudiant());
-        donneesEtudiantRepository.saveAndFlush(etudiant.createDonnees());
+        etudiant.setEtudiant(etudiantRepository.saveAndFlush(etudiant.createEtudiant()));
+        etudiant.setDonnees(donneesEtudiantRepository.saveAndFlush(etudiant.createDonnees()));
 
         // Get all the etudiants
         restEtudiantMockMvc.perform(get("/api/etudiants?sort=id,desc"))
@@ -205,8 +207,8 @@ public class EtudiantResourceIntTest {
     @Transactional
     public void getEtudiant() throws Exception {
         // Initialize the database
-        etudiantRepository.saveAndFlush(etudiant.createEtudiant());
-        donneesEtudiantRepository.saveAndFlush(etudiant.createDonnees());
+        etudiant.setEtudiant(etudiantRepository.saveAndFlush(etudiant.createEtudiant()));
+        etudiant.setDonnees(donneesEtudiantRepository.saveAndFlush(etudiant.createDonnees()));
 
         // Get the etudiant
         restEtudiantMockMvc.perform(get("/api/etudiants/{id}", etudiant.getId()))
@@ -232,8 +234,9 @@ public class EtudiantResourceIntTest {
     public void updateEtudiant() throws Exception {
         // Initialize the database
         Etudiant etud = etudiantService.save(etudiant.createEtudiant());
+        etudiant.setEtudiant(etud);
         DonneesEtudiant donn = donneesEtudiantService.save(etudiant.createDonnees());
-        etudiant = EtudiantIHM.create(etud, donn);
+        etudiant.setDonnees(donn);
 
         int databaseSizeBeforeUpdate = etudiantRepository.findAll().size();
 
@@ -267,7 +270,7 @@ public class EtudiantResourceIntTest {
     @Transactional
     public void deleteEtudiant() throws Exception {
         // Initialize the database
-        etudiantService.save(etudiant.createEtudiant());
+        etudiant.setEtudiant(etudiantService.save(etudiant.createEtudiant()));
 
         int databaseSizeBeforeDelete = etudiantRepository.findAll().size();
 
@@ -289,7 +292,8 @@ public class EtudiantResourceIntTest {
     @Transactional
     public void searchEtudiant() throws Exception {
         // Initialize the database
-        etudiantService.save(etudiant.createEtudiant());
+        etudiant.setEtudiant(etudiantService.save(etudiant.createEtudiant()));
+        etudiant.setDonnees(donneesEtudiantService.save(etudiant.createDonnees()));
 
         // Search the etudiant
         restEtudiantMockMvc.perform(get("/api/_search/etudiants?query=id:" + etudiant.getId()))

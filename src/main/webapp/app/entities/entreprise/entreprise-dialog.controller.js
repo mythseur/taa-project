@@ -36,7 +36,13 @@
             if (vm.entreprise.id !== null) {
                 Entreprise.update(vm.entreprise, saveDonnees, onSaveError);
             } else {
-                Entreprise.save(vm.entreprise, saveDonnees, onSaveError);
+                vm.user = entity;
+                vm.user.login = result.entreprise.id;
+                vm.user.lastName = result.entreprise.Nom;
+                vm.user.authorities = ['ROLE_ENTREPRISE'];
+                vm.user.activated = true;
+                vm.user.email = result.mail;
+                User.save(vm.user, createEntreprise, onSaveError);
             }
         }
 
@@ -44,18 +50,13 @@
             vm.donneesentreprise.datemodif = null;
             vm.donneesentreprise.id = null;
             vm.donneesentreprise.entreprise = result;
-            DonneesEntreprise.save(vm.donneesentreprise, createUser, onSaveError);
+            DonneesEntreprise.save(vm.donneesentreprise, onSaveSuccess, onSaveError);
         }
 
 
-        function createUser(result) {
-            vm.user = entity;
-            vm.user.login = result.entreprise.id;
-            vm.user.lastName = result.entreprise.Nom;
-            vm.user.authorities = ['ROLE_ENTREPRISE'];
-            vm.user.activated = true;
-            vm.user.email = result.mail;
-            User.save(vm.user, onSaveSuccess, onSaveError);
+        function createEntreprise(result) {
+            Entreprise.save(vm.entreprise, saveDonnees, onSaveError);
+
         }
 
         function onSaveSuccess(result) {

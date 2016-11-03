@@ -1,29 +1,25 @@
 package fr.istic.taa.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-
+import fr.istic.taa.domain.DonneesEntreprise;
+import fr.istic.taa.domain.Entreprise;
+import fr.istic.taa.dto.EntrepriseIHM;
+import fr.istic.taa.service.DonneesEntrepriseService;
+import fr.istic.taa.service.EntrepriseService;
+import fr.istic.taa.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
-import javax.inject.Inject;
-
-import fr.istic.taa.dto.EntrepriseIHM;
-import fr.istic.taa.service.EntrepriseService;
-import fr.istic.taa.web.rest.util.HeaderUtil;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Entreprise.
@@ -36,6 +32,9 @@ public class EntrepriseResource {
 
     @Inject
     private EntrepriseService entrepriseService;
+
+    @Inject
+    private DonneesEntrepriseService donneesEntrepriseService;
 
     /**
      * POST  /entreprises : Create a new entreprise.
@@ -53,10 +52,15 @@ public class EntrepriseResource {
         if (entreprise.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("entreprise", "idexists", "A new entreprise cannot already have an ID")).body(null);
         }
-        EntrepriseIHM result = entrepriseService.save(entreprise);
-        return ResponseEntity.created(new URI("/api/entreprises/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("entreprise", result.getId().toString()))
-            .body(result);
+
+        Entreprise entr = entrepriseService.save(entreprise.createEntreprise());
+        entreprise.setEntreprise(entr);
+        DonneesEntreprise donneesEntreprise = donneesEntrepriseService.save(entreprise.createDonnees());
+        entreprise.setDonnees(donneesEntreprise);
+
+        return ResponseEntity.created(new URI("/api/entreprises/" + entreprise.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert("entreprise", entreprise.getId().toString()))
+            .body(entreprise);
     }
 
     /**
@@ -77,7 +81,9 @@ public class EntrepriseResource {
         if (entreprise.getId() == null) {
             return createEntreprise(entreprise);
         }
-        EntrepriseIHM result = entrepriseService.save(entreprise);
+        Entreprise entr = entrepriseService.save(entreprise.createEntreprise());
+        DonneesEntreprise don = donneesEntrepriseService.save(entreprise.createDonnees());
+        EntrepriseIHM result = EntrepriseIHM.create(entr, don);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("entreprise", entreprise.getId().toString()))
             .body(result);
@@ -94,7 +100,11 @@ public class EntrepriseResource {
     @Timed
     public List<EntrepriseIHM> getAllEntreprises() {
         log.debug("REST request to get all Entreprises");
-        return entrepriseService.findAll();
+        List<Entreprise> list = entrepriseService.findAll();
+
+        return list.stream()
+            .map(entreprise -> EntrepriseIHM.create(entreprise, donneesEntrepriseService.findLastByIdEntreprise(entreprise.getId())))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -109,8 +119,12 @@ public class EntrepriseResource {
     @Timed
     public ResponseEntity<EntrepriseIHM> getEntreprise(@PathVariable Long id) {
         log.debug("REST request to get Entreprise : {}", id);
-        EntrepriseIHM entreprise = entrepriseService.findOne(id);
-        return Optional.ofNullable(entreprise)
+        Entreprise entreprise = entrepriseService.findOne(id);
+        DonneesEntreprise donnees = null;
+        if (entreprise != null) {
+            donnees = donneesEntrepriseService.findLastByIdEntreprise(entreprise.getId());
+        }
+        return Optional.ofNullable(EntrepriseIHM.create(entreprise, donnees))
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))
@@ -146,7 +160,9 @@ public class EntrepriseResource {
     @Timed
     public List<EntrepriseIHM> searchEntreprises(@RequestParam String query) {
         log.debug("REST request to search Entreprises for query {}", query);
-        return entrepriseService.search(query);
+        return entrepriseService.search(query).stream()
+            .map(entreprise -> EntrepriseIHM.create(entreprise, donneesEntrepriseService.findLastByIdEntreprise(entreprise.getId())))
+            .collect(Collectors.toList());
     }
 
 

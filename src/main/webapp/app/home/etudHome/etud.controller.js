@@ -5,9 +5,9 @@
         .module('taaProjectApp')
         .controller('EtudHomeController', EtudHomeController);
 
-    EtudHomeController.$inject = ['$scope', '$rootScope', 'Principal', 'entity','LoginService', '$state', 'EtudiantDernieresDonnees', 'StageEtudiant'];
+    EtudHomeController.$inject = ['$scope', '$rootScope', 'Principal', 'entity', 'LoginService', '$state', 'StageEtudiant'];
 
-    function EtudHomeController($scope, $rootScope, Principal, entity, LoginService, $state, EtudiantDernieresDonnees, StageEtudiant) {
+    function EtudHomeController($scope, $rootScope, Principal, entity, LoginService, $state, StageEtudiant) {
         var vm = this;
 
         vm.stages = [];
@@ -38,30 +38,8 @@
 
         var unsubscribe = $rootScope.$on('taaProjectApp:etudiantUpdate', function (event, result) {
             vm.etudiant = result;
-
-            if (vm.etudiant.id != null) {
-                chargerDonnees();
-            }
         });
         $scope.$on('$destroy', unsubscribe);
-
-        if (vm.etudiant.id != null) {
-            chargerDonnees();
-        }
-
-        function chargerDonnees() {
-            EtudiantDernieresDonnees.get(
-                {id: vm.etudiant.id},
-                function (data) {
-                    vm.adresse = (data.adresse);
-                    vm.ville = (data.ville);
-                    vm.codepostal = (data.codepostal);
-                    vm.tel = (data.telperso);
-                    vm.mobile = (data.telmobile);
-                    vm.mail = (data.mail);
-                }
-            );
-        }
 
         function getStages() {
             StageEtudiant.get({id : vm.etudiant.id},

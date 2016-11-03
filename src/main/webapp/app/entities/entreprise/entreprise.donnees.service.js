@@ -1,9 +1,9 @@
 (function () {
     'use strict';
     angular
-        .module('taaProjectApp')
-        .factory('EntrepriseAnciennesDonnees', EntrepriseAnciennesDonnees)
-        .factory('EntrepriseDernieresDonnees', EntrepriseDernieresDonnees);
+        .module('taaProjectApp');
+    // .factory('EntrepriseAnciennesDonnees', EntrepriseAnciennesDonnees)
+    // .factory('EntrepriseDernieresDonnees', EntrepriseDernieresDonnees);
 
     EntrepriseDernieresDonnees.$inject = ['$resource'];
     EntrepriseAnciennesDonnees.$inject = ['$resource'];

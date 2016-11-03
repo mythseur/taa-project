@@ -1,5 +1,6 @@
 package fr.istic.taa.service.impl;
 
+import fr.istic.taa.domain.DonneesEtudiant;
 import fr.istic.taa.domain.Etudiant;
 import fr.istic.taa.repository.DonneesEtudiantRepository;
 import fr.istic.taa.repository.EtudiantRepository;
@@ -89,6 +90,9 @@ public class EtudiantServiceImpl implements EtudiantService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Etudiant : {}", id);
+        for (DonneesEtudiant donnees : donneesEtudiantRepository.findAllByIdEtudiant(id)) {
+            donneesEtudiantRepository.delete(donnees);
+        }
         etudiantRepository.delete(id);
         etudiantSearchRepository.delete(id);
     }
