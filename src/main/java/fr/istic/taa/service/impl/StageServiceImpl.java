@@ -1,28 +1,30 @@
 package fr.istic.taa.service.impl;
 
+import fr.istic.taa.domain.DonneesEtudiant;
+import fr.istic.taa.domain.Etudiant;
+import fr.istic.taa.domain.Stage;
+import fr.istic.taa.dto.EntrepriseIHM;
+import fr.istic.taa.dto.EtudiantIHM;
+import fr.istic.taa.dto.StageIHM;
+import fr.istic.taa.repository.DonneesEtudiantRepository;
+import fr.istic.taa.repository.EtudiantRepository;
+import fr.istic.taa.repository.StageRepository;
+import fr.istic.taa.repository.search.StageSearchRepository;
+import fr.istic.taa.service.EntrepriseService;
+import fr.istic.taa.service.EtudiantService;
+import fr.istic.taa.service.StageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import javax.inject.Inject;
-
-import fr.istic.taa.domain.Stage;
-import fr.istic.taa.dto.EntrepriseIHM;
-import fr.istic.taa.dto.EtudiantIHM;
-import fr.istic.taa.dto.StageIHM;
-import fr.istic.taa.repository.StageRepository;
-import fr.istic.taa.repository.search.StageSearchRepository;
-import fr.istic.taa.service.EntrepriseService;
-import fr.istic.taa.service.EtudiantService;
-import fr.istic.taa.service.StageService;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
@@ -46,6 +48,13 @@ public class StageServiceImpl implements StageService {
 
     @Inject
     private EntrepriseService entrepriseService;
+
+    @Inject
+    private EtudiantRepository etudiantRepository;
+
+    @Inject
+    private DonneesEtudiantRepository donneesEtudiantRepository;
+
 
     /**
      * Save a stage.
@@ -92,7 +101,7 @@ public class StageServiceImpl implements StageService {
     public StageIHM findOne(Long id) {
         log.debug("Request to get Stage : {}", id);
         Stage stage = stageRepository.findOne(id);
-        return createStageIHMfromStage(stage);
+        return stage == null ? null : createStageIHMfromStage(stage);
     }
 
     /**
@@ -203,7 +212,10 @@ public class StageServiceImpl implements StageService {
 
         ZonedDateTime date = stage.getDatedebut().atStartOfDay(ZoneId.systemDefault());
 
-        EtudiantIHM etudiant = etudiantService.findOneByDate(stage.getEtudiant().getId(), date);
+        Etudiant etu = etudiantRepository.findOne(stage.getEtudiant().getId());
+        DonneesEtudiant don = donneesEtudiantRepository.findLastByIdEtudiantAndDate(etu.getId(), date);
+        EtudiantIHM etudiant = EtudiantIHM.create(etu, don);
+
         EntrepriseIHM entreprise = entrepriseService.findOneByDate(stage.getEntreprise().getId(), date);
 
         StageIHM stageIHM = StageIHM.create(stage);

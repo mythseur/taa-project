@@ -1,12 +1,13 @@
 package fr.istic.taa.dto;
 
-import java.util.Objects;
-
 import fr.istic.taa.domain.DonneesEtudiant;
 import fr.istic.taa.domain.Etudiant;
 import fr.istic.taa.domain.enumeration.Sexe;
 
-public class EtudiantIHM extends Etudiant{
+import java.time.ZonedDateTime;
+import java.util.Objects;
+
+public class EtudiantIHM {
     private static final long serialVersionUID = 1L;
 
     private Long id;
@@ -189,6 +190,7 @@ public class EtudiantIHM extends Etudiant{
 
     public DonneesEtudiant createDonnees(){
         DonneesEtudiant don = new DonneesEtudiant();
+        don.setDatemodif(ZonedDateTime.now());
         don.setAdresse(getAdresse());
         don.setCodepostal(getCodepostal());
         don.setVille(getVille());

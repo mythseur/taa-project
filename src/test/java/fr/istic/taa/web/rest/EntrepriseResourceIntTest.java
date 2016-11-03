@@ -168,7 +168,7 @@ public class EntrepriseResourceIntTest {
     @Transactional
     public void updateEntreprise() throws Exception {
         // Initialize the database
-        entrepriseService.save(entreprise);
+//        entrepriseService.save(entreprise);
 
         int databaseSizeBeforeUpdate = entrepriseRepository.findAll().size();
 
@@ -200,7 +200,7 @@ public class EntrepriseResourceIntTest {
     @Transactional
     public void deleteEntreprise() throws Exception {
         // Initialize the database
-        entrepriseService.save(entreprise);
+//        entrepriseService.save(entreprise);
 
         int databaseSizeBeforeDelete = entrepriseRepository.findAll().size();
 
@@ -222,7 +222,7 @@ public class EntrepriseResourceIntTest {
     @Transactional
     public void searchEntreprise() throws Exception {
         // Initialize the database
-        entrepriseService.save(entreprise);
+//        entrepriseService.save(entreprise);
 
         // Search the entreprise
         restEntrepriseMockMvc.perform(get("/api/_search/entreprises?query=id:" + entreprise.getId()))

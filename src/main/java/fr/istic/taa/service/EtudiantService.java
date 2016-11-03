@@ -1,9 +1,9 @@
 package fr.istic.taa.service;
 
+import fr.istic.taa.domain.Etudiant;
+
 import java.time.ZonedDateTime;
 import java.util.List;
-
-import fr.istic.taa.dto.EtudiantIHM;
 
 /**
  * Service Interface for managing Etudiant.
@@ -16,14 +16,14 @@ public interface EtudiantService {
      * @param etudiant the entity to save
      * @return the persisted entity
      */
-    EtudiantIHM save(EtudiantIHM etudiant);
+    Etudiant save(Etudiant etudiant);
 
     /**
      * Get all the etudiants.
      *
      * @return the list of entities
      */
-    List<EtudiantIHM> findAll();
+    List<Etudiant> findAll();
 
     /**
      * Get the "id" etudiant.
@@ -31,7 +31,7 @@ public interface EtudiantService {
      * @param id the id of the entity
      * @return the entity
      */
-    EtudiantIHM findOne(Long id);
+    Etudiant findOne(Long id);
 
     /**
      * Delete the "id" etudiant.
@@ -46,7 +46,7 @@ public interface EtudiantService {
      * @param query the query of the search
      * @return the list of entities
      */
-    List<EtudiantIHM> search(String query);
+    List<Etudiant> search(String query);
 
     /**
      * Get the etudiant with ine "ine".
@@ -54,7 +54,7 @@ public interface EtudiantService {
      * @param ine the ine of the entity
      * @return the entity
      */
-    EtudiantIHM getByIne(String ine);
+    Etudiant getByIne(String ine);
 
     /**
      * Get the "id" etudiant with its data from the given "date"
@@ -63,5 +63,5 @@ public interface EtudiantService {
      * @param date the date of the data
      * @return the entity
      */
-    EtudiantIHM findOneByDate(Long id, ZonedDateTime date);
+    Etudiant findOneByDate(Long id, ZonedDateTime date);
 }
