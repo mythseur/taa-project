@@ -5,11 +5,10 @@
         .module('taaProjectApp')
         .controller('StageCreateController', StageController);
 
-    StageController.$inject = ['$scope', '$state', 'Stage', 'StageSearch', 'EtudiantSearch', 'EntrepriseSearch', 'EnseignantSearch', 'ContactSearch'];
+    StageController.$inject = ['$scope', '$state', 'Stage', 'EtudiantSearch', 'EntrepriseSearch', 'EnseignantSearch', 'ContactSearch'];
 
-    function StageController($scope, $state, Stage, StageSearch, EtudiantSearch, EntrepriseSearch, EnseignantSearch, ContactSearch) {
+    function StageController($scope, $state, Stage, EtudiantSearch, EntrepriseSearch, EnseignantSearch, ContactSearch) {
         var vm = this;
-
 
         vm.selectedEtudiant = null;
         vm.queryEtudiant = null;
@@ -129,8 +128,8 @@
 
         function onSaveSuccess(result) {
             $scope.$emit('taaProjectApp:stageUpdate', result);
-            $uibModalInstance.close(result);
             vm.isSaving = false;
+            $state.go('stageShow', {id: result.id});
         }
 
         function onSaveError() {

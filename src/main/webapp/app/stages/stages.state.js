@@ -18,7 +18,7 @@
                 url: '/stage_create',
                 data: {
                     authorities: ['ROLE_USER'],
-                    pageTitle: 'Page de création d\'un stages'
+                    pageTitle: 'Page de création d\'un stage'
                 },
                 views: {
                     'content@': {
@@ -49,7 +49,8 @@
                 parent: 'stageCreate',
                 url: '/newEtudiant',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER'],
+                    pageTitle: 'Création d\'un étudiant'
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -80,7 +81,8 @@
                 parent: 'stageCreate',
                 url: '/newEntreprise',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER'],
+                    pageTitle: 'Création d\'une entreprise'
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -110,7 +112,8 @@
                 parent: 'stageCreate',
                 url: '/newEnseignant',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER'],
+                    pageTitle: 'Création d\'un enseignant'
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -144,7 +147,8 @@
                 parent: 'stageCreate',
                 url: '/newContact',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER'],
+                    pageTitle: 'Création d\'un contact'
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({

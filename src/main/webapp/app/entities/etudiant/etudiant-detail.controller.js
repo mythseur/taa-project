@@ -5,9 +5,9 @@
         .module('taaProjectApp')
         .controller('EtudiantDetailController', EtudiantDetailController);
 
-    EtudiantDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Etudiant', 'Stage', 'Alternance', 'Enquete', 'EtudiantDiplome', 'DonneesEtudiant'];
+    EtudiantDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity'];
 
-    function EtudiantDetailController($scope, $rootScope, $stateParams, previousState, entity, Etudiant, Stage, Alternance, Enquete, EtudiantDiplome, DonneesEtudiant) {
+    function EtudiantDetailController($scope, $rootScope, $stateParams, previousState, entity) {
         var vm = this;
 
         vm.etudiant = entity;

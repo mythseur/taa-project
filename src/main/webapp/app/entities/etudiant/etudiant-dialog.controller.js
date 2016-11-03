@@ -5,9 +5,9 @@
         .module('taaProjectApp')
         .controller('EtudiantDialogController', EtudiantDialogController);
 
-    EtudiantDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Etudiant', 'Stage', 'Alternance', 'Enquete', 'EtudiantDiplome', 'DonneesEtudiant', 'User'];
+    EtudiantDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Etudiant', 'Stage', 'Alternance', 'Enquete', 'EtudiantDiplome'];
 
-    function EtudiantDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, Etudiant, Stage, Alternance, Enquete, EtudiantDiplome, DonneesEtudiant, User) {
+    function EtudiantDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, Etudiant, Stage, Alternance, Enquete, EtudiantDiplome) {
         var vm = this;
 
         vm.etudiant = entity;
