@@ -8,6 +8,6 @@ test:
     - mvn integration-test
     - mvn -Pprod &
     - bootPid=$!
-    - sleep 300s
+    - sleep 60s
     - gulp itest
     - kill bootPid
