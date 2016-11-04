@@ -6,5 +6,8 @@ test:
   override:
     - npm test
     - mvn integration-test
-    - mvn -Pprod
+    - mvn -Pprod &
+    - bootPid=$!
+    - sleep 300s
     - gulp itest
+    - kill bootPid
