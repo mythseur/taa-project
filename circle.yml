@@ -1,13 +1,4 @@
-database:
-  override:
-    - mysql -u ubuntu circle_test < my-database-setup.sql
-
 test:
   override:
     - npm test
     - mvn integration-test
-    - mvn -Pprod &
-    - bootPid=$!
-    - sleep 60s
-    - gulp itest
-    - kill bootPid

@@ -1,2 +1,0 @@
-CREATE USER root;
-CREATE DATABASE TAAProject;
