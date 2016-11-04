@@ -1,8 +1,9 @@
 package fr.istic.taa.service;
 
+import fr.istic.taa.domain.Stage;
+
 import java.util.List;
 
-import fr.istic.taa.dto.StageIHM;
 
 /**
  * Service Interface for managing Stage.
@@ -15,14 +16,14 @@ public interface StageService {
      * @param stage the entity to save
      * @return the persisted entity
      */
-    StageIHM save(StageIHM stage);
+    Stage save(Stage stage);
 
     /**
      * Get all the stages.
      *
      * @return the list of entities
      */
-    List<StageIHM> findAll();
+    List<Stage> findAll();
 
     /**
      * Get the "id" stage.
@@ -30,7 +31,7 @@ public interface StageService {
      * @param id the id of the entity
      * @return the entity
      */
-    StageIHM findOne(Long id);
+    Stage findOne(Long id);
 
     /**
      * Delete the "id" stage.
@@ -45,7 +46,7 @@ public interface StageService {
      * @param query the query of the search
      * @return the list of entities
      */
-    List<StageIHM> search(String query);
+    List<Stage> search(String query);
 
     /**
      * Get the stages for etudiant "id"
@@ -53,7 +54,7 @@ public interface StageService {
      * @param id the id of the etudiant
      * @return the list of entities
      */
-    List<StageIHM> findAllByEtudiant(Long id);
+    List<Stage> findAllByEtudiant(Long id);
 
     /**
      * Get the stages for entreprise "id"
@@ -61,7 +62,7 @@ public interface StageService {
      * @param id the id of the entreprise
      * @return the list of entities
      */
-    List<StageIHM> findAllByEntreprise(Long id);
+    List<Stage> findAllByEntreprise(Long id);
 
     /**
      * Get the stages for enseignant "id"
@@ -69,7 +70,7 @@ public interface StageService {
      * @param id the id of the enseignant
      * @return the list of entities
      */
-    List<StageIHM> findAllByEnseignant(Long id);
+    List<Stage> findAllByEnseignant(Long id);
 
     /**
      * Get the stages for contact "id"
@@ -77,5 +78,5 @@ public interface StageService {
      * @param id the id of the contact
      * @return the list of entities
      */
-    List<StageIHM> findAllByContact(Long id);
+    List<Stage> findAllByContact(Long id);
 }

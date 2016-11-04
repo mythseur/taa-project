@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -115,14 +114,5 @@ public class EtudiantServiceImpl implements EtudiantService {
     public Etudiant getByIne(String ine) {
         log.debug("Request to get Etudiant by ine : {}", ine);
         return etudiantRepository.getByIne(ine);
-    }
-
-    @Override
-    public Etudiant findOneByDate(Long id, ZonedDateTime date) {
-        log.debug("Request to get Etudiant : {}", id);
-        Etudiant etudiant = etudiantRepository.findOne(id);
-        return Optional.ofNullable(etudiant)
-            .map(result -> etudiant)
-            .orElse(null);
     }
 }

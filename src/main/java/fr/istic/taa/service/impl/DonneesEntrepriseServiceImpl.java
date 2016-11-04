@@ -1,21 +1,19 @@
 package fr.istic.taa.service.impl;
 
+import fr.istic.taa.domain.DonneesEntreprise;
+import fr.istic.taa.repository.DonneesEntrepriseRepository;
+import fr.istic.taa.repository.search.DonneesEntrepriseSearchRepository;
+import fr.istic.taa.service.DonneesEntrepriseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import javax.inject.Inject;
-
-import fr.istic.taa.domain.DonneesEntreprise;
-import fr.istic.taa.repository.DonneesEntrepriseRepository;
-import fr.istic.taa.repository.search.DonneesEntrepriseSearchRepository;
-import fr.istic.taa.service.DonneesEntrepriseService;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
@@ -42,6 +40,9 @@ public class DonneesEntrepriseServiceImpl implements DonneesEntrepriseService {
      */
     public DonneesEntreprise save(DonneesEntreprise donneesEntreprise) {
         log.debug("Request to save DonneesEntreprise : {}", donneesEntreprise);
+        if (donneesEntreprise.getDatemodif() == null) {
+            donneesEntreprise.setDatemodif(ZonedDateTime.now());
+        }
         DonneesEntreprise result = donneesEntrepriseRepository.save(donneesEntreprise);
         donneesEntrepriseSearchRepository.save(result);
         return result;

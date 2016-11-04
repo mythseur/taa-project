@@ -1,11 +1,7 @@
 package fr.istic.taa.service.impl;
 
-import fr.istic.taa.domain.DonneesEtudiant;
-import fr.istic.taa.domain.Etudiant;
 import fr.istic.taa.domain.Stage;
-import fr.istic.taa.dto.EntrepriseIHM;
-import fr.istic.taa.dto.EtudiantIHM;
-import fr.istic.taa.dto.StageIHM;
+import fr.istic.taa.repository.DonneesEntrepriseRepository;
 import fr.istic.taa.repository.DonneesEtudiantRepository;
 import fr.istic.taa.repository.EtudiantRepository;
 import fr.istic.taa.repository.StageRepository;
@@ -19,9 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -55,6 +48,9 @@ public class StageServiceImpl implements StageService {
     @Inject
     private DonneesEtudiantRepository donneesEtudiantRepository;
 
+    @Inject
+    private DonneesEntrepriseRepository donneesEntrepriseRepository;
+
 
     /**
      * Save a stage.
@@ -62,14 +58,11 @@ public class StageServiceImpl implements StageService {
      * @param stage the entity to save
      * @return the persisted entity
      */
-    public StageIHM save(StageIHM stage) {
+    public Stage save(Stage stage) {
         log.debug("Request to save Stage : {}", stage);
-
-        Stage st = stage.createStage();
-
-        Stage result = stageRepository.save(st);
+        Stage result = stageRepository.save(stage);
         stageSearchRepository.save(result);
-        return StageIHM.create(result);
+        return result;
     }
 
     /**
@@ -78,17 +71,9 @@ public class StageServiceImpl implements StageService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<StageIHM> findAll() {
+    public List<Stage> findAll() {
         log.debug("Request to get all Stages");
-        List<Stage> stages = stageRepository.findAll();
-        List<StageIHM> result = new ArrayList<>();
-
-        for (Stage stage : stages) {
-            StageIHM stageIHM = createStageIHMfromStage(stage);
-            result.add(stageIHM);
-        }
-
-        return result;
+        return stageRepository.findAll();
     }
 
     /**
@@ -98,10 +83,9 @@ public class StageServiceImpl implements StageService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public StageIHM findOne(Long id) {
+    public Stage findOne(Long id) {
         log.debug("Request to get Stage : {}", id);
-        Stage stage = stageRepository.findOne(id);
-        return stage == null ? null : createStageIHMfromStage(stage);
+        return stageRepository.findOne(id);
     }
 
     /**
@@ -122,17 +106,11 @@ public class StageServiceImpl implements StageService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<StageIHM> search(String query) {
+    public List<Stage> search(String query) {
         log.debug("Request to search Stages for query {}", query);
-        List<Stage> stages = StreamSupport
+        return StreamSupport
             .stream(stageSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
-
-        List<StageIHM> stageIHMs = new ArrayList<>();
-        for(Stage stage : stages){
-            stageIHMs.add(createStageIHMfromStage(stage));
-        }
-        return stageIHMs;
     }
 
     /**
@@ -142,15 +120,9 @@ public class StageServiceImpl implements StageService {
      * @return the list of entities
      */
     @Override
-    public List<StageIHM> findAllByEtudiant(Long id) {
+    public List<Stage> findAllByEtudiant(Long id) {
         log.debug("Request to get all Stages for Etudiant : {}",id);
-        List<Stage> stages = stageRepository.findAllByEtudiant(id);
-
-        List<StageIHM> stageIHMs = new ArrayList<>();
-        for(Stage stage : stages){
-            stageIHMs.add(createStageIHMfromStage(stage));
-        }
-        return stageIHMs;
+        return stageRepository.findAllByEtudiant(id);
     }
 
     /**
@@ -160,15 +132,9 @@ public class StageServiceImpl implements StageService {
      * @return the list of entities
      */
     @Override
-    public List<StageIHM> findAllByEntreprise(Long id) {
+    public List<Stage> findAllByEntreprise(Long id) {
         log.debug("Request to get all Stages for Entreprise : {}",id);
-        List<Stage> stages = stageRepository.findAllByEntreprise(id);
-
-        List<StageIHM> stageIHMs = new ArrayList<>();
-        for(Stage stage : stages){
-            stageIHMs.add(createStageIHMfromStage(stage));
-        }
-        return stageIHMs;
+        return stageRepository.findAllByEntreprise(id);
     }
 
     /**
@@ -178,15 +144,9 @@ public class StageServiceImpl implements StageService {
      * @return the list of entities
      */
     @Override
-    public List<StageIHM> findAllByEnseignant(Long id) {
+    public List<Stage> findAllByEnseignant(Long id) {
         log.debug("Request to get all Stages for Enseignant : {}",id);
-        List<Stage> stages = stageRepository.findAllByEnseignant(id);
-
-        List<StageIHM> stageIHMs = new ArrayList<>();
-        for(Stage stage : stages){
-            stageIHMs.add(createStageIHMfromStage(stage));
-        }
-        return stageIHMs;
+        return stageRepository.findAllByEnseignant(id);
     }
 
     /**
@@ -196,33 +156,8 @@ public class StageServiceImpl implements StageService {
      * @return the list of entities
      */
     @Override
-    public List<StageIHM> findAllByContact(Long id) {
+    public List<Stage> findAllByContact(Long id) {
         log.debug("Request to get all Stages for Contact : {}",id);
-        List<Stage> stages = stageRepository.findAllByContact(id);
-
-        List<StageIHM> stageIHMs = new ArrayList<>();
-        for(Stage stage : stages){
-            stageIHMs.add(createStageIHMfromStage(stage));
-        }
-        return stageIHMs;
-    }
-
-
-    private StageIHM createStageIHMfromStage(Stage stage){
-
-        ZonedDateTime date = stage.getDatedebut().atStartOfDay(ZoneId.systemDefault());
-
-        Etudiant etu = etudiantRepository.findOne(stage.getEtudiant().getId());
-        DonneesEtudiant don = donneesEtudiantRepository.findLastByIdEtudiantAndDate(etu.getId(), date);
-        EtudiantIHM etudiant = EtudiantIHM.create(etu, don);
-
-        EntrepriseIHM entreprise = entrepriseService.findOneByDate(stage.getEntreprise().getId(), date);
-
-        StageIHM stageIHM = StageIHM.create(stage);
-
-        if(etudiant != null) stageIHM.setEtudiant(etudiant);
-        if(entreprise != null) stageIHM.setEntreprise(entreprise);
-
-        return stageIHM;
+        return stageRepository.findAllByContact(id);
     }
 }

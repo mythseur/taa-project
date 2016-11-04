@@ -2,9 +2,10 @@ package fr.istic.taa.web.rest;
 
 import fr.istic.taa.TaaProjectApp;
 import fr.istic.taa.domain.Stage;
+import fr.istic.taa.dto.StageIHM;
 import fr.istic.taa.repository.StageRepository;
 import fr.istic.taa.repository.search.StageSearchRepository;
-import fr.istic.taa.service.StageService;
+import fr.istic.taa.service.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -83,13 +84,30 @@ public class StageResourceIntTest {
 
     private MockMvc restStageMockMvc;
 
-    private Stage stage;
+    private StageIHM stage;
+
+    @Inject
+    private EtudiantService etudiantService;
+
+    @Inject
+    private DonneesEtudiantService donneesEtudiantService;
+
+    @Inject
+    private EntrepriseService entrepriseService;
+
+    @Inject
+    private DonneesEntrepriseService donneesEntrepriseService;
 
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
         StageResource stageResource = new StageResource();
         ReflectionTestUtils.setField(stageResource, "stageService", stageService);
+        ReflectionTestUtils.setField(stageResource, "etudiantService", etudiantService);
+        ReflectionTestUtils.setField(stageResource, "donneesEtudiantService", donneesEtudiantService);
+        ReflectionTestUtils.setField(stageResource, "entrepriseService", entrepriseService);
+        ReflectionTestUtils.setField(stageResource, "donneesEntrepriseService", donneesEntrepriseService);
+
         this.restStageMockMvc = MockMvcBuilders.standaloneSetup(stageResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -101,8 +119,8 @@ public class StageResourceIntTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Stage createEntity(EntityManager em) {
-        Stage stage = new Stage();
+    public static StageIHM createEntity(EntityManager em) {
+        StageIHM stage = new StageIHM();
         stage.setDatedebut(DEFAULT_DATEDEBUT);
         stage.setDatefin(DEFAULT_DATEFIN);
         stage.setSujet(DEFAULT_SUJET);
@@ -154,7 +172,7 @@ public class StageResourceIntTest {
     @Transactional
     public void getAllStages() throws Exception {
         // Initialize the database
-        stageRepository.saveAndFlush(stage);
+        stage = StageIHM.create(stageRepository.saveAndFlush(stage.createStage()));
 
         // Get all the stages
         restStageMockMvc.perform(get("/api/stages?sort=id,desc"))
@@ -175,7 +193,7 @@ public class StageResourceIntTest {
     @Transactional
     public void getStage() throws Exception {
         // Initialize the database
-        stageRepository.saveAndFlush(stage);
+        stage = StageIHM.create(stageRepository.saveAndFlush(stage.createStage()));
 
         // Get the stage
         restStageMockMvc.perform(get("/api/stages/{id}", stage.getId()))
@@ -204,7 +222,7 @@ public class StageResourceIntTest {
     @Transactional
     public void updateStage() throws Exception {
         // Initialize the database
-//        stageService.save(stage);
+        stage = StageIHM.create(stageService.save(stage.createStage()));
 
         int databaseSizeBeforeUpdate = stageRepository.findAll().size();
 
@@ -246,7 +264,7 @@ public class StageResourceIntTest {
     @Transactional
     public void deleteStage() throws Exception {
         // Initialize the database
-//        stageService.save(stage);
+        stage = StageIHM.create(stageService.save(stage.createStage()));
 
         int databaseSizeBeforeDelete = stageRepository.findAll().size();
 
@@ -268,7 +286,7 @@ public class StageResourceIntTest {
     @Transactional
     public void searchStage() throws Exception {
         // Initialize the database
-//        stageService.save(stage);
+        stage = StageIHM.create(stageService.save(stage.createStage()));
 
         // Search the stage
         restStageMockMvc.perform(get("/api/_search/stages?query=id:" + stage.getId()))

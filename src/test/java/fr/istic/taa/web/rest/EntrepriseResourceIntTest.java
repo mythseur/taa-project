@@ -2,8 +2,12 @@ package fr.istic.taa.web.rest;
 
 import fr.istic.taa.TaaProjectApp;
 import fr.istic.taa.domain.Entreprise;
+import fr.istic.taa.dto.EntrepriseIHM;
+import fr.istic.taa.repository.DonneesEntrepriseRepository;
 import fr.istic.taa.repository.EntrepriseRepository;
+import fr.istic.taa.repository.search.DonneesEntrepriseSearchRepository;
 import fr.istic.taa.repository.search.EntrepriseSearchRepository;
+import fr.istic.taa.service.DonneesEntrepriseService;
 import fr.istic.taa.service.EntrepriseService;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,6 +55,26 @@ public class EntrepriseResourceIntTest {
     private static final Integer DEFAULT_EFFECTIF = 1;
     private static final Integer UPDATED_EFFECTIF = 2;
 
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("Z"));
+
+    private static final ZonedDateTime DEFAULT_DATEMODIF = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.systemDefault());
+    private static final ZonedDateTime UPDATED_DATEMODIF = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final String DEFAULT_DATEMODIF_STR = dateTimeFormatter.format(DEFAULT_DATEMODIF);
+    private static final String DEFAULT_ADRESSE = "AAAAA";
+    private static final String UPDATED_ADRESSE = "BBBBB";
+    private static final String DEFAULT_VILLE = "AAAAA";
+    private static final String UPDATED_VILLE = "BBBBB";
+    private static final String DEFAULT_CODEPOSTAL = "AAAAA";
+    private static final String UPDATED_CODEPOSTAL = "BBBBB";
+    private static final String DEFAULT_TEL = "AAAAA";
+    private static final String UPDATED_TEL = "BBBBB";
+    private static final String DEFAULT_URL = "AAAAA";
+    private static final String UPDATED_URL = "BBBBB";
+    private static final String DEFAULT_COMMENTAIRE = "AAAAA";
+    private static final String UPDATED_COMMENTAIRE = "BBBBB";
+    private static final String DEFAULT_MAIL = "AAAAA";
+    private static final String UPDATED_MAIL = "BBBBB";
+
     @Inject
     private EntrepriseRepository entrepriseRepository;
 
@@ -55,6 +83,15 @@ public class EntrepriseResourceIntTest {
 
     @Inject
     private EntrepriseSearchRepository entrepriseSearchRepository;
+
+    @Inject
+    private DonneesEntrepriseRepository donneesEntrepriseRepository;
+
+    @Inject
+    private DonneesEntrepriseService donneesEntrepriseService;
+
+    @Inject
+    private DonneesEntrepriseSearchRepository donneesEntrepriseSearchRepository;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -67,13 +104,14 @@ public class EntrepriseResourceIntTest {
 
     private MockMvc restEntrepriseMockMvc;
 
-    private Entreprise entreprise;
+    private EntrepriseIHM entreprise;
 
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
         EntrepriseResource entrepriseResource = new EntrepriseResource();
         ReflectionTestUtils.setField(entrepriseResource, "entrepriseService", entrepriseService);
+        ReflectionTestUtils.setField(entrepriseResource, "donneesEntrepriseService", donneesEntrepriseService);
         this.restEntrepriseMockMvc = MockMvcBuilders.standaloneSetup(entrepriseResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -85,11 +123,19 @@ public class EntrepriseResourceIntTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Entreprise createEntity(EntityManager em) {
-        Entreprise entreprise = new Entreprise();
+    public static EntrepriseIHM createEntity(EntityManager em) {
+        EntrepriseIHM entreprise = new EntrepriseIHM();
         entreprise.setNom(DEFAULT_NOM);
         entreprise.setSiret(DEFAULT_SIRET);
         entreprise.setEffectif(DEFAULT_EFFECTIF);
+        entreprise.setDateModif(DEFAULT_DATEMODIF);
+        entreprise.setAdresse(DEFAULT_ADRESSE);
+        entreprise.setVille(DEFAULT_VILLE);
+        entreprise.setCodepostal(DEFAULT_CODEPOSTAL);
+        entreprise.setTel(DEFAULT_TEL);
+        entreprise.setUrl(DEFAULT_URL);
+        entreprise.setCommentaire(DEFAULT_COMMENTAIRE);
+        entreprise.setMail(DEFAULT_MAIL);
         return entreprise;
     }
 
@@ -128,7 +174,8 @@ public class EntrepriseResourceIntTest {
     @Transactional
     public void getAllEntreprises() throws Exception {
         // Initialize the database
-        entrepriseRepository.saveAndFlush(entreprise);
+        entreprise.setEntreprise(entrepriseRepository.saveAndFlush(entreprise.createEntreprise()));
+        entreprise.setDonnees(donneesEntrepriseRepository.saveAndFlush(entreprise.createDonnees()));
 
         // Get all the entreprises
         restEntrepriseMockMvc.perform(get("/api/entreprises?sort=id,desc"))
@@ -144,7 +191,8 @@ public class EntrepriseResourceIntTest {
     @Transactional
     public void getEntreprise() throws Exception {
         // Initialize the database
-        entrepriseRepository.saveAndFlush(entreprise);
+        entreprise.setEntreprise(entrepriseRepository.saveAndFlush(entreprise.createEntreprise()));
+        entreprise.setDonnees(donneesEntrepriseRepository.saveAndFlush(entreprise.createDonnees()));
 
         // Get the entreprise
         restEntrepriseMockMvc.perform(get("/api/entreprises/{id}", entreprise.getId()))
@@ -168,7 +216,8 @@ public class EntrepriseResourceIntTest {
     @Transactional
     public void updateEntreprise() throws Exception {
         // Initialize the database
-//        entrepriseService.save(entreprise);
+        entreprise.setEntreprise(entrepriseService.save(entreprise.createEntreprise()));
+        entreprise.setDonnees(donneesEntrepriseService.save(entreprise.createDonnees()));
 
         int databaseSizeBeforeUpdate = entrepriseRepository.findAll().size();
 
@@ -200,7 +249,7 @@ public class EntrepriseResourceIntTest {
     @Transactional
     public void deleteEntreprise() throws Exception {
         // Initialize the database
-//        entrepriseService.save(entreprise);
+        entreprise.setEntreprise(entrepriseService.save(entreprise.createEntreprise()));
 
         int databaseSizeBeforeDelete = entrepriseRepository.findAll().size();
 
@@ -222,8 +271,8 @@ public class EntrepriseResourceIntTest {
     @Transactional
     public void searchEntreprise() throws Exception {
         // Initialize the database
-//        entrepriseService.save(entreprise);
-
+        entreprise.setEntreprise(entrepriseService.save(entreprise.createEntreprise()));
+        entreprise.setDonnees(donneesEntrepriseService.save(entreprise.createDonnees()));
         // Search the entreprise
         restEntrepriseMockMvc.perform(get("/api/_search/entreprises?query=id:" + entreprise.getId()))
             .andExpect(status().isOk())

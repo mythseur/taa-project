@@ -1,29 +1,27 @@
 package fr.istic.taa.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-
+import fr.istic.taa.domain.*;
+import fr.istic.taa.dto.EntrepriseIHM;
+import fr.istic.taa.dto.EtudiantIHM;
+import fr.istic.taa.dto.StageIHM;
+import fr.istic.taa.service.*;
+import fr.istic.taa.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-
-import fr.istic.taa.dto.StageIHM;
-import fr.istic.taa.service.StageService;
-import fr.istic.taa.web.rest.util.HeaderUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Stage.
@@ -36,6 +34,18 @@ public class StageResource {
 
     @Inject
     private StageService stageService;
+
+    @Inject
+    private EtudiantService etudiantService;
+
+    @Inject
+    private DonneesEtudiantService donneesEtudiantService;
+
+    @Inject
+    private EntrepriseService entrepriseService;
+
+    @Inject
+    private DonneesEntrepriseService donneesEntrepriseService;
 
     /**
      * POST  /stages : Create a new stage.
@@ -53,10 +63,10 @@ public class StageResource {
         if (stage.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("stage", "idexists", "A new stage cannot already have an ID")).body(null);
         }
-        StageIHM result = stageService.save(stage);
+        Stage result = stageService.save(stage.createStage());
         return ResponseEntity.created(new URI("/api/stages/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("stage", result.getId().toString()))
-            .body(result);
+            .body(createStageIHMfromStage(result));
     }
 
     /**
@@ -77,10 +87,10 @@ public class StageResource {
         if (stage.getId() == null) {
             return createStage(stage);
         }
-        StageIHM result = stageService.save(stage);
+        Stage result = stageService.save(stage.createStage());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("stage", stage.getId().toString()))
-            .body(result);
+            .body(createStageIHMfromStage(result));
     }
 
     /**
@@ -94,7 +104,9 @@ public class StageResource {
     @Timed
     public List<StageIHM> getAllStages() {
         log.debug("REST request to get all Stages");
-        return stageService.findAll();
+        return stageService.findAll().stream()
+            .map(this::createStageIHMfromStage)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -109,8 +121,8 @@ public class StageResource {
     @Timed
     public ResponseEntity<StageIHM> getStage(@PathVariable Long id) {
         log.debug("REST request to get Stage : {}", id);
-        StageIHM stage = stageService.findOne(id);
-        return Optional.ofNullable(stage)
+        Stage stage = stageService.findOne(id);
+        return Optional.ofNullable(createStageIHMfromStage(stage))
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))
@@ -146,7 +158,9 @@ public class StageResource {
     @Timed
     public List<StageIHM> searchStages(@RequestParam String query) {
         log.debug("REST request to search Stages for query {}", query);
-        return stageService.search(query);
+        return stageService.search(query).stream()
+            .map(this::createStageIHMfromStage)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -161,7 +175,9 @@ public class StageResource {
     @Timed
     public List<StageIHM> getAllStagesByEtudiant(@PathVariable Long id) {
         log.debug("REST request to get all Stages for Etudiant : {}",id);
-        return stageService.findAllByEtudiant(id);
+        return stageService.findAllByEtudiant(id).stream()
+            .map(this::createStageIHMfromStage)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -176,7 +192,9 @@ public class StageResource {
     @Timed
     public List<StageIHM> getAllStagesByEntreprise(@PathVariable Long id) {
         log.debug("REST request to get all Stages for Entreprise : {}",id);
-        return stageService.findAllByEntreprise(id);
+        return stageService.findAllByEntreprise(id).stream()
+            .map(this::createStageIHMfromStage)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -191,7 +209,9 @@ public class StageResource {
     @Timed
     public List<StageIHM> getAllStagesByEnseignant(@PathVariable Long id) {
         log.debug("REST request to get all Stages for Enseignant : {}",id);
-        return stageService.findAllByEnseignant(id);
+        return stageService.findAllByEnseignant(id).stream()
+            .map(this::createStageIHMfromStage)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -206,7 +226,37 @@ public class StageResource {
     @Timed
     public List<StageIHM> getAllStagesByContact(@PathVariable Long id) {
         log.debug("REST request to get all Stages for Contact : {}",id);
-        return stageService.findAllByContact(id);
+        return stageService.findAllByContact(id).stream()
+            .map(this::createStageIHMfromStage)
+            .collect(Collectors.toList());
+    }
+
+
+    private StageIHM createStageIHMfromStage(Stage stage) {
+
+        if (stage == null)
+            return null;
+
+        ZonedDateTime date = stage.getDatedebut().atStartOfDay(ZoneId.systemDefault());
+        StageIHM stageIHM = StageIHM.create(stage);
+
+        if (stage.getEtudiant() != null) {
+
+            Etudiant etu = etudiantService.findOne(stage.getEtudiant().getId());
+            DonneesEtudiant don = donneesEtudiantService.findLastByIdEtudiantAndDate(etu.getId(), date);
+            EtudiantIHM etudiant = EtudiantIHM.create(etu, don);
+            stageIHM.setEtudiant(etudiant);
+
+        }
+
+        if (stage.getEntreprise() != null) {
+            Entreprise entr = entrepriseService.findOne(stage.getEntreprise().getId());
+            DonneesEntreprise donEntr = donneesEntrepriseService.findLastByIdEntrepriseAndDate(stage.getEntreprise().getId(),
+                date);
+            EntrepriseIHM entreprise = EntrepriseIHM.create(entr, donEntr);
+            stageIHM.setEntreprise(entreprise);
+        }
+        return stageIHM;
     }
 
 

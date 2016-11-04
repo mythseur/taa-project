@@ -2,7 +2,6 @@ package fr.istic.taa.service;
 
 import fr.istic.taa.domain.Entreprise;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 
@@ -49,12 +48,4 @@ public interface EntrepriseService {
      */
     List<Entreprise> search(String query);
 
-    /**
-     * Get the "id" entreprise with its data from the given "date"
-     *
-     * @param id the id of the entity
-     * @param date the date of the data
-     * @return the entity
-     */
-    Entreprise findOneByDate(Long id, ZonedDateTime date);
 }

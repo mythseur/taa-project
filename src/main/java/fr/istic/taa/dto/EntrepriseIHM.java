@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * Created by guillaume on 27/10/16.
  */
-public class EntrepriseIHM extends Entreprise {
+public class EntrepriseIHM {
     private static final long serialVersionUID = 1L;
 
     private Long id;
@@ -198,6 +198,7 @@ public class EntrepriseIHM extends Entreprise {
         this.setCommentaire(don.getCommentaire());
         this.setMail(don.getMail());
         this.setDateModif(don.getDatemodif());
+        this.setEntreprise(createEntreprise());
     }
 
     public Entreprise createEntreprise() {
@@ -219,6 +220,7 @@ public class EntrepriseIHM extends Entreprise {
         don.setCommentaire(getCommentaire());
         don.setMail(getMail());
         don.setDatemodif(getDateModif());
+        don.setEntreprise(createEntreprise());
         return don;
     }
 

@@ -220,7 +220,9 @@ public class StageIHM {
         stage.setReferent(referent);
         stage.setResponsable(responsable);
         stage.setEncadrant(encadrant);
+        if (etudiant != null)
         stage.setEtudiant(etudiant.createEtudiant());
+        if (entreprise != null)
         stage.setEntreprise(entreprise.createEntreprise());
         return stage;
     }
