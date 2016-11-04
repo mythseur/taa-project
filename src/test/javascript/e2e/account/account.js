@@ -13,9 +13,7 @@ describe('account', function () {
     });
 
     it('should fail to login with bad password', function () {
-        expect(element.all(by.css('h1')).first().getText()).toMatch(/Welcome, Java Hipster!/);
-        accountMenu.click();
-        login.click();
+        expect(element.all(by.css('h1')).first().getText()).toMatch(/Sign in/);
 
         username.sendKeys('admin');
         password.sendKeys('foo');
@@ -31,7 +29,7 @@ describe('account', function () {
         password.clear().sendKeys('admin');
         element(by.css('button[type=submit]')).click();
 
-        expect(element(by.css('.alert-success')).getText()).toMatch(/You are logged in as user "admin"/);
+        expect(element(by.css('h1')).getText()).toMatch(/Bienvenue sur le Logiciel de Gestion des Stages de Rennes 1/);
     });
 
     it('should be able to update settings', function () {
@@ -56,9 +54,6 @@ describe('account', function () {
         expect(element(by.css('.alert-success')).getText()).toMatch(/Password changed!/);
         accountMenu.click();
         logout.click();
-
-        accountMenu.click();
-        login.click();
 
         username.sendKeys('admin');
         password.sendKeys('newpassword');

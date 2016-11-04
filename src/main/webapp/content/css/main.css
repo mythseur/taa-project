@@ -52,7 +52,7 @@ Version number in navbar
 ========================================================================== */
 .navbar-version {
     font-size: 10px;
-    color: #ccc
+    color: #ccc;
 }
 
 /* ==========================================================================
@@ -72,7 +72,7 @@ Logo styles
     padding: 5px 15px;
 }
 
-.logo .logo-img {
+.navbar-brand.logo .logo-img {
     height: 45px;
     display: inline-block;
 }
@@ -80,39 +80,7 @@ Logo styles
 /* ==========================================================================
 Main page styles
 ========================================================================== */
-.hero-unit {
-    margin: 50px auto 0 auto;
-    width: 300px;
-    font-size: 18px;
-    font-weight: 200;
-    line-height: 30px;
-    background-color: #eee;
-    border-radius: 6px;
-    padding: 60px;
-}
-
-.hero-unit h1 {
-    font-size: 60px;
-    line-height: 1;
-    letter-spacing: -1px;
-}
-
-.hipster {
-    display: inline-block;
-    width: 347px;
-    height: 497px;
-    background: url("../images/hipster.png") no-repeat center top;
-    background-size: contain;
-}
-
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (   min--moz-device-pixel-ratio: 2), only screen and (     -o-min-device-pixel-ratio: 2/1), only screen and (        min-device-pixel-ratio: 2), only screen and (                min-resolution: 192dpi), only screen and (                min-resolution: 2dppx) {
-    .hipster {
-        background: url("../images/hipster2x.png") no-repeat center top;
-        background-size: contain;
-    }
-}
-
 /* ==========================================================================
 Generic styles
 ========================================================================== */
@@ -207,17 +175,13 @@ Metrics and Health styles
 /* ==========================================================================
 start Password strength bar style
 ========================================================================== */
-ul#strengthBar {
+ul#strength {
     display: inline;
     list-style: none;
     margin: 0;
     margin-left: 15px;
     padding: 0;
     vertical-align: 2px;
-}
-
-.point:last {
-    margin: 0 !important;
 }
 
 .point {
@@ -229,6 +193,10 @@ ul#strengthBar {
     width: 20px;
 }
 
+.point:last {
+    margin: 0 !important;
+}
+
 /* ==========================================================================
 Custom alerts for notification
 ========================================================================== */
@@ -236,7 +204,7 @@ Custom alerts for notification
     text-overflow: ellipsis;
 }
 
-.alert pre {
+.alerts .alert pre {
     background: none;
     border: none;
     font: inherit;
@@ -245,7 +213,7 @@ Custom alerts for notification
     margin: 0;
 }
 
-.alert .popover pre {
+.alerts .alert .popover pre {
     font-size: 10px;
 }
 
@@ -308,7 +276,7 @@ entity tables helpers
 }
 
 /* Makes toolbar not wrap on smaller screens
- http://www.sketchingwithcss.com/samplechapter/cheatsheet.html#right */
+   http://www.sketchingwithcss.com/samplechapter/cheatsheet.html#right */
 .flex-btn-group-container {
     display: -webkit-flex;
     display: flex;
@@ -370,4 +338,4 @@ ui bootstrap tweaks
     outline: none;
 }
 
-/* jhipster-needle-css-add-main JHipster will add new css style */
+/* jhipster-needle-scss-add-main JHipster will add new css style */

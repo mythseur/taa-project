@@ -12,9 +12,6 @@ describe('Entreprise e2e test', function () {
     beforeAll(function () {
         browser.get('/');
 
-        accountMenu.click();
-        login.click();
-
         username.sendKeys('admin');
         password.sendKeys('admin');
         element(by.css('button[type=submit]')).click();
@@ -29,7 +26,7 @@ describe('Entreprise e2e test', function () {
 
     it('should load create Entreprise dialog', function () {
         element(by.css('[ui-sref="entreprise.new"]')).click().then(function () {
-            expect(element(by.css('h4.modal-title')).getText()).toMatch(/Create or edit a Entreprise/);
+            expect(element(by.css('h4.modal-title')).getText()).toMatch(/Créer ou éditer une entreprise/);
             element(by.css('button.close')).click();
         });
     });

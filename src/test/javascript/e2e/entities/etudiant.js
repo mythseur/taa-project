@@ -12,9 +12,6 @@ describe('Etudiant e2e test', function () {
     beforeAll(function () {
         browser.get('/');
 
-        accountMenu.click();
-        login.click();
-
         username.sendKeys('admin');
         password.sendKeys('admin');
         element(by.css('button[type=submit]')).click();
@@ -29,7 +26,7 @@ describe('Etudiant e2e test', function () {
 
     it('should load create Etudiant dialog', function () {
         element(by.css('[ui-sref="etudiant.new"]')).click().then(function () {
-            expect(element(by.css('h4.modal-title')).getText()).toMatch(/Create or edit a Etudiant/);
+            expect(element(by.css('h4.modal-title')).getText()).toMatch(/Créer ou éditer un étudiant/);
             element(by.css('button.close')).click();
         });
     });

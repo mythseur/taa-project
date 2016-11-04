@@ -12,9 +12,6 @@ describe('Contact e2e test', function () {
     beforeAll(function () {
         browser.get('/');
 
-        accountMenu.click();
-        login.click();
-
         username.sendKeys('admin');
         password.sendKeys('admin');
         element(by.css('button[type=submit]')).click();
@@ -29,7 +26,7 @@ describe('Contact e2e test', function () {
 
     it('should load create Contact dialog', function () {
         element(by.css('[ui-sref="contact.new"]')).click().then(function () {
-            expect(element(by.css('h4.modal-title')).getText()).toMatch(/Create or edit a Contact/);
+            expect(element(by.css('h4.modal-title')).getText()).toMatch(/Créer ou éditer un contact/);
             element(by.css('button.close')).click();
         });
     });
