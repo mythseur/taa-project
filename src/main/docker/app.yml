@@ -1,7 +1,7 @@
 version: '2'
 services:
     taaproject-app:
-        image: taaproject
+        image: mythseur/taa-project
         external_links:
             - taaproject-mysql:mysql
             - taaproject-elasticsearch:elasticsearch
