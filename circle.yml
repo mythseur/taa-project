@@ -1,4 +1,8 @@
 test:
   override:
     - npm test
-    - mvn integration-test
+    - mvnw spring-boot:run &
+    - bootPid=$!
+    - sleep 30s
+    - gulp itest
+    - kill $bootPid
