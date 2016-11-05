@@ -3,10 +3,15 @@ package fr.istic.taa.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import fr.istic.taa.domain.DonneesEntreprise;
 import fr.istic.taa.domain.Entreprise;
+import fr.istic.taa.domain.User;
 import fr.istic.taa.dto.EntrepriseIHM;
+import fr.istic.taa.security.AuthoritiesConstants;
 import fr.istic.taa.service.DonneesEntrepriseService;
 import fr.istic.taa.service.EntrepriseService;
+import fr.istic.taa.service.MailService;
+import fr.istic.taa.service.UserService;
 import fr.istic.taa.web.rest.util.HeaderUtil;
+import fr.istic.taa.web.rest.vm.ManagedUserVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,10 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -36,6 +41,14 @@ public class EntrepriseResource {
     @Inject
     private DonneesEntrepriseService donneesEntrepriseService;
 
+    @Inject
+    private UserService userService;
+
+    @Inject
+    private MailService mailService;
+
+    private static Set<String> authorities = new HashSet<>(Collections.singletonList(AuthoritiesConstants.ENTREPRISE));
+
     /**
      * POST  /entreprises : Create a new entreprise.
      *
@@ -47,7 +60,7 @@ public class EntrepriseResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<EntrepriseIHM> createEntreprise(@RequestBody EntrepriseIHM entreprise) throws URISyntaxException {
+    public ResponseEntity<EntrepriseIHM> createEntreprise(@RequestBody EntrepriseIHM entreprise, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save Entreprise : {}", entreprise);
         if (entreprise.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("entreprise", "idexists", "A new entreprise cannot already have an ID")).body(null);
@@ -57,6 +70,34 @@ public class EntrepriseResource {
         entreprise.setEntreprise(entr);
         DonneesEntreprise donneesEntreprise = donneesEntrepriseService.save(entreprise.createDonnees());
         entreprise.setDonnees(donneesEntreprise);
+
+        ManagedUserVM userVm = new ManagedUserVM(
+            null,
+            String.valueOf(entreprise.getId()),
+            null,
+            entreprise.getNom(),
+            "",
+            entreprise.getMail(),
+            true,
+            "fr",
+            authorities,
+            null,
+            null,
+            null,
+            null
+        );
+
+
+        User user = userService.createUser(userVm);
+
+        String baseUrl = request.getScheme() + // "http"
+            "://" +                                // "://"
+            request.getServerName() +              // "myhost"
+            ":" +                                  // ":"
+            request.getServerPort() +              // "80"
+            request.getContextPath();              // "/myContextPath" or "" if deployed in root context
+
+        mailService.sendCreationEmail(user, baseUrl);
 
         return ResponseEntity.created(new URI("/api/entreprises/" + entreprise.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("entreprise", entreprise.getId().toString()))
@@ -76,10 +117,10 @@ public class EntrepriseResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<EntrepriseIHM> updateEntreprise(@RequestBody EntrepriseIHM entreprise) throws URISyntaxException {
+    public ResponseEntity<EntrepriseIHM> updateEntreprise(@RequestBody EntrepriseIHM entreprise, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to update Entreprise : {}", entreprise);
         if (entreprise.getId() == null) {
-            return createEntreprise(entreprise);
+            return createEntreprise(entreprise, request);
         }
         Entreprise entr = entrepriseService.save(entreprise.createEntreprise());
         DonneesEntreprise don = donneesEntrepriseService.save(entreprise.createDonnees());

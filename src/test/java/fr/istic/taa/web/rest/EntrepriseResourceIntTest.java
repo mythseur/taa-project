@@ -9,6 +9,8 @@ import fr.istic.taa.repository.search.DonneesEntrepriseSearchRepository;
 import fr.istic.taa.repository.search.EntrepriseSearchRepository;
 import fr.istic.taa.service.DonneesEntrepriseService;
 import fr.istic.taa.service.EntrepriseService;
+import fr.istic.taa.service.MailService;
+import fr.istic.taa.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,7 +74,7 @@ public class EntrepriseResourceIntTest {
     private static final String UPDATED_URL = "BBBBB";
     private static final String DEFAULT_COMMENTAIRE = "AAAAA";
     private static final String UPDATED_COMMENTAIRE = "BBBBB";
-    private static final String DEFAULT_MAIL = "AAAAA";
+    private static final String DEFAULT_MAIL = "testApp@mythseur.fr";
     private static final String UPDATED_MAIL = "BBBBB";
 
     @Inject
@@ -106,12 +108,20 @@ public class EntrepriseResourceIntTest {
 
     private EntrepriseIHM entreprise;
 
+    @Inject
+    private UserService userService;
+
+    @Inject
+    private MailService mailService;
+
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
         EntrepriseResource entrepriseResource = new EntrepriseResource();
         ReflectionTestUtils.setField(entrepriseResource, "entrepriseService", entrepriseService);
         ReflectionTestUtils.setField(entrepriseResource, "donneesEntrepriseService", donneesEntrepriseService);
+        ReflectionTestUtils.setField(entrepriseResource, "userService", userService);
+        ReflectionTestUtils.setField(entrepriseResource, "mailService", mailService);
         this.restEntrepriseMockMvc = MockMvcBuilders.standaloneSetup(entrepriseResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

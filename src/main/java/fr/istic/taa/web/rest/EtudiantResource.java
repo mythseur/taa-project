@@ -3,10 +3,15 @@ package fr.istic.taa.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import fr.istic.taa.domain.DonneesEtudiant;
 import fr.istic.taa.domain.Etudiant;
+import fr.istic.taa.domain.User;
 import fr.istic.taa.dto.EtudiantIHM;
+import fr.istic.taa.security.AuthoritiesConstants;
 import fr.istic.taa.service.DonneesEtudiantService;
 import fr.istic.taa.service.EtudiantService;
+import fr.istic.taa.service.MailService;
+import fr.istic.taa.service.UserService;
 import fr.istic.taa.web.rest.util.HeaderUtil;
+import fr.istic.taa.web.rest.vm.ManagedUserVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,10 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -36,6 +41,14 @@ public class EtudiantResource {
     @Inject
     private DonneesEtudiantService donneesEtudiantService;
 
+    @Inject
+    private UserService userService;
+
+    @Inject
+    private MailService mailService;
+
+    private static Set<String> authorities = new HashSet<>(Collections.singletonList(AuthoritiesConstants.ETUDIANT));
+
     /**
      * POST  /etudiants : Create a new etudiant.
      *
@@ -47,7 +60,7 @@ public class EtudiantResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<EtudiantIHM> createEtudiant(@RequestBody EtudiantIHM etudiant) throws URISyntaxException {
+    public ResponseEntity<EtudiantIHM> createEtudiant(@RequestBody EtudiantIHM etudiant, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save Etudiant : {}", etudiant);
         if (etudiant.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("etudiant", "idexists", "A new etudiant cannot already have an ID")).body(null);
@@ -56,6 +69,34 @@ public class EtudiantResource {
         etudiant.setEtudiant(etu);
         DonneesEtudiant don = donneesEtudiantService.save(etudiant.createDonnees());
         etudiant.setDonnees(don);
+
+
+        ManagedUserVM userVm = new ManagedUserVM(
+            null,
+            etudiant.getiNe(),
+            null,
+            etudiant.getPrenom(),
+            etudiant.getNom(),
+            etudiant.getMail(),
+            true,
+            "fr",
+            authorities,
+            null,
+            null,
+            null,
+            null
+        );
+
+        User user = userService.createUser(userVm);
+
+        String baseUrl = request.getScheme() + // "http"
+            "://" +                                // "://"
+            request.getServerName() +              // "myhost"
+            ":" +                                  // ":"
+            request.getServerPort() +              // "80"
+            request.getContextPath();              // "/myContextPath" or "" if deployed in root context
+
+        mailService.sendCreationEmail(user, baseUrl);
 
         return ResponseEntity.created(new URI("/api/etudiants/" + etudiant.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("etudiant", etudiant.getId().toString()))
@@ -75,10 +116,10 @@ public class EtudiantResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<EtudiantIHM> updateEtudiant(@RequestBody EtudiantIHM etudiant) throws URISyntaxException {
+    public ResponseEntity<EtudiantIHM> updateEtudiant(@RequestBody EtudiantIHM etudiant, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to update Etudiant : {}", etudiant);
         if (etudiant.getId() == null) {
-            return createEtudiant(etudiant);
+            return createEtudiant(etudiant, request);
         }
         Etudiant etu = etudiantService.save(etudiant.createEtudiant());
         DonneesEtudiant donnees = donneesEtudiantService.save(etudiant.createDonnees());

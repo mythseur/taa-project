@@ -15,6 +15,7 @@
           <a th:href="@{|${baseUrl}/#/reset/finish?key=${user.resetKey}|}"
              th:text="|${user.firstName}|">login</a>
         </p>
+    <p th:text="#{email.creation.text2(${user.login})}"></p>
         <p>
             <span th:text="#{email.activation.text2}">Regards, </span>
             <br/>

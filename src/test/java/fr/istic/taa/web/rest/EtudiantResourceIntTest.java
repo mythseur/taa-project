@@ -11,6 +11,8 @@ import fr.istic.taa.repository.search.DonneesEtudiantSearchRepository;
 import fr.istic.taa.repository.search.EtudiantSearchRepository;
 import fr.istic.taa.service.DonneesEtudiantService;
 import fr.istic.taa.service.EtudiantService;
+import fr.istic.taa.service.MailService;
+import fr.istic.taa.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,7 +76,7 @@ public class EtudiantResourceIntTest {
     private static final String UPDATED_TELPERSO = "BBBBB";
     private static final String DEFAULT_TELMOBILE = "AAAAA";
     private static final String UPDATED_TELMOBILE = "BBBBB";
-    private static final String DEFAULT_MAIL = "AAAAA";
+    private static final String DEFAULT_MAIL = "testApp@mythseur.fr";
     private static final String UPDATED_MAIL = "BBBBB";
 
     @Inject
@@ -108,12 +110,21 @@ public class EtudiantResourceIntTest {
 
     private EtudiantIHM etudiant;
 
+    @Inject
+    private UserService userService;
+
+    @Inject
+    private MailService mailService;
+
+
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
         EtudiantResource etudiantResource = new EtudiantResource();
         ReflectionTestUtils.setField(etudiantResource, "etudiantService", etudiantService);
         ReflectionTestUtils.setField(etudiantResource, "donneesEtudiantService", donneesEtudiantService);
+        ReflectionTestUtils.setField(etudiantResource, "userService", userService);
+        ReflectionTestUtils.setField(etudiantResource, "mailService", mailService);
         this.restEtudiantMockMvc = MockMvcBuilders.standaloneSetup(etudiantResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
