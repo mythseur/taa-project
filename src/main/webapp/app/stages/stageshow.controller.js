@@ -17,17 +17,21 @@
         vm.responsable = vm.stage.responsable;
         vm.encadrant = vm.stage.encadrant;
 
-        Etudiant.get(
-            {"id": vm.etudiant.id},
-            function(data){
-                vm.dernieredonneesetudiant = data;
-            });
+        if(vm.etudiant != null) {
+            Etudiant.get(
+                {"id": vm.etudiant.id},
+                function (data) {
+                    vm.dernieredonneesetudiant = data;
+                });
+        }
 
-        Entreprise.get(
-            {"id": vm.entreprise.id},
-            function(data){
-                vm.dernieredonneesentreprise = data;
-            });
+        if(vm.entreprise != null){
+            Entreprise.get(
+                {"id": vm.entreprise.id},
+                function(data){
+                    vm.dernieredonneesentreprise = data;
+                });
+        }
 
         vm.exists = function(data){
             return data !== undefined && data != null && data != '';

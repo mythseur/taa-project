@@ -12,14 +12,14 @@
             <i class="fa fa-venus" ng-show="vm.etudiant.sexe == 'FEMME'"></i>
         </h3>
 
-        <dl class="dl-horizontal">
+        <dl class="dl-horizontal" ng-show="vm.exists(vm.etudiant)">
             <dt><span>INE</span></dt>
             <dd>
                 <span>{{vm.etudiant.iNe}}</span>
             </dd>
         </dl>
 
-        <dl class="dl-horizontal">
+        <dl class="dl-horizontal" ng-show="vm.exists(vm.etudiant)">
             <dt><span>Adresse</span></dt>
             <dd>
                 <span
@@ -69,11 +69,12 @@
                 <span><i
                     class="fa fa-angle-double-right"></i> {{vm.dernieredonneesetudiant.mail}}</span>
             </dd>
+
+            <a ng-click="showDetailsEtudiant = ! showDetailsEtudiant" ng-hide="showDetailsEtudiant">Afficher
+                les informations actuelles</a>
+            <a ng-click="showDetailsEtudiant = ! showDetailsEtudiant" ng-show="showDetailsEtudiant">Cacher
+                les informations actuelles</a>
         </dl>
-        <a ng-click="showDetailsEtudiant = ! showDetailsEtudiant" ng-hide="showDetailsEtudiant">Afficher
-            les informations actuelles</a>
-        <a ng-click="showDetailsEtudiant = ! showDetailsEtudiant" ng-show="showDetailsEtudiant">Cacher
-            les informations actuelles</a>
     </div>
     <br/>
 
@@ -82,7 +83,7 @@
         <h3>Entreprise : <a
             ui-sref="entreprise-detail({id:vm.entreprise.id})">{{vm.entreprise.nom}}</a></h3>
 
-        <dl class="dl-horizontal">
+        <dl class="dl-horizontal" ng-show="vm.exists(vm.entreprise)">
             <dt><span>SIRET</span></dt>
             <dd>
                 <span>{{vm.entreprise.siret}}</span>
@@ -93,7 +94,7 @@
             </dd>
         </dl>
 
-        <dl class="dl-horizontal">
+        <dl class="dl-horizontal" ng-show="vm.exists(vm.entreprise)">
             <dt><span>Adresse</span></dt>
             <dd>
                 <span
@@ -159,14 +160,14 @@
             <dd ng-show="showDetailsEntreprise && vm.dernieredonneesentreprise.commentaire != vm.entreprise.commentaire">
                 <span><i class="fa fa-angle-double-right"></i> {{vm.dernieredonneesentreprise.commentaire}}</span>
             </dd>
-        </dl>
 
-        <a ng-click="showDetailsEntreprise = ! showDetailsEntreprise"
-           ng-hide="showDetailsEntreprise">Afficher
-            les informations actuelles</a>
-        <a ng-click="showDetailsEntreprise = ! showDetailsEntreprise"
-           ng-show="showDetailsEntreprise">Cacher
-            les informations actuelles</a>
+            <a ng-click="showDetailsEntreprise = ! showDetailsEntreprise"
+               ng-hide="showDetailsEntreprise">Afficher
+                les informations actuelles</a>
+            <a ng-click="showDetailsEntreprise = ! showDetailsEntreprise"
+               ng-show="showDetailsEntreprise">Cacher
+                les informations actuelles</a>
+        </dl>
     </div>
     <br/>
 
