@@ -1,10 +1,10 @@
 package fr.istic.taa.dto;
 
-import fr.istic.taa.domain.DonneesEntreprise;
-import fr.istic.taa.domain.Entreprise;
-
 import java.time.ZonedDateTime;
 import java.util.Objects;
+
+import fr.istic.taa.domain.DonneesEntreprise;
+import fr.istic.taa.domain.Entreprise;
 
 /**
  * Created by guillaume on 27/10/16.
@@ -163,42 +163,36 @@ public class EntrepriseIHM {
     }
 
     public static EntrepriseIHM create(Entreprise ent, DonneesEntreprise don) {
-        if (ent == null || don == null)
+        if (ent == null)
             return null;
 
         EntrepriseIHM res = new EntrepriseIHM();
-        res.setId(ent.getId());
-        res.setSiret(ent.getSiret());
-        res.setNom(ent.getNom());
-        res.setEffectif(ent.getEffectif());
-        res.setAdresse(don.getAdresse());
-        res.setCodepostal(don.getCodepostal());
-        res.setVille(don.getVille());
-        res.setTel(don.getTel());
-        res.setUrl(don.getUrl());
-        res.setCommentaire(don.getCommentaire());
-        res.setMail(don.getMail());
-        res.setDateModif(don.getDatemodif());
+        res.setEntreprise(ent);
+        res.setDonnees(don);
         return res;
     }
 
     public void setEntreprise(Entreprise ent) {
-        this.setId(ent.getId());
-        this.setSiret(ent.getSiret());
-        this.setNom(ent.getNom());
-        this.setEffectif(ent.getEffectif());
+        if(ent!=null) {
+            this.setId(ent.getId());
+            this.setSiret(ent.getSiret());
+            this.setNom(ent.getNom());
+            this.setEffectif(ent.getEffectif());
+        }
     }
 
     public void setDonnees(DonneesEntreprise don) {
-        this.setAdresse(don.getAdresse());
-        this.setCodepostal(don.getCodepostal());
-        this.setVille(don.getVille());
-        this.setTel(don.getTel());
-        this.setUrl(don.getUrl());
-        this.setCommentaire(don.getCommentaire());
-        this.setMail(don.getMail());
-        this.setDateModif(don.getDatemodif());
-        this.setEntreprise(createEntreprise());
+        if(don!=null) {
+            this.setAdresse(don.getAdresse());
+            this.setCodepostal(don.getCodepostal());
+            this.setVille(don.getVille());
+            this.setTel(don.getTel());
+            this.setUrl(don.getUrl());
+            this.setCommentaire(don.getCommentaire());
+            this.setMail(don.getMail());
+            this.setDateModif(don.getDatemodif());
+            this.setEntreprise(createEntreprise());
+        }
     }
 
     public Entreprise createEntreprise() {

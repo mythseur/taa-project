@@ -1,11 +1,11 @@
 package fr.istic.taa.dto;
 
+import java.time.ZonedDateTime;
+import java.util.Objects;
+
 import fr.istic.taa.domain.DonneesEtudiant;
 import fr.istic.taa.domain.Etudiant;
 import fr.istic.taa.domain.enumeration.Sexe;
-
-import java.time.ZonedDateTime;
-import java.util.Objects;
 
 public class EtudiantIHM {
     private static final long serialVersionUID = 1L;
@@ -161,24 +161,13 @@ public class EtudiantIHM {
     }
 
     public static EtudiantIHM create(Etudiant etu, DonneesEtudiant don) {
-        if (etu == null || don == null) {
+        if (etu == null) {
             return null;
         }
 
         EtudiantIHM res = new EtudiantIHM();
-            res.setId(etu.getId());
-            res.setiNe(etu.getiNe());
-            res.setPrenom(etu.getPrenom());
-            res.setNom(etu.getNom());
-            res.setSexe(etu.getSexe());
-            res.setAdresse(don.getAdresse());
-            res.setCodepostal(don.getCodepostal());
-            res.setVille(don.getVille());
-            res.setMail(don.getMail());
-            res.setTelmobile(don.getTelmobile());
-            res.setTelperso(don.getTelperso());
-        res.setDateModif(don.getDatemodif());
-
+        res.setEtudiant(etu);
+        res.setDonnees(don);
         return res;
     }
 
