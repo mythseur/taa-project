@@ -62,14 +62,6 @@ public class EntrepriseResource {
     @Timed
     public ResponseEntity<EntrepriseIHM> createEntreprise(@RequestBody EntrepriseIHM entreprise, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save Entreprise : {}", entreprise);
-        if (entreprise.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("entreprise", "idexists", "A new entreprise cannot already have an ID")).body(null);
-        }
-
-        Entreprise entr = entrepriseService.save(entreprise.createEntreprise());
-        entreprise.setEntreprise(entr);
-        DonneesEntreprise donneesEntreprise = donneesEntrepriseService.save(entreprise.createDonnees());
-        entreprise.setDonnees(donneesEntreprise);
 
         ManagedUserVM userVm = new ManagedUserVM(
             null,
@@ -98,6 +90,15 @@ public class EntrepriseResource {
             request.getContextPath();              // "/myContextPath" or "" if deployed in root context
 
         mailService.sendCreationEmail(user, baseUrl);
+
+        if (entreprise.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("entreprise", "idexists", "A new entreprise cannot already have an ID")).body(null);
+        }
+
+        Entreprise entr = entrepriseService.save(entreprise.createEntreprise());
+        entreprise.setEntreprise(entr);
+        DonneesEntreprise donneesEntreprise = donneesEntrepriseService.save(entreprise.createDonnees());
+        entreprise.setDonnees(donneesEntreprise);
 
         return ResponseEntity.created(new URI("/api/entreprises/" + entreprise.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("entreprise", entreprise.getId().toString()))

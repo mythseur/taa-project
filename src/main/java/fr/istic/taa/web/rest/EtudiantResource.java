@@ -62,14 +62,6 @@ public class EtudiantResource {
     @Timed
     public ResponseEntity<EtudiantIHM> createEtudiant(@RequestBody EtudiantIHM etudiant, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save Etudiant : {}", etudiant);
-        if (etudiant.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("etudiant", "idexists", "A new etudiant cannot already have an ID")).body(null);
-        }
-        Etudiant etu = etudiantService.save(etudiant.createEtudiant());
-        etudiant.setEtudiant(etu);
-        DonneesEtudiant don = donneesEtudiantService.save(etudiant.createDonnees());
-        etudiant.setDonnees(don);
-
 
         ManagedUserVM userVm = new ManagedUserVM(
             null,
@@ -97,6 +89,16 @@ public class EtudiantResource {
             request.getContextPath();              // "/myContextPath" or "" if deployed in root context
 
         mailService.sendCreationEmail(user, baseUrl);
+
+        if (etudiant.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("etudiant", "idexists", "A new etudiant cannot already have an ID")).body(null);
+        }
+        Etudiant etu = etudiantService.save(etudiant.createEtudiant());
+        etudiant.setEtudiant(etu);
+        DonneesEtudiant don = donneesEtudiantService.save(etudiant.createDonnees());
+        etudiant.setDonnees(don);
+
+
 
         return ResponseEntity.created(new URI("/api/etudiants/" + etudiant.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("etudiant", etudiant.getId().toString()))
